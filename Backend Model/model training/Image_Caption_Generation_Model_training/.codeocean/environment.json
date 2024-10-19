@@ -1,0 +1,57 @@
+{
+	"version": 1,
+	"base_image": "registry.codeocean.com/codeocean/miniconda3:4.9.2-cuda11.7.0-cudnn8-ubuntu20.04",
+	"options": {},
+	"installers": {
+		"pip": {
+			"packages": [
+				{
+					"name": "jupyter",
+					"version": "1.0.0"
+				},
+				{
+					"name": "keras",
+					"version": "2.6.0"
+				},
+				{
+					"name": "matplotlib",
+					"version": "3.5.3"
+				},
+				{
+					"name": "nltk",
+					"version": "3.6.5"
+				},
+				{
+					"name": "numpy",
+					"version": "1.21.5"
+				},
+				{
+					"name": "opencv-python-headless",
+					"version": "4.5.4.60"
+				},
+				{
+					"name": "protobuf",
+					"version": "3.20.0"
+				},
+				{
+					"name": "pydot",
+					"version": "2.0.0"
+				},
+				{
+					"name": "scikit-image",
+					"version": "0.19.1"
+				},
+				{
+					"name": "tensorflow",
+					"version": "2.8.0"
+				},
+				{
+					"name": "tensorflow-addons",
+					"version": "0.15.0"
+				}
+			],
+			"options": {},
+			"pre_install_options": {}
+		}
+	}
+}
