@@ -20,16 +20,16 @@ VisionXAI is a mobile application project designed to generate detailed image ca
 
 ### 2. Backend API (Flask)
 
-- API developed using **Flask** to handle image uploads and process caption generation.
+- API developed using **FastAPI** to handle image uploads and process caption generation.
 - Integrates the pre-trained Bengali image captioning model.
 - Runs locally and returns generated captions in Bengali.
 
 ### 3. Model
 
-This project involves training a multimodal Transformer model for image captioning. 
+This project involves training a multimodal Transformer model for image captioning.
 
 1. Dataset:
-   
+   - The dataset is a collection of 9,154 images paired with two captions in Bengali.
    - The dataset consists of images paired with two captions each.
    - It's split into an 80% training set (7,323 samples) and a 20% test set (1,831 samples).
    - Image augmentation is applied to increase data diversity.
@@ -37,7 +37,6 @@ This project involves training a multimodal Transformer model for image captioni
    - The data is prepared using TensorFlow Dataset API.
 
 2. Model Architecture:
-   
    - The model is a Transformer-based architecture designed for image-to-text tasks.
    - It uses EfficientNetB0 as the CNN backbone for image feature extraction.
    - Custom Encoder and Decoder blocks are implemented by inheriting from TensorFlow's Layer class.
@@ -45,25 +44,21 @@ This project involves training a multimodal Transformer model for image captioni
    - The final model is created by compiling these layers and inheriting from TensorFlow's Model class.
 
 3. Training Process:
-   
    - A custom loss function is defined.
    - Early stopping is implemented to prevent overfitting.
    - The model is compiled with the defined loss function and other unspecified parameters.
    - The training process checks for previously saved weights and loads them if available.
 
 4. Text Generation:
-   
    - A lookup dictionary is created.
    - An output sequence length is set, determining the maximum length of generated captions.
 
 This model is designed for generating textual captions given input images, utilizing a state-of-the-art Transformer architecture combined with a pre-trained CNN for image feature extraction.
 
-
-
 ## Technology Stack
 
 - **Flutter**: For frontend mobile app development.
-- **Flask**: For backend API development.
+- **FastAPI**: For backend API development.
 - **Grad-CAM**, **LIME**: For Explainable AI integration.
 - **Python 3.8.10**: For running the backend Flask API.
 
@@ -76,7 +71,7 @@ Before running the Flask API, ensure the following are installed:
 1. **Python 3.8.10 or above**: Check version compatibility.
 
 2. **Required Dependencies**: Install the necessary Python packages.
-   
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -86,7 +81,7 @@ Before running the Flask API, ensure the following are installed:
 ### Running the Flask API
 
 1. Start the API by running the `main.py` script in the project directory (Flask_API).
-   
+
    ```bash
    python main.py
    ```
@@ -102,32 +97,36 @@ Before running the Flask API, ensure the following are installed:
 ## Local Development Setup
 
 1. **Clone the repository**:
-   
+
    ```bash
    git clone <repository-url>
    ```
 
 2. **Navigate to the project directory**:
-   
+
    ```bash
    cd VisionXAI
    ```
 
 3. **Install the backend dependencies**:
-   
+
    ```bash
    pip install -r requirements.txt
    ```
 
 4. **Run the Flask API**:
-   
+
    ```bash
    python main.py
    ```
 
 5. **Run the Flutter app**:
-   
-   Open the Flutter project (vision_xai) in your preferred IDE (VSCode, Android Studio) and run the app on an Android/iOS device or emulator.
+
+   ```bash
+   flutter run
+   ```
+
+   Open the Flutter project (vision_xai) in your preferred IDE (VSCode, Android Studio) and run the app on an Android/iOS device.
 
 ## Notes
 
