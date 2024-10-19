@@ -1,5 +1,0 @@
-docker run -p 8888:8888 -it --platform linux/amd64 --rm --gpus all --workdir /code --volume "%cd%/data":/data --volume "%cd%/code":/code --volume "%cd%/results":/results 7c30468f-6fe0-4cdb-90be-1858f26bf550 /bin/bash
-
-source /opt/conda/bin/activate
-
-jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
