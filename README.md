@@ -7,7 +7,7 @@ VisionXAI is a mobile application project designed to generate detailed image ca
 - **Image Caption Generation**: Captions images in Bengali by using pre-trained AI models.
 - **Explainable AI (xAI)**: Provides an explainability layer that highlights important features in the image and explains how the captions were generated.
 - **Mobile Application**: Cross-platform app built using Flutter.
-- **Flask API**: A backend API for handling image uploads and caption generation.
+- **FastAPI**: A backend API for handling image uploads and caption generation.
 - **Local Execution**: The backend API runs locally and processes images to return Bengali captions.
 
 ## Project Components
