@@ -1,6 +1,6 @@
 # VisionXAI: Image Caption Generation in Bengali with Explainable AI (xAI)
 
-VisionXAI is a mobile application project designed to generate detailed image captions in Bengali. It integrates Explainable AI (xAI) to help users understand how captions are generated, making the app transparent and trustworthy. VisionXAI aims to support Bengali-speaking users, including visually impaired individuals, by offering rich image descriptions in Bengali, which can be read aloud through text-to-speech (TTS) technology. This accessibility feature ensures that visually impaired users can fully experience the descriptions and gain meaningful insights into the images.  
+VisionXAI is a mobile application project designed to generate detailed image captions in Bengali. It integrates Explainable AI (xAI) to help users understand how captions are generated, making the app transparent and trustworthy. VisionXAI aims to support Bengali-speaking users by offering rich image descriptions in Bengali, which can be read aloud through text-to-speech (TTS) technology. This accessibility feature ensures that visually impaired users can fully experience the descriptions and gain meaningful insights into the images.
 
 ## Features
 
