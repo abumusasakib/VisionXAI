@@ -1,0 +1,95 @@
+{
+  "@@locale": "bn",
+  "appTitle": "VisionXAI",
+  "@appTitle": {
+    "description": "The title of the application."
+  },
+  "settingsScreenTitle": "Settings",
+  "@settingsScreenTitle": {
+    "description": "The title for the settings screen."
+  },
+  "ip": "IP ঠিকানা",
+  "@ip": {
+    "description": "The IP address of the server."
+  },
+  "port": "পোর্ট",
+  "@port": {
+    "description": "The port of the server."
+  },
+  "ipPortUpdated": "IP এবং পোর্ট সফলভাবে আপডেট করা হয়েছে",
+  "@ipPortUpdated": {
+    "description": "Success message for IP and port update."
+  },
+  "enterIpAndPort": "অনুগ্রহ করে IP এবং পোর্ট লিখুন",
+  "@enterIpAndPort": {
+    "description": "Message for IP and port not entered."
+  },
+  "updateIp": "IP ঠিকানা আপডেট করুন",
+  "@updateIp": {
+    "description": "Text for the update IP button."
+  },
+  "imageUploadFailedMessage": "ছবি আপলোড ব্যর্থ হয়েছে",
+  "@imageUploadFailedMessage": {
+    "description": "Error message for image upload failure."
+  },
+  "chooseImage": "ক্যাপশন তৈরি করতে ইমেজ বেছে নিন",
+  "@chooseImage": {
+    "description": "Text for choosing image to caption."
+  },
+  "noImageSelected": "কোনো ছবি নির্বাচন করা হয়নি",
+  "@noImageSelected": {
+    "description": "Text when no image has been chosen."
+  },
+  "generatingCaption": "ক্যাপশন তৈরি করা হচ্ছে...",
+  "@generatingCaption": {
+    "description": "Text for the generating caption message."
+  },
+  "captionText": "ক্যাপশন এখানে প্রদর্শিত হবে",
+  "@captionText": {
+    "description": "Text for the caption text."
+  },
+  "stopText": "থামো",
+  "@stopText": {
+    "description": "Text for the stop text."
+  },
+  "uploadImage": "ছবি আপলোড করুন৷",
+  "@uploadImage": {
+    "description": "Text for the upload image button."
+  },
+  "generateCaption": "ক্যাপশন তৈরি করুন",
+  "@generateCaption": {
+    "description": "Text for the generate caption button."
+  },
+  "selectImageFrom": "উৎস থেকে ছবি নির্বাচন করুন",
+  "@selectImageFrom": {
+    "description": "Text for the select image from text."
+  },
+  "camera": "ক্যামেরা দিয়ে ছবি ক্যাপচার করুন",
+  "@camera": {
+    "description": "Text to capture image from camera."
+  },
+  "selectImageFromGallery": "গ্যালারি থেকে ছবি নির্বাচন করুন",
+  "@selectImageFromGallery": {
+    "description": "Text for the select image from gallery."
+  },
+  "errorTitle": "ত্রুটি",
+  "@errorTitle": {
+    "description": "Title for error messages."
+  },
+  "ok": "ঠিক আছে",
+  "@ok": {
+    "description": "Text for the OK button."
+  },
+  "languageSettings": "ভাষা সেটিংস",
+  "@languageSettings": {
+    "description": "The title for the language settings screen."
+  },
+  "selectLanguage": "ভাষা নির্বাচন করুন",
+  "@selectLanguage": {
+    "description": "Text for the select language text."
+  },
+  "ipConfiguration": "আইপি কনফিগারেশন",
+  "@ipConfiguration": {
+    "description": "The title for the IP configuration screen."
+  }
+}
