@@ -1,0 +1,92 @@
+# General OS-specific files
+.DS_Store               # macOS metadata files
+Thumbs.db               # Windows thumbnail cache files
+desktop.ini             # Windows metadata files
+
+# Python-specific files
+*.py[cod]               # Compiled Python files
+__pycache__/            # Python cache directories
+*.pyo
+*.pyd
+*.bak
+*.tmp
+*.old
+*.orig
+
+# Virtual Environments
+.venv/
+env/
+ENV/
+venv/
+
+# FastAPI-related ignores
+*.log                   # Log files
+*.out                   # Output files
+*.err                   # Error files
+ImgCap/weights/         # Pre-trained model weights (customizable if needed)
+
+# IDE-specific files
+.idea/                  # JetBrains IDEs (e.g., PyCharm)
+.vscode/                # Visual Studio Code settings
+*.swp                   # Swap files (vi/vim)
+*.swo
+
+# TensorFlow and ML-related ignores
+**/checkpoint           # TensorFlow checkpoint files
+**/saved_model/         # TensorFlow saved models
+*.h5                    # Model files
+*.pb                    # Protocol buffer files
+*.tflite                # TensorFlow Lite models
+*.onnx                  # ONNX models
+**/.ipynb_checkpoints/  # Jupyter Notebook checkpoints
+Image_Caption_Generation_Model_training/code/run/  # Temporary execution files
+
+# Node.js and Flutter-specific ignores
+node_modules/           # Node.js dependencies
+pubspec.lock            # Flutter package lock file (optional, can be tracked if needed)
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-version
+android/.gradle/        # Gradle cache for Android builds
+android/.idea/
+android/local.properties
+android/.cxx/
+android/.settings/
+ios/Pods/               # CocoaPods dependencies for iOS builds
+ios/.symlinks/
+ios/Flutter/Flutter.framework/
+ios/Flutter/App.framework/
+*.xcworkspace/          # Xcode workspace files
+build/                  # Build output directory for Flutter, FastAPI, etc.
+
+# Generated files and metadata
+*.metadata              # Flutter metadata files
+*.cmake/                # CMake files
+CMakeFiles/
+CMakeCache.txt
+*.log                   # Logs from CMake or build systems
+cmake.check_cache
+
+# Uploaded files
+uploaded_images/        # Customizable directory for user uploads
+
+# Environment variables and secrets
+.env                    # Environment variables
+.env.*                  # Other environment files
+*.ini                   # Configuration files with sensitive data
+
+# Backup and temporary files
+*.tmp
+*.bak
+*.swp
+*.lock
+*.backup
+*.temp
+
+# Model metadata and reproducibility files
+**/metadata/
+**/metadata.json
+**/metadata.yml
+
+# Miscellaneous
+README.md~              # Backup versions of README files
