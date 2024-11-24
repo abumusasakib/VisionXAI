@@ -1,0 +1,95 @@
+{
+  "@@locale": "en",
+  "appTitle": "VisionXAI",
+  "@appTitle": {
+    "description": "The title of the application."
+  },
+  "settingsScreenTitle": "Settings",
+  "@settingsScreenTitle": {
+    "description": "The title for the settings screen."
+  },
+  "ip": "IP Address",
+  "@ip": {
+    "description": "The IP address of the server."
+  },
+  "port": "Port",
+  "@port": {
+    "description": "The port of the server."
+  },
+  "ipPortUpdated": "IP and Port updated successfully",
+  "@ipPortUpdated": {
+    "description": "Success message for IP and port update."
+  },
+  "enterIpAndPort": "Please enter IP and Port",
+  "@enterIpAndPort": {
+    "description": "Error message for IP and port not entered."
+  },
+  "updateIp": "Update IP Address",
+  "@updateIp": {
+    "description": "Text for the update IP button."
+  },
+  "imageUploadFailedMessage": "Image upload failed",
+  "@imageUploadFailedMessage": {
+    "description": "Error message for image upload failure."
+  },
+  "chooseImage": "Choose image to generate caption",
+  "@chooseImage": {
+    "description": "Text for the choose image button."
+  },
+  "noImageSelected": "No image selected",
+  "@noImageSelected": {
+    "description": "Text when no image has been chosen."
+  },
+  "generatingCaption": "Generating Caption...",
+  "@generatingCaption": {
+    "description": "Text for the generating caption message."
+  },
+  "captionText": "Caption will appear here",
+  "@captionText": {
+    "description": "Text for the caption text."
+  },
+  "stopText": "Stop",
+  "@stopText": {
+    "description": "Text for the stop text."
+  },
+  "uploadImage": "Upload Image",
+  "@uploadImage": {
+    "description": "Text for the upload image button."
+  },
+  "generateCaption": "Generate Caption",
+  "@generateCaption": {
+    "description": "Text for the generate caption button."
+  },
+  "selectImageFrom": "Select image from source",
+  "@selectImageFrom": {
+    "description": "Text for the select image from text."
+  },
+  "camera": "Capture Image with Camera",
+  "@camera": {
+    "description": "Text to capture image from camera."
+  },
+  "selectImageFromGallery": "Select Image from Gallery",
+  "@selectImageFromGallery": {
+    "description": "Text for the select image from gallery."
+  },
+  "errorTitle": "Error",
+  "@errorTitle": {
+    "description": "Title for error messages."
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Text for the OK button."
+  },
+  "languageSettings": "Language Settings",
+  "@languageSettings": {
+    "description": "The title for the language settings screen."
+  },
+  "selectLanguage": "Select Language",
+  "@selectLanguage": {
+    "description": "Text for the select language text."
+  },
+  "ipConfiguration": "IP Configuration",
+  "@ipConfiguration": {
+    "description": "The title for the IP configuration screen."
+  }
+}
