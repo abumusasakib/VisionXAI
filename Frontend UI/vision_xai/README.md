@@ -121,7 +121,7 @@ The **VisionXAI** app can be built for **Android** and **Windows** in release mo
 
 ## Running the Application on Windows
 
-### Prerequisites:
+### Prerequisites
 
 - Install and set up Flutter's desktop support for Windows.
 - Use the following command to run the app on Windows:
