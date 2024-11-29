@@ -1,9 +1,13 @@
+import 'package:arb_utils/state_managers/l10n_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vision_xai/l10n/localization_extension.dart';
+import 'package:vision_xai/routes/app_routes.dart';
 import 'package:vision_xai/settings/settings_cubit.dart';
 import 'package:vision_xai/settings/settings_state.dart';
-import 'package:locale_names/locale_names.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vision_xai/widgets/custom_language_selector_dropdown.dart';
 
 class LanguageSettings extends StatelessWidget {
   const LanguageSettings({super.key});
@@ -18,26 +22,23 @@ class LanguageSettings extends StatelessWidget {
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(context.tr.selectLanguage, style: const TextStyle(fontSize: 18)),
-                const SizedBox(height: 16),
-                DropdownButton<Locale>(
-                  value: state.currentLocale,
-                  items: state.availableLanguages.map((locale) {
-                    return DropdownMenuItem(
-                      value: locale,
-                      child: Text(locale.defaultDisplayLanguage),
-                    );
-                  }).toList(),
-                  onChanged: (locale) {
-                    if (locale != null) {
-                      context.read<SettingsCubit>().updateLanguage(locale.languageCode);
-                    }
-                    Navigator.of(context).pop();
+                Text(context.tr.selectLanguage,
+                    style: const TextStyle(fontSize: 18)),
+                const SizedBox(width: 25),
+                CustomLanguageSelectorDropdown(
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  provider: context.read<ProviderL10n>(),
+                  languageChangeHandler: (Locale locale) {
+                    // Handle the language change event
+                    context
+                        .read<SettingsCubit>()
+                        .updateLanguage(locale.languageCode);
+                    context.go(AppRoutes.home);
                   },
-                  isExpanded: true,
                 ),
               ],
             ),

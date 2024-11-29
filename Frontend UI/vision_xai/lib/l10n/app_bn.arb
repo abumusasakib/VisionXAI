@@ -91,5 +91,9 @@
   "ipConfiguration": "আইপি কনফিগারেশন",
   "@ipConfiguration": {
     "description": "The title for the IP configuration screen."
+  },
+  "noLanguageSelected": "কোন ভাষা নির্বাচিত নেই",
+  "@noLanguageSelected": {
+    "description": "Error message for no language selected."
   }
 }
