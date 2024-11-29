@@ -10,6 +10,8 @@ import 'package:vision_xai/home/home_cubit.dart';
 import 'package:vision_xai/home/home_state.dart';
 import 'package:vision_xai/l10n/localization_extension.dart';
 import 'package:vision_xai/routes/app_routes.dart';
+import 'package:vision_xai/settings/settings_cubit.dart';
+import 'package:vision_xai/settings/settings_state.dart';
 
 Future<String> _getBaseUrl() async {
   var box = await Hive.box('settings');
@@ -44,75 +46,81 @@ class Home extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocListener<HomeCubit, HomeState>(
+      body: BlocListener<SettingsCubit, SettingsState>(
         listener: (context, state) {
-          if (state.errorMessage != null) {
-            // Show error dialog
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text(context.tr.errorTitle),
-                  content: Text(state.errorMessage!),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        context.read<HomeCubit>().reset();
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(context.tr.ok),
-                    ),
-                  ],
-                );
-              },
-            );
-          }
+          debugPrint(
+              'BlocListener detected state change: ${state.currentLocale.languageCode}');
         },
-        child: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            final cubit = context.read<HomeCubit>();
-            final picker = ImagePicker();
-
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                final isWideScreen = constraints.maxWidth > 600;
-
-                return SafeArea(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: isWideScreen
-                          ? Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: _buildImageDisplay(context, state),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  flex: 2,
-                                  child: _buildControls(
-                                      context, cubit, state, picker),
-                                ),
-                              ],
-                            )
-                          : Column(
-                              mainAxisSize: MainAxisSize
-                                  .min, // Ensuring Column doesn't expand indefinitely
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                _buildImageDisplay(context, state),
-                                const SizedBox(height: 16),
-                                _buildControls(context, cubit, state, picker),
-                              ],
-                            ),
-                    ),
-                  ),
-                );
-              },
-            );
+        child: BlocListener<HomeCubit, HomeState>(
+          listener: (context, state) {
+            if (state.errorMessage != null) {
+              // Show error dialog
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(context.tr.errorTitle),
+                    content: Text(state.errorMessage!),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          context.read<HomeCubit>().reset();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(context.tr.ok),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
           },
+          child: BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, state) {
+              final cubit = context.read<HomeCubit>();
+              final picker = ImagePicker();
+
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  final isWideScreen = constraints.maxWidth > 600;
+
+                  return SafeArea(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: isWideScreen
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: _buildImageDisplay(context, state),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    flex: 2,
+                                    child: _buildControls(
+                                        context, cubit, state, picker),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                mainAxisSize: MainAxisSize
+                                    .min, // Ensuring Column doesn't expand indefinitely
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  _buildImageDisplay(context, state),
+                                  const SizedBox(height: 16),
+                                  _buildControls(context, cubit, state, picker),
+                                ],
+                              ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

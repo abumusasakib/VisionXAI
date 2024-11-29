@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:vision_xai/home/home_cubit.dart';
 import 'package:vision_xai/l10n/localization_extension.dart';
 import 'package:vision_xai/routes/routes.dart';
 import 'package:vision_xai/settings/settings_cubit.dart';
-import 'package:vision_xai/settings/settings_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:arb_utils/state_managers/l10n_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   // Initialize Hive
-  await Hive.initFlutter(); // Initialize Hive
+  await Hive.initFlutter();
 
   // Open a box for settings
   await Hive.openBox('settings');
 
-  final box = Hive.box('settings');
-  final savedLocaleCode =
-      box.get('locale', defaultValue: 'bn'); // Default to Bangla
-  final locale = Locale(savedLocaleCode);
-  runApp(MyApp(initialLocale: locale));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final Locale initialLocale;
-
-  const MyApp({required this.initialLocale, super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,16 +40,27 @@ class MyApp extends StatelessWidget {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
-    return BlocProvider(
-      create: (context) => HomeCubit(),
-      child: BlocProvider(
-        create: (_) => SettingsCubit()..loadIpAndPort(),
-        child: BlocBuilder<SettingsCubit, SettingsState>(
-          builder: (context, state) {
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => HomeCubit()),
+        BlocProvider(
+          create: (context) => SettingsCubit()..initializeSettings(),
+        ),
+      ],
+      child: ChangeNotifierProvider(
+        create: (context) => ProviderL10n(),
+        child: Builder(
+          builder: (context) {
             return MaterialApp.router(
               onGenerateTitle: (cxt) => cxt.tr.appTitle,
-              locale: state.currentLocale,
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              locale: context.watch<ProviderL10n>().locale, // Dynamically update locale
+              localizationsDelegates: [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
               supportedLocales: AppLocalizations.supportedLocales,
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
@@ -61,7 +69,7 @@ class MyApp extends StatelessWidget {
               ),
               routerConfig: router,
             );
-          },
+          }
         ),
       ),
     );

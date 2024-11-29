@@ -91,5 +91,9 @@
   "ipConfiguration": "IP Configuration",
   "@ipConfiguration": {
     "description": "The title for the IP configuration screen."
+  },
+  "noLanguageSelected": "No Language Selected",
+  "@noLanguageSelected": {
+    "description": "Error message for no language selected."
   }
 }
