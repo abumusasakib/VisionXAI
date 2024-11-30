@@ -90,3 +90,56 @@ uploaded_images/        # Customizable directory for user uploads
 
 # Miscellaneous
 README.md~              # Backup versions of README files
+
+# Flutter/Dart
+**/build/
+**/.dart_tool/
+**/.idea/
+**/.vscode/
+**/.packages
+**/*.iml
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Node.js
+node_modules/
+
+# Large model files and weights
+**/results/Model_weights/
+**/*.data-*
+**/*.index
+**/*.ckpt
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+*.venv
+
+# TensorFlow and training checkpoints
+checkpoint/
+*.h5
+*.pb
+*.tflite
+
+# Git LFS (suggesting configuration)
+*.data-00000-of-00001
+*.tar.gz
+*.zip
+*.rar
+*.7z
+*.tgz
