@@ -1,37 +1,36 @@
 # General OS-specific files
+############################
 .DS_Store               # macOS metadata files
 Thumbs.db               # Windows thumbnail cache files
 desktop.ini             # Windows metadata files
 
-# Python-specific files
-*.py[cod]               # Compiled Python files
-__pycache__/            # Python cache directories
-*.pyo
-*.pyd
-*.bak
-*.tmp
-*.old
-*.orig
-
 # Virtual Environments
+########################
 .venv/
 env/
 ENV/
 venv/
 
-# FastAPI-related ignores
-*.log                   # Log files
-*.out                   # Output files
-*.err                   # Error files
-ImgCap/weights/         # Pre-trained model weights (customizable if needed)
-
 # IDE-specific files
+######################
 .idea/                  # JetBrains IDEs (e.g., PyCharm)
 .vscode/                # Visual Studio Code settings
 *.swp                   # Swap files (vi/vim)
-*.swo
+*.swo                   # Swap files (vi/vim)
 
-# TensorFlow and ML-related ignores
+# Python-specific files
+########################
+*.py[cod]               # Compiled Python files
+__pycache__/            # Python cache directories
+*.pyo                   # Python optimization files
+*.pyd                   # Python dynamic libraries
+*.bak                   # Backup files
+*.tmp                   # Temporary files
+*.old                   # Old versions of files
+*.orig                  # Original files
+
+# TensorFlow and ML-related files
+###############################
 **/checkpoint           # TensorFlow checkpoint files
 **/saved_model/         # TensorFlow saved models
 *.h5                    # Model files
@@ -39,107 +38,89 @@ ImgCap/weights/         # Pre-trained model weights (customizable if needed)
 *.tflite                # TensorFlow Lite models
 *.onnx                  # ONNX models
 **/.ipynb_checkpoints/  # Jupyter Notebook checkpoints
-Image_Caption_Generation_Model_training/code/run/  # Temporary execution files
 
-# Node.js and Flutter-specific ignores
+# FastAPI-related ignores
+##########################
+*.log                   # Log files
+*.out                   # Output files
+*.err                   # Error files
+ImgCap/weights/         # Pre-trained model weights (customizable if needed)
+
+# Node.js and Flutter-specific files
+#######################################
 node_modules/           # Node.js dependencies
 pubspec.lock            # Flutter package lock file (optional, can be tracked if needed)
-.flutter-plugins
+.flutter-plugins        # Flutter plugins
 .flutter-plugins-dependencies
-.flutter-version
+.flutter-version         # Flutter version file
 android/.gradle/        # Gradle cache for Android builds
-android/.idea/
+android/.idea/          # Android IDE settings
 android/local.properties
-android/.cxx/
-android/.settings/
+android/.cxx/           # Android C++ build files
+android/.settings/      # Android settings
+
+# iOS-specific files
+#######################
 ios/Pods/               # CocoaPods dependencies for iOS builds
-ios/.symlinks/
-ios/Flutter/Flutter.framework/
-ios/Flutter/App.framework/
+ios/.symlinks/          # iOS symlink files
+ios/Flutter/Flutter.framework/   # iOS Flutter framework
+ios/Flutter/App.framework/       # iOS Flutter app framework
 *.xcworkspace/          # Xcode workspace files
+
+# Flutter build output files
+##############################
 build/                  # Build output directory for Flutter, FastAPI, etc.
 
 # Generated files and metadata
+##############################
 *.metadata              # Flutter metadata files
 *.cmake/                # CMake files
-CMakeFiles/
-CMakeCache.txt
+CMakeFiles/             # CMake files
+CMakeCache.txt          # CMake cache files
+cmake.check_cache       # CMake check cache files
 *.log                   # Logs from CMake or build systems
-cmake.check_cache
 
-# Uploaded files
-uploaded_images/        # Customizable directory for user uploads
+# Uploaded files (Customizable directory for user uploads)
+##############################
+uploaded_images/
 
 # Environment variables and secrets
+###################################
 .env                    # Environment variables
-.env.*                  # Other environment files
+.env.*                  # Other environment files (e.g., .env.prod, .env.staging)
 *.ini                   # Configuration files with sensitive data
 
 # Backup and temporary files
-*.tmp
-*.bak
-*.swp
-*.lock
-*.backup
-*.temp
+#############################
+*.tmp                   # Temporary files
+*.bak                   # Backup files
+*.swp                   # Swap files
+*.lock                  # Lock files (e.g., package lock)
+*.backup                # Backup files
+*.temp                  # Temporary files
 
 # Model metadata and reproducibility files
-**/metadata/
-**/metadata.json
-**/metadata.yml
+###########################################
+**/metadata/            # Model metadata directory
+**/metadata.json        # Model metadata in JSON format
+**/metadata.yml         # Model metadata in YAML format
 
 # Miscellaneous
+###############
 README.md~              # Backup versions of README files
 
-# Flutter/Dart
-**/build/
-**/.dart_tool/
-**/.idea/
-**/.vscode/
-**/.packages
-**/*.iml
-
-# Environment variables
-.env
-
-# macOS
-.DS_Store
-
-# Windows
-Thumbs.db
-
-# Node.js
-node_modules/
-
 # Large model files and weights
-**/results/Model_weights/
-**/*.data-*
-**/*.index
-**/*.ckpt
+#################################
+**/results/Model_weights/  # Model weights directory
+**/*.data-*              # TensorFlow data files
+**/*.index               # TensorFlow index files
+**/*.ckpt                # TensorFlow checkpoint files
 
-# Temporary files
-*.tmp
-*.log
-*.bak
-
-# Python
-*.pyc
-*.pyo
-*.pyd
-__pycache__/
-*.env
-*.venv
-
-# TensorFlow and training checkpoints
-checkpoint/
-*.h5
-*.pb
-*.tflite
-
-# Git LFS (suggesting configuration)
-*.data-00000-of-00001
-*.tar.gz
-*.zip
-*.rar
-*.7z
-*.tgz
+# Git LFS (suggesting configuration for large files)
+#####################################################
+*.data-00000-of-00001    # Git LFS file for large models
+*.tar.gz                 # Compressed archives
+*.zip                    # ZIP files
+*.rar                    # RAR files
+*.7z                     # 7z compressed files
+*.tgz                    # Tarball compressed files
