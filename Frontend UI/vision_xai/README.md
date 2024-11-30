@@ -35,30 +35,99 @@ A Flutter application with dynamic localization, BLoC state management, Hive for
 
 ### 7. **Cross-Platform Compatibility**
 
-- **Android** and **Windows** apps can be built and run seamlessly.
-- The app is designed to be functional on both **mobile** and **desktop** platforms.
+- **Android**, **Windows**, and **Web** apps can be built and run seamlessly.
+- The app is designed to be functional on **mobile**, **desktop**, and **web** platforms.
 
 ---
 
-## Directory Structure
+## Directory Structure for VisionXAI
 
-The directory structure of the **VisionXAI** Flutter project is organized to maintain clear separation between the different modules and functionalities, such as localization, state management, UI components, and persistence. Here's a breakdown of the project structure:
+Below is the detailed directory structure for the **VisionXAI** Flutter project. This structure organizes the app into logical modules, ensuring modularity and clarity in code maintenance.
 
-```text
-lib/
-├── l10n/
-│   ├── app_en.arb
-│   ├── app_bn.arb
-├── home/
-│   ├── home_screen.dart
-│   ├── home_cubit.dart
-│   └── home_state.dart
-├── settings/
-│   ├── settings_screen.dart
-│   ├── settings_cubit.dart
-│   └── settings_state.dart
-├── main.dart
+```plaintext
+vision_xai/
+├── analysis_options.yaml                # Analysis options for linting rules.
+├── devtools_options.yaml                # DevTools configuration.
+├── l10n.yaml                            # Configuration for Flutter localization.
+├── l10n_errors.txt                      # Logs for localization errors.
+├── pubspec.yaml                         # Flutter project dependencies and configurations.
+├── pubspec.lock                         # Lock file for dependencies.
+├── README.md                            # Project documentation.
+├── .fvm/                                # Flutter Version Management files.
+│   ├── fvm_config.json
+│   ├── release
+│   └── version
+├── .fvmrc                               # FVM version configuration.
+├── .gitignore                           # Git ignore rules.
+├── .metadata                            # Flutter project metadata.
+├── .vscode/                             # Visual Studio Code configurations.
+│   ├── launch.json                      # Debugger configurations.
+│   └── settings.json                    # Editor-specific settings.
+├── android/                             # Android-specific files and configurations.
+│   ├── app/
+│   │   ├── build.gradle
+│   │   └── src/
+│   │       ├── main/
+│   │       │   ├── AndroidManifest.xml  # Android configuration file.
+│   │       │   ├── kotlin/              # Kotlin code for MainActivity.
+│   │       │   └── res/                 # Resources for Android app.
+│   │           ├── drawable/            # Launch screen resources.
+│   │           ├── mipmap-hdpi/         # App launcher icons for different resolutions.
+│   │           └── values/              # Style definitions.
+│   └── gradle/                          # Gradle wrapper configurations.
+├── web/                                 # Web-specific files.
+│   ├── index.html                       # HTML entry point for the web app.
+│   ├── favicon.png                      # Web favicon.
+│   ├── manifest.json                    # Web manifest for PWA features.
+│   └── icons/                           # App icons for web.
+│       ├── Icon-192.png
+│       ├── Icon-512.png
+│       ├── Icon-maskable-192.png
+│       └── Icon-maskable-512.png
+├── windows/                             # Windows-specific files.
+│   ├── CMakeLists.txt                   # CMake build configurations.
+│   ├── flutter/                         # Flutter-generated Windows integration files.
+│   └── runner/                          # App runner configurations for Windows.
+├── test/                                # Unit and widget tests.
+│   └── widget_test.dart                 # Example widget test.
+├── lib/                                 # Main application source code.
+│   ├── main.dart                        # Application entry point.
+│   ├── constants/                       # Constants for the app.
+│   │   └── ipDetails.dart               # IP configuration constants.
+│   ├── l10n/                            # Localization files and utilities.
+│   │   ├── app_en.arb                   # English language translations.
+│   │   ├── app_bn.arb                   # Bengali language translations.
+│   │   └── localization_extension.dart  # Localization extension for convenience.
+│   ├── routes/                          # Routing configuration.
+│   │   ├── app_routes.dart              # Route definitions.
+│   │   └── routes.dart                  # GoRouter setup.
+│   ├── home/                            # Home screen-related files.
+│   │   ├── home_screen.dart             # Home screen UI.
+│   │   ├── home_cubit.dart              # State management for home screen.
+│   │   └── home_state.dart              # State definitions for home screen.
+│   ├── settings/                        # Settings screen and logic.
+│   │   ├── ip_settings/                 # IP configuration UI.
+│   │   │   └── ip_settings_screen.dart
+│   │   ├── language_settings/           # Language selection UI.
+│   │   │   └── language_settings_screen.dart
+│   │   ├── settings_cubit.dart          # State management for settings.
+│   │   ├── settings_screen.dart         # Main settings screen.
+│   │   └── settings_state.dart          # State definitions for settings.
+│   └── widgets/                         # Shared widgets.
+│       └── custom_language_selector_dropdown.dart # Dropdown for language selection.
 ```
+
+---
+
+### **Key Directories**
+
+- **`lib/`**: Contains all the application logic, widgets, and business logic.
+- **`android/`**: Contains Android-specific configurations and resources.
+- **`web/`**: Contains web-specific resources, including `index.html`.
+- **`windows/`**: Contains Windows-specific build configurations and app runner files.
+- **`test/`**: Includes unit and widget tests for validating app functionality.
+
+This directory structure ensures clarity, modularity, and scalability, making it easier for developers to navigate and maintain the **VisionXAI** project.
 
 ---
 
@@ -86,11 +155,9 @@ This will generate the `app_localizations.dart` file in the `lib/l10n` directory
 
 ---
 
-## Building the Application for Different Platforms
+## Building and Running the Application
 
-The **VisionXAI** app can be built for **Android** and **Windows** in release mode. Below are the instructions for each platform.
-
-### **Building for Android**
+### **Android**
 
 1. Ensure you have the Android SDK installed and configured.
 2. Run the following command to build the APK in release mode:
@@ -106,7 +173,9 @@ The **VisionXAI** app can be built for **Android** and **Windows** in release mo
    fvm flutter build appbundle --release
    ```
 
-### **Building for Windows**
+---
+
+### **Windows**
 
 1. Ensure you have the Windows desktop development environment set up, and the `flutter_windows` plugin enabled.
 2. Run the following command to build the Windows executable in release mode:
@@ -117,20 +186,33 @@ The **VisionXAI** app can be built for **Android** and **Windows** in release mo
 
 3. The executable will be located in the `build/windows/runner/Release/` directory.
 
----
-
-## Running the Application on Windows
-
-### Prerequisites
-
-- Install and set up Flutter's desktop support for Windows.
-- Use the following command to run the app on Windows:
+To **run** the app on Windows, use:
 
 ```bash
 fvm flutter run -d windows
 ```
 
-This will launch the app in debug mode, allowing you to test and interact with the Windows application directly.
+---
+
+### **Web**
+
+1. **Serve the Application**:
+   To serve the app locally for testing, run:
+
+   ```bash
+   fvm flutter run -d chrome
+   ```
+
+   This will start the app in a web browser on your local machine.
+
+2. **Build for Release**:
+   To build the app for deployment on the web, use:
+
+   ```bash
+   fvm flutter build web --release
+   ```
+
+   The built files will be located in the `build/web/` directory. These files can be deployed to any web server.
 
 ---
 

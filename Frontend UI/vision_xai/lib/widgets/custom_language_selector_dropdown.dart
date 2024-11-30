@@ -2,6 +2,7 @@ import 'package:arb_utils/arb_utils_flutter.dart';
 import 'package:arb_utils/state_managers/l10n_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:locale_names/locale_names.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomLanguageSelectorDropdown extends StatelessWidget {
   CustomLanguageSelectorDropdown({
@@ -63,7 +64,7 @@ class CustomLanguageSelectorDropdown extends StatelessWidget {
       fit: FlexFit.loose, // Constrain the width of DropdownButton
       child: DropdownButton<String>(
         icon: icon ?? const Icon(Icons.language), // Default icon or custom one
-        value: provider?.locale?.toLanguageTag(),
+        value: AppLocalizations.of(context)?.localeName,
         items: supportedLocales.map(_buildMenuItem).toList(),
         onChanged: languageChangedHandler,
         isExpanded: true, // Adjust width
