@@ -28,7 +28,7 @@ class CustomLanguageSelectorDropdown extends StatelessWidget {
 
   /// Get the display name of a language from a Locale instance
   String getLanguageNameFromLocale(Locale locale) {
-    return locale.defaultDisplayLanguage;
+    return locale.nativeDisplayLanguage;
   }
 
   /// Handler for language change
