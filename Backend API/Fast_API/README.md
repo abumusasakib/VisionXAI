@@ -32,7 +32,7 @@ Ensure that you have Python 3.10 or higher installed on your system. Recommended
 4. **Run the Application**:
 
    ```bash
-   uvicorn main:app --reload
+   uvicorn main:app --host 0.0.0.0 --port 5000 --reload
    ```
 
 ## **Testing the API**
@@ -40,13 +40,7 @@ Ensure that you have Python 3.10 or higher installed on your system. Recommended
 1. **Run the API**:
 
    ```bash
-   uvicorn main:app --reload
-   ```
-
-   OR
-
-   ```bash
-   python app.py
+   uvicorn main:app --host 0.0.0.0 --port 5000 --reload
    ```
 
 2. **Test with Swagger**:
@@ -67,3 +61,31 @@ Ensure that you have Python 3.10 or higher installed on your system. Recommended
      ```bash
      curl -X GET "http://127.0.0.1:5000/caption"
      ```
+
+## **Debugging Configuration**
+
+Add the following configuration to your `.vscode/launch.json` file:
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "debugpy",
+        "request": "launch",
+        "name": "Launch FastAPI with Uvicorn",
+        "module": "uvicorn",
+        "args": [
+          "main:app", // Specify the module and app instance
+          "--host", "0.0.0.0", // Host to listen on
+          "--port", "5000", // Port to use
+          "--reload" // Enable auto-reload for development
+        ],
+        "jinja": true, // Enables Jinja2 template debugging if applicable
+        "envFile": "${workspaceFolder}/.env", // Path to the environment variables file
+        "console": "integratedTerminal", // Use the integrated terminal for better interaction
+        "justMyCode": true // Only debug user code, not external libraries
+      }
+    ]
+  }
+```

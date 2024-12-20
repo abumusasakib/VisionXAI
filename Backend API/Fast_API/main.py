@@ -1,6 +1,5 @@
 import os
 import logging
-from logging.handlers import RotatingFileHandler
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,28 +7,25 @@ from ImgCap import captioner as cap
 from loguru import logger
 
 # Configure logging with loguru
-LOG_FILE = "app.log"
-MAX_LOG_SIZE = 10 * 1024 * 1024  # 10 MB
-BACKUP_COUNT = 5  # Keep 5 backup log files
+LOG_FILE = "logs/app.log"
 
 logger.add(
-    LOG_FILE, 
+    LOG_FILE,
     rotation="1 day",  # Rotate log every day
     retention="7 days",  # Keep logs for the last 7 days
     compression="zip",  # Compress old log files
     level="INFO",  # Default log level
 )
 
-logger.add(
-    "stdout", 
-    level="INFO",  # Console log level
-)
+# Redirect FastAPI/uvicorn logs to loguru
+logging.getLogger("uvicorn.access").handlers = [logging.StreamHandler()]
+logging.getLogger("uvicorn.error").handlers = [logging.StreamHandler()]
 
 # Initialize the FastAPI app
 app = FastAPI(
     title="Image Caption Generation API",
     description="An API for generating image captions in Bengali.",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 # Configure upload folder
