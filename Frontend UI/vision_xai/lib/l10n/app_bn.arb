@@ -48,8 +48,8 @@
   "@captionText": {
     "description": "Text for the caption text."
   },
-  "stopText": "থামো",
-  "@stopText": {
+  "stopCaptionGeneration": "থামো",
+  "@stopCaptionGeneration": {
     "description": "Text for the stop text."
   },
   "uploadImage": "ছবি আপলোড করুন৷",
