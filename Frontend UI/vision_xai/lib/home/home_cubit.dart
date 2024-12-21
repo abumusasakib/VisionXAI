@@ -28,23 +28,30 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<void> startCaptionGeneration(String baseUrl) async {
+  /// Combined function to handle both upload and caption generation sequentially
+  Future<void> uploadAndGenerateCaption(String baseUrl) async {
     if (state.imageFile == null) {
-      emit(state.copyWith(testOutput: null, errorMessage: 'No image selected.'));
+      emit(state.copyWith(errorMessage: 'No image selected.'));
       return;
     }
 
-    if (_isCaptionGenerationInProgress) {
-      emit(state.copyWith(testOutput: 'Caption generation already in progress.'));
-      return;
-    }
-
-    _isCaptionGenerationInProgress = true;
-    _shouldStopGeneration = false; // Reset stop flag when starting a new process
-    emit(state.copyWith(isLoading: true, testOutput: null, errorMessage: null));
+    emit(state.copyWith(isLoading: true, errorMessage: null));
 
     try {
-      final uri = '$baseUrl/caption';
+      // Upload the image first
+      await uploadImage(baseUrl);
+
+      // Proceed to caption generation if upload succeeds
+      await generateCaption(baseUrl);
+    } catch (e) {
+      emit(state.copyWith(errorMessage: 'Error during upload or caption generation: $e', isLoading: false));
+    }
+  }
+
+  /// Uploads the image to the server
+  Future<void> uploadImage(String baseUrl) async {
+    try {
+      final uri = '$baseUrl/upload';
       final formData = FormData.fromMap({
         "image": await MultipartFile.fromFile(
           state.imageFile!.path,
@@ -52,14 +59,39 @@ class HomeCubit extends Cubit<HomeState> {
         ),
       });
 
-      // Send the request with a cancel token
-      final response = await _dio.post(uri,
-          data: formData,
-          cancelToken: _cancelToken); // Pass the cancel token
+      final response = await _dio.post(uri, data: formData, cancelToken: _cancelToken);
 
-      // Check if the process was stopped by the user
+      if (response.statusCode == 200) {
+        emit(state.copyWith(testOutput: 'Image uploaded successfully.'));
+      } else {
+        throw Exception('Failed to upload image. Status: ${response.statusCode}');
+      }
+    } catch (e) {
+      if (e is DioException && e.type == DioExceptionType.cancel) {
+        emit(state.copyWith(errorMessage: 'Image upload was cancelled.'));
+      } else {
+        throw Exception('An error occurred during image upload: $e');
+      }
+    }
+  }
+
+  /// Requests a caption from the server for the uploaded image
+  Future<void> generateCaption(String baseUrl) async {
+    if (_isCaptionGenerationInProgress) {
+      emit(state.copyWith(testOutput: 'Caption generation already in progress.'));
+      return;
+    }
+
+    _isCaptionGenerationInProgress = true;
+    _shouldStopGeneration = false; // Reset stop flag when starting a new process
+
+    try {
+      final uri = '$baseUrl/caption';
+
+      final response = await _dio.get(uri, cancelToken: _cancelToken);
+
       if (_shouldStopGeneration) {
-        emit(state.copyWith(testOutput: 'Caption generation stopped by user.', errorMessage: null, isLoading: false));
+        emit(state.copyWith(testOutput: 'Caption generation stopped by user.', isLoading: false));
         return;
       }
 
@@ -84,9 +116,11 @@ class HomeCubit extends Cubit<HomeState> {
       }
     } finally {
       _isCaptionGenerationInProgress = false;
+      emit(state.copyWith(isLoading: false));
     }
   }
 
+  /// Stops the caption generation process
   void stopCaptionGeneration() {
     if (!_isCaptionGenerationInProgress) {
       emit(state.copyWith(errorMessage: 'No caption generation in progress.'));
@@ -103,6 +137,7 @@ class HomeCubit extends Cubit<HomeState> {
     ));
   }
 
+  /// Resets the state of the HomeCubit
   void reset() {
     _isCaptionGenerationInProgress = false;
     _shouldStopGeneration = false;

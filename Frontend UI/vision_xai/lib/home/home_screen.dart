@@ -196,8 +196,7 @@ class Home extends StatelessWidget {
               ? null
               : () async {
                   final baseUrl = await _getBaseUrl();
-                  cubit.startCaptionGeneration(
-                      '$baseUrl/upload'); // The `/upload` is the endpoint
+                  cubit.uploadAndGenerateCaption(baseUrl);
                 },
           icon: const Icon(Icons.cloud_upload),
           label: state.isLoading
