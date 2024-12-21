@@ -2,7 +2,7 @@
 
 ## Setup Instructions
 
-Ensure that you have Python 3.10 or higher installed on your system. Recommended to have Python 3.12.4.
+Recommended to have Python 3.8.5 for compatibility with TensorFlow.
 
 1. **Create a Virtual Environment**:
 
@@ -35,16 +35,31 @@ Ensure that you have Python 3.10 or higher installed on your system. Recommended
    uvicorn main:app --host 0.0.0.0 --port 5000 --reload
    ```
 
-## **Testing the API**
 
-1. **Run the API**:
+### Steps to Use Docker Compose
+
+1. **Build and Start Services:**
+   Run the following command to build and start the container:
 
    ```bash
+   docker-compose up --build
+   ```
+
+2. **Access the Application:**
+   The app will be available at `http://localhost:5000`.
+
+---
+
+## **Testing the API**
+
+1. **Run the API using Docker or using this command**:
+
+  ```bash
    uvicorn main:app --host 0.0.0.0 --port 5000 --reload
    ```
 
 2. **Test with Swagger**:
-   Visit `http://127.0.0.1:5000/docs` for an interactive Swagger UI.
+   Visit `http://localhost:5000/docs` for an interactive Swagger UI.
 
 3. **Test Endpoints**:
    - Use tools like **Postman**, **cURL**, or **Swagger UI** to test the `/upload` and `/caption` endpoints.
