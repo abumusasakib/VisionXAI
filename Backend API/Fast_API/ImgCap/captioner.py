@@ -513,7 +513,7 @@ def generate(img_path):
                 tokenized_caption, encoded_img, training=False, mask=mask
             )
             sampled_token_index = np.argmax(predictions[0, -1, :])
-            if sampled_token_index >= len(vx):
+            if sampled_token_index >= VOCAB_SIZE:
                 logger.warning(f"Token index {sampled_token_index} out of range.")
                 continue
             sampled_token = index_lookup.get(sampled_token_index, "[UNK]")
