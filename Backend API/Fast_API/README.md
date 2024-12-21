@@ -35,7 +35,6 @@ Recommended to have Python 3.8.5 for compatibility with TensorFlow.
    uvicorn main:app --host 0.0.0.0 --port 5000 --reload
    ```
 
-
 ### Steps to Use Docker Compose
 
 1. **Build and Start Services:**
