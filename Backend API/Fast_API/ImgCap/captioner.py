@@ -98,11 +98,11 @@ class TransformerEncoderBlock(layers.Layer):
 
     def call(self, inputs, training, mask=None):
         # Input shape
-        # logger.info(f"Encoder Input Shape: {inputs.shape}")
+        logger.debug(f"Encoder Input Shape: {inputs.shape}")
 
-        # logger.info(f"Encoder Input Shape before LayerNorm: {inputs.shape}")
+        logger.debug(f"Encoder Input Shape before LayerNorm: {inputs.shape}")
         inputs = self.layernorm_1(inputs)
-        # logger.info(f"Encoder Input Shape after LayerNorm: {inputs.shape}")
+        logger.debug(f"Encoder Input Shape after LayerNorm: {inputs.shape}")
         
         inputs = self.dense_1(inputs)
 
@@ -117,7 +117,7 @@ class TransformerEncoderBlock(layers.Layer):
         out_1 = self.layernorm_2(inputs + attention_output_1)
 
         # Output shape
-        # logger.info(f"Encoder Output Shape: {out_1.shape}")
+        logger.debug(f"Encoder Output Shape: {out_1.shape}")
         return out_1
 
 
@@ -137,7 +137,7 @@ class PositionalEmbedding(layers.Layer):
         self.embed_scale = tf.math.sqrt(tf.cast(embed_dim, tf.float32))
 
     def call(self, inputs):
-        # logger.info(f"Positional Embedding Input Shape: {inputs.shape}")
+        logger.debug(f"Positional Embedding Input Shape: {inputs.shape}")
         
         # Get input shape and positions
         length = tf.shape(inputs)[-1]
@@ -149,9 +149,9 @@ class PositionalEmbedding(layers.Layer):
         embedded_positions = self.position_embeddings(positions)
         
         # Embeddings shape
-        # logger.info(f"Positional Embedding Output Shape: {embedded_tokens.shape}")
-        # logger.info(f"embedded_tokens dtype: {embedded_tokens.dtype}")
-        # logger.info(f"embedded_positions dtype: {embedded_positions.dtype}")
+        logger.debug(f"Positional Embedding Output Shape: {embedded_tokens.shape}")
+        logger.debug(f"embedded_tokens dtype: {embedded_tokens.dtype}")
+        logger.debug(f"embedded_positions dtype: {embedded_positions.dtype}")
         
         # Return combined embeddings
         return embedded_tokens + embedded_positions
@@ -207,7 +207,7 @@ class TransformerDecoderBlock(layers.Layer):
         Returns:
             preds: Decoder output predictions (batch_size, seq_len, vocab_size).
         """
-        logger.info(f"Decoder Input Shape: {inputs.shape}")
+        logger.debug(f"Decoder Input Shape: {inputs.shape}")
         
         inputs = self.embedding(inputs)
         causal_mask = self.get_causal_attention_mask(inputs)
@@ -246,7 +246,7 @@ class TransformerDecoderBlock(layers.Layer):
         ffn_out = self.dropout_2(ffn_out, training=training)
         preds = self.out(ffn_out)
         
-        # logger.info(f"Decoder Output Shape: {preds.shape}")
+        logger.debug(f"Decoder Output Shape: {preds.shape}")
         return preds
 
     def get_causal_attention_mask(self, inputs):
@@ -291,27 +291,27 @@ class ImageCaptioningModel(keras.Model):
         return tf.reduce_sum(accuracy) / tf.reduce_sum(mask)
 
     def _compute_caption_loss_and_acc(self, img_embed, batch_seq, training=True):
-        # logger.info(f"Image Embedding Input Shape before passing to Encoder: {img_embed.shape}")
+        logger.debug(f"Image Embedding Input Shape before passing to Encoder: {img_embed.shape}")
         
         # batch_seq = tf.expand_dims(batch_seq, axis=1)
-        # logger.info(f"Batch Sequence Input Shape before slicing: {batch_seq.shape}")
+        logger.debug(f"Batch Sequence Input Shape before slicing: {batch_seq.shape}")
         
         encoder_out = self.encoder(img_embed, training=training)
         batch_seq_inp = batch_seq[:, :-1] # Input sequence (without the last token)
 
-        # logger.info(f"Batch Sequence Input Shape before target sequence: {batch_seq_inp.shape}")
+        logger.debug(f"Batch Sequence Input Shape before target sequence: {batch_seq_inp.shape}")
         
         batch_seq_true = batch_seq[:, 1:] # Target sequence (without the first token)
         mask = tf.math.not_equal(batch_seq_true, 0)
         
-        # logger.info(f"Batch Sequence Input Shape: {batch_seq_inp.shape}")
-        # logger.info(f"Batch Sequence True Shape: {batch_seq_true.shape}")
+        logger.debug(f"Batch Sequence Input Shape: {batch_seq_inp.shape}")
+        logger.debug(f"Batch Sequence True Shape: {batch_seq_true.shape}")
         
         batch_seq_pred = self.decoder(
             batch_seq_inp, encoder_out, training=training, mask=mask
         )
 
-        # logger.info(f"Batch Sequence Predicted Shape: {batch_seq_pred.shape}")
+        logger.debug(f"Batch Sequence Predicted Shape: {batch_seq_pred.shape}")
         
         loss = self.calculate_loss(batch_seq_true, batch_seq_pred, mask)
         acc = self.calculate_accuracy(batch_seq_true, batch_seq_pred, mask)
@@ -322,31 +322,31 @@ class ImageCaptioningModel(keras.Model):
 
         # batch_seq = tf.expand_dims(batch_seq, axis=1)
 
-        # logger.info(f"Training Image Batch Shape before passing to CNN: {batch_img.shape}")
+        logger.debug(f"Training Image Batch Shape before passing to CNN: {batch_img.shape}")
         total_loss = 0
         total_acc = 0
     
         if self.image_aug:
             batch_img = self.image_aug(batch_img)
 
-        # logger.info(f"Training Image Batch Shape: {batch_img.shape}")
-        # logger.info(f"Training Sequence Batch Shape: {batch_seq.shape}")
+        logger.debug(f"Training Image Batch Shape: {batch_img.shape}")
+        logger.debug(f"Training Sequence Batch Shape: {batch_seq.shape}")
         
         # 1. Get image embeddings from CNN
         img_embed = self.cnn_model(batch_img)
-        # logger.info(f"Image Embeddings Shape: {img_embed.shape}")
+        logger.debug(f"Image Embeddings Shape: {img_embed.shape}")
 
         # 2. Reshape CNN output to (batch_size, 1, embedding_dim)
         img_embed = tf.expand_dims(img_embed, axis=1)  # It should be (None, 1, 1024)
 
-        # logger.info(f"Reshaped Image Embeddings for Encoder: {img_embed.shape}")
+        logger.debug(f"Reshaped Image Embeddings for Encoder: {img_embed.shape}")
         
         # 3. Make sure batch_seq has 3 dimensions
         if batch_seq.shape.ndims == 2:
             # Reshape the sequence to have a third dimension (e.g., 1 caption per image)
             batch_seq = tf.expand_dims(batch_seq, axis=1)
         
-        # logger.info(f"Updated Sequence Shape: {batch_seq.shape}")
+        logger.debug(f"Updated Sequence Shape: {batch_seq.shape}")
 
         # 4. Accumulate loss and accuracy for each caption
         with tf.GradientTape() as tape:
@@ -383,8 +383,8 @@ class ImageCaptioningModel(keras.Model):
 
     def test_step(self, batch_data):
         batch_img, batch_seq = batch_data
-        # logger.info(f"Validation Image Batch Shape: {batch_img.shape}")
-        # logger.info(f"Validation Sequence Batch Shape: {batch_seq.shape}")
+        logger.debug(f"Validation Image Batch Shape: {batch_img.shape}")
+        logger.debug(f"Validation Sequence Batch Shape: {batch_seq.shape}")
 
         # batch_seq = tf.expand_dims(batch_seq, axis=1)
 
@@ -393,9 +393,9 @@ class ImageCaptioningModel(keras.Model):
 
         # 1. Get image embeddings
         img_embed = self.cnn_model(batch_img)
-        # logger.info(f"Image Embeddings Shape: {img_embed.shape}")
+        logger.debug(f"Image Embeddings Shape: {img_embed.shape}")
         img_embed = tf.expand_dims(img_embed, axis=1)
-        # logger.info(f"Reshaped Image Embeddings Shape: {img_embed.shape}")
+        logger.debug(f"Reshaped Image Embeddings Shape: {img_embed.shape}")
 
         # 2. Pass each of the captions one by one to the decoder
         # along with the encoder outputs and compute the loss as well as accuracy
@@ -404,8 +404,8 @@ class ImageCaptioningModel(keras.Model):
         for i in range(self.num_captions_per_image):
             batch_seq_inp = batch_seq[:, i, :-1]
             batch_seq_true = batch_seq[:, i, 1:]
-            # logger.info(f"Validation Sequence Input Shape: {batch_seq_inp.shape}")
-            # logger.info(f"Validation Sequence True Shape: {batch_seq_true.shape}")
+            logger.debug(f"Validation Sequence Input Shape: {batch_seq_inp.shape}")
+            logger.debug(f"Validation Sequence True Shape: {batch_seq_true.shape}")
         
             loss, acc = self._compute_caption_loss_and_acc(
                 img_embed, batch_seq[:, i, :], training=False
@@ -447,13 +447,22 @@ def load_vocab(filepath):
         return None
 
 # Initialize Vocabulary
-VOCAB_FILE = f'{WEIGHTS_DIR}vocab_{mdx}'
-vocab  = load_vocab(VOCAB_FILE)
-if vocab :
-    index_lookup = dict(zip(range(len(vocab)), vocab))
-else:
+try:
+    VOCAB_FILE = f'{WEIGHTS_DIR}vocab_{mdx}'
+    vocab = load_vocab(VOCAB_FILE)
+    if vocab:
+        index_lookup = dict(zip(range(len(vocab)), vocab))
+        logger.info(f"Vocabulary size: {len(vocab)}")
+    else:
+        index_lookup = None
+        logger.warning("Vocabulary is missing. Captions may not generate correctly.")
+except AttributeError as e:
     index_lookup = None
-    logger.warning("Vocabulary is missing. Captions may not generate correctly.")
+    logger.error(f"Failed to retrieve vocabulary: {e}")
+except Exception as e:
+    index_lookup = None
+    logger.error(f"Unexpected error while initializing vocabulary: {e}")
+
 
 # Custom standardization
 def custom_standardization(input_string):

@@ -1,17 +1,17 @@
-# VisionXAI Model Training Capsule Built using Codeocean
+# VisionXAI Model Testing Capsule Built using Codeocean
 
 ## Project Building and Running
 
 ### Build image
 
 ```cmd
-cd environment && docker build . --tag 7c30468f-6fe0-4cdb-90be-1858f26bf550
+cd environment && docker build . --tag 30d3e3cc-58a4-402c-aacb-ca7d5bc100c4
 ```
 
 ### Run image
 
 ```cmd
-docker run --platform linux/amd64 --rm --gpus all --workdir /code --volume "%cd%/data":/data --volume "%cd%/code":/code --volume "%cd%/results":/results 7c30468f-6fe0-4cdb-90be-1858f26bf550 bash run
+docker run --platform linux/amd64 --rm --gpus all --workdir /code --volume "%cd%/data":/data --volume "%cd%/code":/code --volume "%cd%/results":/results 30d3e3cc-58a4-402c-aacb-ca7d5bc100c4 bash run
 ```
 
 ## Running Jupyter for Development
@@ -20,10 +20,10 @@ docker run --platform linux/amd64 --rm --gpus all --workdir /code --volume "%cd%
    You can start a new container from the image you built using the following command in Command Line:
 
    ```cmd
-   docker run -p 8888:8888 -it --platform linux/amd64 --rm --gpus all --workdir /code --volume "%cd%/data":/data --volume "%cd%/code":/code --volume "%cd%/results":/results 7c30468f-6fe0-4cdb-90be-1858f26bf550 /bin/bash
+   docker run -p 8888:8888 -it --platform linux/amd64 --rm --gpus all --workdir /code --volume "%cd%/data":/data --volume "%cd%/code":/code --volume "%cd%/results":/results 30d3e3cc-58a4-402c-aacb-ca7d5bc100c4 /bin/bash
    ```
 
-   This command will start a new container based on the image tagged as `7c30468f-6fe0-4cdb-90be-1858f26bf550` and open an interactive shell (`/bin/bash`) within the container.
+   This command will start a new container based on the image tagged as `30d3e3cc-58a4-402c-aacb-ca7d5bc100c4` and open an interactive shell (`/bin/bash`) within the container.
 
 2. **Activate Miniconda Environment:**
    Before launching the Jupyter Notebook server, ensure that you have activated your Miniconda environment. If you haven't activated it yet, you can do so by running:

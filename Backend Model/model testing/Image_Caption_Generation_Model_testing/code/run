@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -ex
+
+# This is the master script for the capsule. When you click "Reproducible Run", the code in this file will execute.
+jupyter nbconvert \
+	--to 'html' \
+	--ExecutePreprocessor.allow_errors=True \
+	--ExecutePreprocessor.timeout=-1 \
+	--FilesWriter.build_directory=../results \
+	--execute Image_Caption_Generation_Model_testing.ipynb
+
+# jupyter nbconvert \
+# 	--to markdown \
+# 	--FilesWriter.build_directory=../results \
+# 	Image_Caption_Generation_Model_testing.ipynb
