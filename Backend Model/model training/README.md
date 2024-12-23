@@ -35,7 +35,7 @@ docker run --platform linux/amd64 --rm --gpus all --workdir /code --volume "%cd%
    This command activates the Miniconda environment.
 
 3. **Launch Jupyter Notebook:**
-   Once your Miniconda environment is activated, you can launch the Jupyter Notebook server in VSCode Command Line by running:
+   Once your Miniconda environment is activated, you can launch the Jupyter Notebook server in Command Line by running:
 
    ```bash
    jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
