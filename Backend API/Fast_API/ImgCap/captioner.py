@@ -31,8 +31,13 @@ mdx = "231005"
 WEIGHTS_DIR = "ImgCap/weights/"
 
 # Setup loguru logger
-logger.add("logs/captioner_{time}.log", rotation="1 day", retention="7 days", compression="zip")
-
+logger.add(
+    "logs/captioner_{time}.log",
+    rotation="1 day",  # Rotate log every day
+    retention="7 days",  # Keep logs for the last 7 days
+    compression="zip",  # Compress old log files
+    level="INFO",  # Default log level
+)
 # Suppress repetitive TensorFlow warnings
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # Show only errors and critical warnings
 

@@ -1,6 +1,53 @@
 # **Image Captioning API**
 
-## Setup Instructions
+This project provides an API to generate captions for images using a pre-trained image captioning model. The application is built with FastAPI and supports deployment via Docker.
+
+---
+
+## **Folder Structure**
+
+```text
+.
+├── ImgCap
+│   ├── weights
+│   │   ├── checkpoint
+│   │   ├── imgcap_231005.data-00000-of-00001
+│   │   ├── imgcap_231005.index
+│   │   ├── vocab_231005
+│   │   └── readme.txt
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── __init__.cpython-38.pyc
+│   │   ├── captioner.cpython-312.pyc
+│   │   └── captioner.cpython-38.pyc
+│   └── captioner.py
+├── setup.bat
+├── .gitignore
+├── .vscode
+│   └── launch.json
+├── API_DOCUMENTATION.md
+├── Dockerfile
+├── README.md
+├── __pycache__
+│   ├── main.cpython-312.pyc
+│   └── main.cpython-38.pyc
+├── docker-compose.yml
+├── main.py
+├── managed_context
+│   └── metadata.json
+├── requirements.txt
+├── setup.ps1
+├── setup.sh
+└── test_suite_analysis
+    └── metadata.json
+```
+
+---
+
+## **Setup Instructions**
+
+### **Using Python**
 
 Recommended to have Python 3.8.5 for compatibility with TensorFlow.
 
@@ -19,11 +66,11 @@ Recommended to have Python 3.8.5 for compatibility with TensorFlow.
 
    - On Windows:
 
-     ```bash
+     ```cmd
      .venv\Scripts\activate
      ```
 
-3. **Install Requirements**:
+3. **Install Dependencies**:
 
    ```bash
    pip install -r requirements.txt
@@ -35,71 +82,113 @@ Recommended to have Python 3.8.5 for compatibility with TensorFlow.
    uvicorn main:app --host 0.0.0.0 --port 5000 --reload
    ```
 
-### Steps to Use Docker Compose
+---
 
-1. **Build and Start Services:**
-   Run the following command to build and start the container:
+### **Using Docker**
+
+#### **Linux/macOS**
+
+1. Ensure `setup.sh` is executable:
 
    ```bash
-   docker-compose up --build
+   chmod +x setup.sh
    ```
 
-2. **Access the Application:**
-   The app will be available at `http://localhost:5000`.
+2. Run the setup script:
+
+   ```bash
+   ./setup.sh
+   ```
+
+#### **Windows (PowerShell)**
+
+1. Execute the PowerShell script:
+
+   ```powershell
+   .\setup.ps1
+   ```
+
+#### **Windows (Command Prompt)**
+
+1. Run the batch script:
+
+   ```cmd
+   setup.bat
+   ```
 
 ---
 
 ## **Testing the API**
 
-1. **Run the API using Docker or using this command**:
+### **Swagger UI**
+
+Access the Swagger UI at `http://localhost:5000/docs` for an interactive interface to test the API endpoints.
+
+### **Example cURL Commands**
+
+- **Upload an Image**:
 
   ```bash
-   uvicorn main:app --host 0.0.0.0 --port 5000 --reload
-   ```
+  curl -X POST "http://127.0.0.1:5000/upload" -F "image=@path_to_image.jpg"
+  ```
 
-2. **Test with Swagger**:
-   Visit `http://localhost:5000/docs` for an interactive Swagger UI.
+- **Generate a Caption**:
 
-3. **Test Endpoints**:
-   - Use tools like **Postman**, **cURL**, or **Swagger UI** to test the `/upload` and `/caption` endpoints.
+  ```bash
+  curl -X GET "http://127.0.0.1:5000/caption"
+  ```
 
-4. **Example cURL Commands**:
-   - Upload an image:
-
-     ```bash
-     curl -X POST "http://127.0.0.1:5000/upload" -F "image=@your_image.jpg"
-     ```
-
-   - Generate a caption:
-
-     ```bash
-     curl -X GET "http://127.0.0.1:5000/caption"
-     ```
+---
 
 ## **Debugging Configuration**
 
-Add the following configuration to your `.vscode/launch.json` file:
+Add the following to `.vscode/launch.json` for debugging in Visual Studio Code:
 
 ```json
 {
     "version": "0.2.0",
     "configurations": [
-      {
-        "type": "debugpy",
-        "request": "launch",
-        "name": "Launch FastAPI with Uvicorn",
-        "module": "uvicorn",
-        "args": [
-          "main:app", // Specify the module and app instance
-          "--host", "0.0.0.0", // Host to listen on
-          "--port", "5000", // Port to use
-          "--reload" // Enable auto-reload for development
-        ],
-        "jinja": true, // Enables Jinja2 template debugging if applicable
-        "envFile": "${workspaceFolder}/.env", // Path to the environment variables file
-        "console": "integratedTerminal", // Use the integrated terminal for better interaction
-        "justMyCode": true // Only debug user code, not external libraries
-      }
+        {
+            "type": "python",
+            "request": "launch",
+            "name": "Launch FastAPI with Uvicorn",
+            "module": "uvicorn",
+            "args": [
+                "main:app",
+                "--host", "0.0.0.0",
+                "--port", "5000",
+                "--reload"
+            ],
+            "jinja": true,
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
     ]
-  }
+}
 ```
+
+---
+
+## **Folder Details**
+
+### **Key Folders and Files**
+
+- `ImgCap/weights/`: Contains the pre-trained model weights and vocabulary files.
+- `main.py`: The entry point for the FastAPI application.
+- `setup.sh`, `setup.ps1`, `setup.bat`: Platform-specific setup scripts for Docker.
+- `Dockerfile`: Defines the Docker image setup.
+- `docker-compose.yml`: Manages containerized deployment.
+- `requirements.txt`: Lists Python dependencies.
+- `.vscode/launch.json`: Configuration for debugging with Visual Studio Code.
+
+---
+
+## **Additional Resources**
+
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Uvicorn Documentation](https://www.starlette.io/uvicorn/)
+
+---
+
+**Note**: This project is intended for educational and demonstration purposes only. It is not intended for production use.
