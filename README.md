@@ -15,7 +15,7 @@ VisionXAI is a mobile application project designed to generate detailed image ca
 ### 1. Mobile Application (Frontend)
 
 - Developed using **Flutter** for cross-platform compatibility (iOS and Android).
-- Integrates with the Flask API to upload images and retrieve Bengali captions.
+- Integrates with the FastAPI to upload images and retrieve Bengali captions.
 - Provides a user-friendly interface fully localized in Bengali.
 
 ### 2. Backend API (FastAPI)
