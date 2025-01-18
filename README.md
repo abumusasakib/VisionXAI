@@ -59,7 +59,7 @@ This model is designed for generating textual captions given input images, utili
 
 - **Flutter**: For frontend mobile app development.
 - **FastAPI**: For backend API development.
-- **Grad-CAM**, **LIME**: For Explainable AI integration.
+- **Grad-CAM**, **LIME**: For Explainable AI integration. (Proposed)
 - **Python 3.8.10**: For running the backend Flask API.
 
 ## Prerequisites
@@ -88,7 +88,7 @@ Before running the Flask API, ensure the following are installed:
 
 2. After executing, the server will display an IP address in the console. Use this IP to communicate with the API from the Flutter app.
 
-3. **Update IP in App**: Make sure to update the IP address in the mobile app's configuration with the one shown after running the Flask server.
+3. **Update IP in App**: Make sure to update the IP address in the mobile app's configuration with the one shown after running the FastAPI server.
 
 ## Image Captioning Model
 
