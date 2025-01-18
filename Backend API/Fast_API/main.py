@@ -1,10 +1,13 @@
 import os
 import logging
+import socket
+import time
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from ImgCap import captioner as cap
 from loguru import logger
+from zeroconf import ServiceInfo, Zeroconf
 
 # Configure logging with loguru
 LOG_FILE = "logs/app.log"
@@ -42,6 +45,49 @@ app.add_middleware(
     allow_headers=["*"],
 )
 logger.info("CORS middleware configured")
+
+# mDNS Configuration
+zeroconf = Zeroconf()
+service_info = None
+
+# mDNS Registration
+def register_mdns_service():
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+    port = 5353
+    service_type = "_http._tcp.local."
+    service_name = "VisionXAI API._http._tcp.local."
+    service_properties = {"description": "Image Captioning API in Bengali"}
+
+    global service_info
+    service_info = ServiceInfo(
+        service_type,
+        service_name,
+        addresses=[socket.inet_aton(local_ip)],
+        port=port,
+        properties=service_properties,
+        server=f"{hostname}.local.",
+    )
+    logger.info(f"Registering service: {service_info}")
+
+    zeroconf = Zeroconf()
+    logger.info("Attempting to register mDNS service...")
+    try:
+        zeroconf.register_service(service_info)
+        logger.info("mDNS service registered successfully.")
+    except Exception as e:
+        logger.error(f"Error registering mDNS service: {e}")
+
+    logger.info(f"mDNS service registered: {service_info.name} on {local_ip}:5353")
+
+@app.on_event("shutdown")
+def shutdown_event():
+    global zeroconf, service_info
+    if service_info:
+        logger.info("Unregistering mDNS service...")
+        zeroconf.unregister_service(service_info)
+        zeroconf.close()
+        logger.info("mDNS service unregistered.")
 
 # Routes and Endpoints
 
@@ -109,8 +155,19 @@ def generate_caption():
     logger.info(f"Caption generated successfully for {image_path}")
     return {"image": image_name, "caption": caption}
 
-# Run the app
 if __name__ == "__main__":
-    import uvicorn
-    logger.info("Starting the API server")
-    uvicorn.run(app, host="0.0.0.0", port=5000, reload=True)
+    logger.info("Registering mDNS service...")
+    register_mdns_service()
+
+    try:
+        hostname = socket.gethostname()
+        local_ip = socket.gethostbyname(hostname)
+        port = 5000
+        logger.info(f"Starting the API server at http://{local_ip}:{port}")
+        import uvicorn
+        uvicorn.run(app, host="0.0.0.0", port=port, log_level="info")
+    except Exception as e:
+        logger.error(f"Failed to start the API server: {e}")
+    finally:
+        logger.info("Shutting down the server")
+
