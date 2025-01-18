@@ -13,14 +13,14 @@ class IPSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SettingsCubit()..initializeSettings(),
+      create: (_) => SettingsCubit(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(context.tr.settingsScreenTitle),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: BlocListener<SettingsCubit, SettingsState>(
               listenWhen: (previous, current) =>
                   previous.ip != current.ip || previous.port != current.port,
@@ -39,7 +39,7 @@ class IPSettings extends StatelessWidget {
                       labelText: context.tr.ip,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextField(
@@ -66,7 +66,7 @@ class IPSettings extends StatelessWidget {
                   backgroundColor: Colors.green.shade600,
                   content: Text(
                     context.tr.ipPortUpdated,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -80,7 +80,7 @@ class IPSettings extends StatelessWidget {
             }
           },
           elevation: 0,
-          icon: Icon(Icons.file_upload_outlined),
+          icon: const Icon(Icons.file_upload_outlined),
           label: Text(context.tr.updateIp),
         ),
       ),

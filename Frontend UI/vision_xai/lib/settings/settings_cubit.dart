@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_nsd/flutter_nsd.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:locale_names/locale_names.dart';
 import 'package:vision_xai/constants/ipDetails.dart';
@@ -7,6 +8,9 @@ import 'package:vision_xai/settings/settings_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
+  final FlutterNsd _flutterNsd = FlutterNsd();
+  bool _scanning = false;
+
   SettingsCubit()
       : super(SettingsState(
           ip: '',
@@ -17,7 +21,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     initializeSettings();
   }
 
-  void initializeSettings() async {
+  /// Initialize settings and start mDNS discovery
+  Future<void> initializeSettings() async {
     var box = await Hive.openBox('settings');
 
     // Load saved values or use defaults
@@ -25,25 +30,21 @@ class SettingsCubit extends Cubit<SettingsState> {
     final ip = box.get("ip") ?? IPDetails.defaultIP;
     final port = box.get("port") ?? IPDetails.defaultPort;
 
-    // Load the persisted locale from Hive, default to the current state's locale if not found
-    final localeCode =
-        box.get('locale', defaultValue: 'bn'); // default 'bn' for Bengali
-
-    // Find the corresponding Locale
+    final localeCode = box.get('locale', defaultValue: 'bn');
     final newLocale = AppLocalizations.supportedLocales.firstWhere(
       (locale) => locale.languageCode == localeCode,
-      orElse: () => Locale('bn'), // Fallback to Bengali
+      orElse: () => const Locale('bn'),
     );
 
-    // Emit the updated state with loaded IP, port, and locale
-    emit(state.copyWith(
-      ip: ip,
-      port: port,
-      currentLocale: newLocale,
-    ));
-    debugPrint('Initialized state: ${state.toString()}');
+    emit(state.copyWith(ip: ip, port: port, currentLocale: newLocale));
+
+    debugPrint(
+          'State emitted with locale: ${state.currentLocale.defaultDisplayLanguage}');
+
+    _startMdnsDiscovery();
   }
 
+  /// Update IP and port and persist in Hive
   Future<void> updateIpAndPort(String ip, String port) async {
     var box = await Hive.openBox('settings');
     await box.put("ip", ip);
@@ -53,23 +54,59 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(ip: ip, port: port));
   }
 
-  void updateLanguage(String languageCode) {
-    debugPrint('Updating language to: $languageCode');
-
+  /// Update language preference
+  Future<void> updateLanguage(String languageCode) async {
     final newLocale = Locale(languageCode);
+    if (state.currentLocale == newLocale) return;
 
-    if (state.currentLocale == newLocale) {
-      debugPrint('Locale is already ${newLocale.languageCode}, skipping emit.');
-      return;
-    }
-
-    // Persist the language choice in Hive
-    Hive.box('settings').put('locale', languageCode);
-
-    // Update the state with the new locale
+    var box = await Hive.openBox('settings');
+    await box.put('locale', languageCode);
     emit(state.copyWith(currentLocale: newLocale));
+  }
 
-    debugPrint(
-        'State emitted with locale: ${state.currentLocale.defaultDisplayLanguage}');
+  /// Start mDNS discovery
+  Future<void> _startMdnsDiscovery() async {
+    if (_scanning) return;
+    _scanning = true;
+
+    try {
+      await _flutterNsd.discoverServices('_http._tcp.');
+
+      _flutterNsd.stream.listen(
+        (NsdServiceInfo service) {
+          if (service.hostname != null && service.port != null) {
+            updateIpAndPort(service.hostname!, service.port!.toString());
+          }
+        },
+        onError: (e) {
+          if (e is NsdError) {
+            debugPrint('mDNS error: ${e.errorCode}');
+          } else {
+            debugPrint('Unexpected error: $e');
+          }
+        },
+      );
+    } catch (e) {
+      debugPrint('Failed to start mDNS discovery: $e');
+    }
+  }
+
+  /// Stop mDNS discovery
+  Future<void> _stopMdnsDiscovery() async {
+    if (!_scanning) return;
+
+    try {
+      await _flutterNsd.stopDiscovery();
+    } catch (e) {
+      debugPrint('Failed to stop mDNS discovery: $e');
+    } finally {
+      _scanning = false;
+    }
+  }
+
+  @override
+  Future<void> close() {
+    _stopMdnsDiscovery();
+    return super.close();
   }
 }

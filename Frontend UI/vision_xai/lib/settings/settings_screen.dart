@@ -11,7 +11,7 @@ class SettingsUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SettingsCubit()..initializeSettings(),
+      create: (_) => SettingsCubit(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(context.tr.settingsScreenTitle),

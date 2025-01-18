@@ -11,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:arb_utils/state_managers/l10n_provider.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => HomeCubit()),
         BlocProvider(
-          create: (context) => SettingsCubit()..initializeSettings(),
+          create: (context) => SettingsCubit(),
         ),
       ],
       child: ChangeNotifierProvider(
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp.router(
               onGenerateTitle: (cxt) => cxt.tr.appTitle,
               locale: context.watch<ProviderL10n>().locale, // Dynamically update locale
-              localizationsDelegates: [
+              localizationsDelegates: const [
                 AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
