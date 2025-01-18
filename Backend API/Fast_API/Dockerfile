@@ -1,5 +1,5 @@
-# Use a generic base image for compatibility
-ARG BASE_IMAGE
+# Set default base image based on architecture
+ARG BASE_IMAGE=tensorflow/tensorflow:2.8.0
 FROM ${BASE_IMAGE}
 
 # Set environment variables to prevent interactive prompts
@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxext6 \
     libxrender-dev \
     wget \
+    python3-zeroconf \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -30,6 +31,7 @@ RUN ARCH=$(uname -m) && \
             fastapi[all]==0.100.0 \
             uvicorn[standard]==0.23.0 \
             loguru==0.7.2 \
+            zeroconf==0.38.3 \
             protobuf==3.20.3 && \
         pip install --no-cache-dir --upgrade typing_extensions; \
     elif [ "$ARCH" = "aarch64" ]; then \
@@ -39,6 +41,7 @@ RUN ARCH=$(uname -m) && \
             fastapi[all]==0.100.0 \
             uvicorn[standard]==0.23.0 \
             loguru==0.7.2 \
+            zeroconf==0.38.3 \
             protobuf==3.20.3 \
             typing_extensions; \
     else \
@@ -58,4 +61,4 @@ COPY . .
 EXPOSE 5000
 
 # Run the FastAPI application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000", "--reload"]
+CMD [ "python" , "main.py" ]

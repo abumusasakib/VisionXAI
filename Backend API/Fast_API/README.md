@@ -79,7 +79,7 @@ Recommended to have Python 3.8.5 for compatibility with TensorFlow.
 4. **Run the Application**:
 
    ```bash
-   uvicorn main:app --host 0.0.0.0 --port 5000 --reload
+   python main.py
    ```
 
 ---
@@ -146,26 +146,35 @@ Add the following to `.vscode/launch.json` for debugging in Visual Studio Code:
 
 ```json
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "python",
-            "request": "launch",
-            "name": "Launch FastAPI with Uvicorn",
-            "module": "uvicorn",
-            "args": [
-                "main:app",
-                "--host", "0.0.0.0",
-                "--port", "5000",
-                "--reload"
-            ],
-            "jinja": true,
-            "envFile": "${workspaceFolder}/.env",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "debugpy",
+      "request": "launch",
+      "name": "Run FastAPI",
+      "program": "${workspaceFolder}/main.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "PYTHONUNBUFFERED": "1"  // Ensure logs are flushed immediately
+      },
+      "args": [],
+    },
+    {
+      "type": "debugpy",
+      "request": "launch",
+      "name": "Debug FastAPI",
+      "program": "${workspaceFolder}/main.py",
+      "console": "integratedTerminal",
+      "justMyCode": false, // Include third-party libraries in debugging
+      "args": [],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      },
+    }
+  ]
 }
+
 ```
 
 ---

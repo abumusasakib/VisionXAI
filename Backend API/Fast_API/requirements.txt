@@ -11,3 +11,5 @@ tensorflow==2.8.0  # TensorFlow for image captioning, deep learning models
 
 # Logging
 loguru==0.7.2  # For improved logging capabilities (alternative to the default logging module)
+
+zeroconf==0.136.2
