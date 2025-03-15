@@ -29,16 +29,15 @@ VisionXAI is a mobile application project designed to generate detailed image ca
 This project involves training a multimodal Transformer model for image captioning.
 
 1. Dataset:
-   - The dataset is a collection of 9,154 images paired with two captions in Bengali.
-   - The dataset consists of images paired with two captions each.
-   - It's split into an 80% training set (7,323 samples) and a 20% test set (1,831 samples).
+   - The dataset is a collection of images paired with five captions in Bengali.
+   - It's split into an 80% training set and a 20% test set.
    - Image augmentation is applied to increase data diversity.
    - Captions are vectorized.
    - The data is prepared using TensorFlow Dataset API.
 
 2. Model Architecture:
    - The model is a Transformer-based architecture designed for image-to-text tasks.
-   - It uses EfficientNetB0 as the CNN backbone for image feature extraction.
+   - It uses EfficientNetB4 as the CNN backbone for image feature extraction.
    - Custom Encoder and Decoder blocks are implemented by inheriting from TensorFlow's Layer class.
    - A Positional Embedding layer is included.
    - The final model is created by compiling these layers and inheriting from TensorFlow's Model class.
@@ -92,7 +91,7 @@ Before running the Flask API, ensure the following are installed:
 
 ## Image Captioning Model
 
-- **Dataset**: The model is trained on a dataset of **9,154 images** paired with captions in Bengali, sourced from [this dataset](https://data.mendeley.com/datasets/rxxch9vw59/2).
+- **Dataset**: The model is trained on a dataset of images paired with captions in Bengali, sourced from [this dataset](https://data.mendeley.com/datasets/rxxch9vw59/2) and the testing dataset is sourced from [here](https://www.kaggle.com/datasets/almominfaruk/bnaturebengali-image-captioning-dataset?select=Pictures).
 
 ## Local Development Setup
 

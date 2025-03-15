@@ -124,3 +124,4 @@ README.md~              # Backup versions of README files
 *.rar                    # RAR files
 *.7z                     # 7z compressed files
 *.tgz                    # Tarball compressed files
+.qodo
