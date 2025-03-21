@@ -50,6 +50,7 @@ logger.info("CORS middleware configured")
 zeroconf = Zeroconf()
 service_info = None
 
+
 # mDNS Registration
 def register_mdns_service():
     hostname = socket.gethostname()
@@ -80,6 +81,7 @@ def register_mdns_service():
 
     logger.info(f"mDNS service registered: {service_info.name} on {local_ip}:5353")
 
+
 @app.on_event("shutdown")
 def shutdown_event():
     global zeroconf, service_info
@@ -89,7 +91,9 @@ def shutdown_event():
         zeroconf.close()
         logger.info("mDNS service unregistered.")
 
+
 # Routes and Endpoints
+
 
 @app.get("/", response_model=dict)
 def read_root():
@@ -98,6 +102,7 @@ def read_root():
     """
     logger.info("Root endpoint accessed")
     return {"message": "Image Caption Generation in Bengali"}
+
 
 @app.post("/upload", response_model=dict)
 async def upload_image(image: UploadFile = File(...)):
@@ -108,11 +113,14 @@ async def upload_image(image: UploadFile = File(...)):
     if not image.filename:
         logger.warning("No file selected by the user")
         raise HTTPException(status_code=400, detail="No file selected.")
-    
+
     extension = image.filename.split(".")[-1].lower()
     if extension not in ["jpg", "jpeg", "png"]:
         logger.warning(f"Invalid file format: {extension}")
-        raise HTTPException(status_code=400, detail="Invalid file format. Only jpg, jpeg, png are supported.")
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid file format. Only jpg, jpeg, png are supported.",
+        )
 
     # Clear the upload folder
     logger.info("Clearing existing files in the upload folder")
@@ -125,9 +133,10 @@ async def upload_image(image: UploadFile = File(...)):
     file_path = os.path.join(UPLOAD_FOLDER, f"image.{extension}")
     with open(file_path, "wb") as f:
         f.write(await image.read())
-    
+
     logger.info(f"Image uploaded successfully: {file_path}")
     return {"message": "Image uploaded successfully.", "filename": file_path}
+
 
 @app.get("/caption", response_model=dict)
 def generate_caption():
@@ -139,8 +148,10 @@ def generate_caption():
     files = os.listdir(UPLOAD_FOLDER)
     if not files:
         logger.warning("No uploaded image found when attempting to generate a caption")
-        raise HTTPException(status_code=400, detail="No image found. Please upload an image first.")
-    
+        raise HTTPException(
+            status_code=400, detail="No image found. Please upload an image first."
+        )
+
     image_name = files[0]  # There should be only one file in the folder
     image_path = os.path.join(UPLOAD_FOLDER, image_name)
 
@@ -150,10 +161,13 @@ def generate_caption():
         caption = cap.generate(image_path)
     except Exception as e:
         logger.error(f"Caption generation failed for {image_path}: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Caption generation failed: {str(e)}")
-    
+        raise HTTPException(
+            status_code=500, detail=f"Caption generation failed: {str(e)}"
+        )
+
     logger.info(f"Caption generated successfully for {image_path}")
     return {"image": image_name, "caption": caption}
+
 
 if __name__ == "__main__":
     logger.info("Registering mDNS service...")
@@ -165,9 +179,9 @@ if __name__ == "__main__":
         port = 5000
         logger.info(f"Starting the API server at http://{local_ip}:{port}")
         import uvicorn
+
         uvicorn.run(app, host="0.0.0.0", port=port, log_level="info")
     except Exception as e:
         logger.error(f"Failed to start the API server: {e}")
     finally:
         logger.info("Shutting down the server")
-

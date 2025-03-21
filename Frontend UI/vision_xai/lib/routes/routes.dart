@@ -22,7 +22,7 @@ final GoRouter router = GoRouter(
       path: AppRoutes.settings,
       builder: (context, state) => BlocProvider(
         create: (context) => SettingsCubit(),
-        child: SettingsUI(),
+        child: const SettingsUI(),
       ),
     ),
     GoRoute(
@@ -36,7 +36,7 @@ final GoRouter router = GoRouter(
       path: AppRoutes.languageSettings,
       builder: (context, state) => BlocProvider(
         create: (context) => SettingsCubit(),
-        child: LanguageSettings(),
+        child: const LanguageSettings(),
       ),
     ),
   ],

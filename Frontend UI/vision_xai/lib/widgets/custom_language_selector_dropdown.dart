@@ -5,10 +5,10 @@ import 'package:locale_names/locale_names.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomLanguageSelectorDropdown extends StatelessWidget {
-  CustomLanguageSelectorDropdown({
+  const CustomLanguageSelectorDropdown({
     super.key,
 
-    /// Provided the [AppLocalizations.supportedLocales]
+    /// Provide the [AppLocalizations.supportedLocales]
     required this.supportedLocales,
 
     /// A callback to be called when the user selects a language.
