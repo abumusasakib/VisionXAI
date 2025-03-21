@@ -69,3 +69,4 @@ test-results.xml
 *.db               # Database files (if any)
 *.sqlite           # SQLite database files
 *.sqlite3          # SQLite database files
+.qodo
