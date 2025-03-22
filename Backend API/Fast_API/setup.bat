@@ -15,6 +15,8 @@ IF "%ARCH%"=="64-bit" (
     EXIT /B 1
 )
 
-REM Build and run the Docker containers
+REM Ensure the correct path format and run Docker commands
+echo Using BASE_IMAGE: %BASE_IMAGE%
+
 docker-compose build --build-arg BASE_IMAGE=%BASE_IMAGE%
 docker-compose up

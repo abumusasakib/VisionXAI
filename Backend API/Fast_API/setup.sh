@@ -1,5 +1,6 @@
 ARCH=$(uname -m)
 
+# Detect architecture and set base image
 if [ "$ARCH" = "x86_64" ]; then
   export BASE_IMAGE="tensorflow/tensorflow:2.8.0"
 elif [ "$ARCH" = "aarch64" ]; then
@@ -9,4 +10,5 @@ else
   exit 1
 fi
 
+# Run Docker Compose
 docker-compose up --build

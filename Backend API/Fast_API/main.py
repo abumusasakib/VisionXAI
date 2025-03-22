@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from ImgCap import captioner as cap
 from loguru import logger
 from zeroconf import ServiceInfo, Zeroconf
+from contextlib import asynccontextmanager
 
 # Configure logging with loguru
 LOG_FILE = "logs/app.log"
@@ -82,14 +83,18 @@ def register_mdns_service():
     logger.info(f"mDNS service registered: {service_info.name} on {local_ip}:5353")
 
 
-@app.on_event("shutdown")
-def shutdown_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
     global zeroconf, service_info
     if service_info:
         logger.info("Unregistering mDNS service...")
         zeroconf.unregister_service(service_info)
         zeroconf.close()
         logger.info("mDNS service unregistered.")
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 # Routes and Endpoints
@@ -180,8 +185,15 @@ if __name__ == "__main__":
         logger.info(f"Starting the API server at http://{local_ip}:{port}")
         import uvicorn
 
-        uvicorn.run(app, host="0.0.0.0", port=port, log_level="info")
+        uvicorn.run(
+            app, host="0.0.0.0", port=port, log_level="info", timeout_keep_alive=5
+        )
     except Exception as e:
         logger.error(f"Failed to start the API server: {e}")
     finally:
         logger.info("Shutting down the server")
+        if service_info:
+            logger.info("Unregistering mDNS service...")
+            zeroconf.unregister_service(service_info)
+            zeroconf.close()
+            logger.info("mDNS service unregistered.")
