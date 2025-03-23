@@ -29,6 +29,7 @@ mdx = "231005"
 
 # Directory Path
 WEIGHTS_DIR = "ImgCap/weights/"
+VOCAB_FILE = f"{WEIGHTS_DIR}vocab_{mdx}"
 
 # Setup loguru logger
 logger.add(
@@ -40,6 +41,64 @@ logger.add(
 )
 # Suppress repetitive TensorFlow warnings
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # Show only errors and critical warnings
+
+
+# Load Vocabulary
+def load_vocab(filepath):
+    try:
+        logger.info(f"Loading vocabulary from {filepath}")
+        with open(filepath, "rb") as f:
+            vocab = pickle.load(f)
+        logger.info("Vocabulary loaded successfully")
+
+        global VOCAB_SIZE
+        VOCAB_SIZE = len(vocab)
+
+        return vocab
+    except Exception as e:
+        logger.error(f"Error loading vocabulary file: {e}")
+        return None
+
+
+vocab = load_vocab(VOCAB_FILE)
+
+
+# Custom standardization
+def custom_standardization(input_string):
+    lowercase = tf.strings.lower(input_string)
+    return tf.strings.regex_replace(lowercase, "[%s]" % re.escape(strip_chars), "")
+
+
+# Using raw string for strip_chars
+strip_chars = r"!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
+strip_chars = strip_chars.replace("<", "").replace(">", "")
+
+# Initialize TextVectorization
+try:
+    if vocab:
+        vectorization = TextVectorization(
+            max_tokens=VOCAB_SIZE,
+            output_mode="int",
+            output_sequence_length=SEQ_LENGTH,
+            standardize=custom_standardization,
+            vocabulary=vocab,
+        )
+    else:
+        logger.error("Vocabulary is not defined.")
+        raise ValueError("Vocabulary is not defined.")
+except Exception as e:
+    logger.error(f"Error initializing TextVectorization: {e}")
+    vectorization = None
+
+# Data augmentation for image data
+image_augmentation = keras.Sequential(
+    [
+        layers.RandomFlip("horizontal"),
+        layers.RandomRotation(0.1),  # Reduced rotation for faster preprocessing
+        layers.RandomContrast(0.2),  # Lighter contrast adjustment
+        # layers.RandomTranslation(0.1, 0.1),
+    ]
+)
 
 
 # Process input image
@@ -484,27 +543,49 @@ class ImageCaptioningModel(keras.Model):
         return [self.loss_tracker, self.acc_tracker]
 
 
-# Load Vocabulary
-def load_vocab(filepath):
+# Model construction
+
+# Initialize components
+cnn_model = get_cnn_model()
+encoder = TransformerEncoderBlock(embed_dim=EMBED_DIM, dense_dim=FF_DIM, num_heads=4)
+decoder = TransformerDecoderBlock(embed_dim=EMBED_DIM, ff_dim=FF_DIM, num_heads=4)
+
+# Create the ImageCaptioningModel
+caption_model = ImageCaptioningModel(
+    cnn_model=cnn_model,
+    encoder=encoder,
+    decoder=decoder,
+    image_aug=image_augmentation,
+)
+
+
+# Load weights
+def load_weights(filepath):
+    # Check for the files
     try:
-        logger.info(f"Loading vocabulary from {filepath}")
-        with open(filepath, "rb") as f:
-            vocab = pickle.load(f)
-        logger.info("Vocabulary loaded successfully")
+        # Loading weights
+        fls = os.listdir(WEIGHTS_DIR)
 
-        global VOCAB_SIZE
-        VOCAB_SIZE = len(vocab)
+        # Look for specific weight files (like .index or .data-00000-of-00001)
+        checkpoint_files = [f for f in fls if "imgcap_" in f]
 
-        return vocab
+        if len(checkpoint_files) > 0:
+            logger.info("Found saved weights, loading them now...")
+            caption_model.load_weights(filepath)
+            logger.info("Saved weights loaded successfully")
+    except FileNotFoundError as e:
+        logger.error(f"Error: {e}")
     except Exception as e:
-        logger.error(f"Error loading vocabulary file: {e}")
-        return None
+        logger.error(f"Error loading weights: {str(e)}")
 
+
+# Load weights
+WEIGHTS_FILE = f"{WEIGHTS_DIR}imgcap_{mdx}"
+load_weights(WEIGHTS_FILE)
 
 # Initialize Vocabulary
 try:
-    VOCAB_FILE = f"{WEIGHTS_DIR}vocab_{mdx}"
-    vocab = load_vocab(VOCAB_FILE)
+    vocab = vectorization.get_vocabulary() if vectorization else None
     if vocab:
         index_lookup = dict(zip(range(len(vocab)), vocab))
         logger.info(f"Vocabulary size: {len(vocab)}")
@@ -517,44 +598,6 @@ except AttributeError as e:
 except Exception as e:
     index_lookup = None
     logger.error(f"Unexpected error while initializing vocabulary: {e}")
-
-
-# Custom standardization
-def custom_standardization(input_string):
-    lowercase = tf.strings.lower(input_string)
-    return tf.strings.regex_replace(lowercase, "[%s]" % re.escape(strip_chars), "")
-
-
-# Using raw string for strip_chars
-strip_chars = r"!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
-strip_chars = strip_chars.replace("<", "").replace(">", "")
-
-# Initialize TextVectorization
-try:
-    if vocab:
-        vectorization = TextVectorization(
-            max_tokens=VOCAB_SIZE,
-            output_mode="int",
-            output_sequence_length=SEQ_LENGTH,
-            standardize=custom_standardization,
-            vocabulary=vocab,
-        )
-    else:
-        logger.error("Vocabulary is not defined.")
-        raise ValueError("Vocabulary is not defined.")
-except Exception as e:
-    logger.error(f"Error initializing TextVectorization: {e}")
-    vectorization = None
-
-# Data augmentation for image data
-image_augmentation = keras.Sequential(
-    [
-        layers.RandomFlip("horizontal"),
-        layers.RandomRotation(0.1),  # Reduced rotation for faster preprocessing
-        layers.RandomContrast(0.2),  # Lighter contrast adjustment
-        # layers.RandomTranslation(0.1, 0.1),
-    ]
-)
 
 max_decoded_sentence_length = SEQ_LENGTH - 1
 
@@ -629,7 +672,7 @@ def generate(img_path):
             # logger.debug(f"Predictions shape: {predictions.shape}")
 
             # Get the predicted token
-            sampled_token_index = np.argmax(predictions[0, -1, :])
+            sampled_token_index = np.argmax(predictions[0, i, :])
 
             # Check if token index is valid
             if sampled_token_index >= len(vocab):
@@ -662,43 +705,3 @@ def generate(img_path):
     except Exception as e:
         logger.error(f"Error generating caption for image {img_path}: {e}")
         return "Error generating caption."
-
-
-# Load weights
-def load_weights(filepath):
-    # Check for the files
-    try:
-        # Loading weights
-        fls = os.listdir(WEIGHTS_DIR)
-
-        # Look for specific weight files (like .index or .data-00000-of-00001)
-        checkpoint_files = [f for f in fls if "imgcap_" in f]
-
-        if len(checkpoint_files) > 0:
-            logger.info("Found saved weights, loading them now...")
-            caption_model.load_weights(filepath)
-            logger.info("Saved weights loaded successfully")
-    except FileNotFoundError as e:
-        logger.error(f"Error: {e}")
-    except Exception as e:
-        logger.error(f"Error loading weights: {str(e)}")
-
-
-# Model construction
-
-# Initialize components
-cnn_model = get_cnn_model()
-encoder = TransformerEncoderBlock(embed_dim=EMBED_DIM, dense_dim=FF_DIM, num_heads=4)
-decoder = TransformerDecoderBlock(embed_dim=EMBED_DIM, ff_dim=FF_DIM, num_heads=4)
-
-# Create the ImageCaptioningModel
-caption_model = ImageCaptioningModel(
-    cnn_model=cnn_model,
-    encoder=encoder,
-    decoder=decoder,
-    image_aug=image_augmentation,
-)
-
-# Load weights
-WEIGHTS_FILE = f"{WEIGHTS_DIR}imgcap_{mdx}"
-load_weights(WEIGHTS_FILE)
