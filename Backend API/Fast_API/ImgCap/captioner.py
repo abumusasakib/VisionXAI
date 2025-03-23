@@ -73,7 +73,9 @@ def get_cnn_model():
         base_model_out = layers.GlobalAveragePooling2D()(base_model_out)
 
         # Project the output to match the embedding size
-        base_model_out = layers.Dense(EMBED_DIM)(base_model_out)
+        # Increase embedding projection for richer features
+        base_model_out = layers.Dense(EMBED_DIM, activation="relu")(base_model_out)
+        base_model_out = layers.Dense(EMBED_DIM, dtype="float32")(base_model_out)
 
         cnn_model = keras.models.Model(base_model.input, base_model_out)
 
@@ -120,11 +122,12 @@ class TransformerEncoderBlock(layers.Layer):
         inputs = tf.cast(inputs, dtype=tf.float32)  # Ensure correct dtype
 
         # Input shape
-        logger.debug(f"Encoder Input Shape: {inputs.shape}")
+        # logger.debug(f"Encoder Input Shape: {inputs.shape}")
 
-        logger.debug(f"Encoder Input Shape before LayerNorm: {inputs.shape}")
+        # logger.debug(f"Encoder Input Shape before LayerNorm: {inputs.shape}")
+        # Apply LayerNorm before attention
         inputs = self.layernorm_1(inputs)
-        logger.debug(f"Encoder Input Shape after LayerNorm: {inputs.shape}")
+        # logger.debug(f"Encoder Input Shape after LayerNorm: {inputs.shape}")
 
         inputs = self.dense_1(inputs)
 
@@ -146,7 +149,7 @@ class TransformerEncoderBlock(layers.Layer):
         out_2 = self.dense_2(out_2)
 
         # Output shape
-        logger.debug(f"Encoder Output Shape: {out_1.shape}")
+        # logger.debug(f"Encoder Output Shape: {out_1.shape}")
         return out_1 + out_2  # Residual connection for stability
 
 
@@ -166,7 +169,7 @@ class PositionalEmbedding(layers.Layer):
         self.embed_scale = tf.math.sqrt(tf.cast(embed_dim, tf.float32))
 
     def call(self, inputs):
-        logger.debug(f"Positional Embedding Input Shape: {inputs.shape}")
+        # logger.debug(f"Positional Embedding Input Shape: {inputs.shape}")
 
         # Get input shape and positions
         length = tf.shape(inputs)[-1]
@@ -178,9 +181,9 @@ class PositionalEmbedding(layers.Layer):
         embedded_positions = self.position_embeddings(positions)
 
         # Embeddings shape
-        logger.debug(f"Positional Embedding Output Shape: {embedded_tokens.shape}")
-        logger.debug(f"embedded_tokens dtype: {embedded_tokens.dtype}")
-        logger.debug(f"embedded_positions dtype: {embedded_positions.dtype}")
+        # logger.debug(f"Positional Embedding Output Shape: {embedded_tokens.shape}")
+        # logger.debug(f"embedded_tokens dtype: {embedded_tokens.dtype}")
+        # logger.debug(f"embedded_positions dtype: {embedded_positions.dtype}")
 
         # Return combined embeddings
         return embedded_tokens + embedded_positions
@@ -239,7 +242,7 @@ class TransformerDecoderBlock(layers.Layer):
         Returns:
             preds: Decoder output predictions (batch_size, seq_len, vocab_size).
         """
-        logger.debug(f"Decoder Input Shape: {inputs.shape}")
+        # logger.debug(f"Decoder Input Shape: {inputs.shape}")
 
         inputs = self.embedding(inputs)
         causal_mask = self.get_causal_attention_mask(inputs)
@@ -281,7 +284,7 @@ class TransformerDecoderBlock(layers.Layer):
         ffn_out = self.dropout_2(ffn_out, training=training)
         preds = self.out(ffn_out)
 
-        logger.debug(f"Decoder Output Shape: {preds.shape}")
+        # logger.debug(f"Decoder Output Shape: {preds.shape}")
         return preds
 
     def get_causal_attention_mask(self, inputs):
@@ -331,31 +334,31 @@ class ImageCaptioningModel(keras.Model):
         return tf.reduce_sum(accuracy) / tf.reduce_sum(mask)
 
     def _compute_caption_loss_and_acc(self, img_embed, batch_seq, training=True):
-        logger.debug(
-            f"Image Embedding Input Shape before passing to Encoder: {img_embed.shape}"
-        )
+        # logger.debug(
+        #     f"Image Embedding Input Shape before passing to Encoder: {img_embed.shape}"
+        # )
 
         # batch_seq = tf.expand_dims(batch_seq, axis=1)
-        logger.debug(f"Batch Sequence Input Shape before slicing: {batch_seq.shape}")
+        # logger.debug(f"Batch Sequence Input Shape before slicing: {batch_seq.shape}")
 
         encoder_out = self.encoder(img_embed, training=training)
         batch_seq_inp = batch_seq[:, :-1]  # Input sequence (without the last token)
 
-        logger.debug(
-            f"Batch Sequence Input Shape before target sequence: {batch_seq_inp.shape}"
-        )
+        # logger.debug(
+        #     f"Batch Sequence Input Shape before target sequence: {batch_seq_inp.shape}"
+        # )
 
         batch_seq_true = batch_seq[:, 1:]  # Target sequence (without the first token)
         mask = tf.math.not_equal(batch_seq_true, 0)
 
-        logger.debug(f"Batch Sequence Input Shape: {batch_seq_inp.shape}")
-        logger.debug(f"Batch Sequence True Shape: {batch_seq_true.shape}")
+        # logger.debug(f"Batch Sequence Input Shape: {batch_seq_inp.shape}")
+        # logger.debug(f"Batch Sequence True Shape: {batch_seq_true.shape}")
 
         batch_seq_pred = self.decoder(
             batch_seq_inp, encoder_out, training=training, mask=mask
         )
 
-        logger.debug(f"Batch Sequence Predicted Shape: {batch_seq_pred.shape}")
+        # logger.debug(f"Batch Sequence Predicted Shape: {batch_seq_pred.shape}")
 
         loss = self.calculate_loss(batch_seq_true, batch_seq_pred, mask)
         acc = self.calculate_accuracy(batch_seq_true, batch_seq_pred, mask)
@@ -366,33 +369,33 @@ class ImageCaptioningModel(keras.Model):
 
         # batch_seq = tf.expand_dims(batch_seq, axis=1)
 
-        logger.debug(
-            f"Training Image Batch Shape before passing to CNN: {batch_img.shape}"
-        )
+        # logger.debug(
+        #     f"Training Image Batch Shape before passing to CNN: {batch_img.shape}"
+        # )
         total_loss = 0
         total_acc = 0
 
         if self.image_aug:
             batch_img = self.image_aug(batch_img)
 
-        logger.debug(f"Training Image Batch Shape: {batch_img.shape}")
-        logger.debug(f"Training Sequence Batch Shape: {batch_seq.shape}")
+        # logger.debug(f"Training Image Batch Shape: {batch_img.shape}")
+        # logger.debug(f"Training Sequence Batch Shape: {batch_seq.shape}")
 
         # 1. Get image embeddings from CNN
         img_embed = self.cnn_model(batch_img)
-        logger.debug(f"Image Embeddings Shape: {img_embed.shape}")
+        # logger.debug(f"Image Embeddings Shape: {img_embed.shape}")
 
         # 2. Reshape CNN output to (batch_size, 1, embedding_dim)
         img_embed = tf.expand_dims(img_embed, axis=1)  # It should be (None, 1, 1024)
 
-        logger.debug(f"Reshaped Image Embeddings for Encoder: {img_embed.shape}")
+        # logger.debug(f"Reshaped Image Embeddings for Encoder: {img_embed.shape}")
 
         # 3. Make sure batch_seq has 3 dimensions
         if batch_seq.shape.ndims == 2:
             # Reshape the sequence to have a third dimension (e.g., 1 caption per image)
             batch_seq = tf.expand_dims(batch_seq, axis=1)
 
-        logger.debug(f"Updated Sequence Shape: {batch_seq.shape}")
+        # logger.debug(f"Updated Sequence Shape: {batch_seq.shape}")
 
         # 4. Accumulate loss and accuracy for each caption
         with tf.GradientTape() as tape:
@@ -433,8 +436,8 @@ class ImageCaptioningModel(keras.Model):
 
     def test_step(self, batch_data):
         batch_img, batch_seq = batch_data
-        logger.debug(f"Validation Image Batch Shape: {batch_img.shape}")
-        logger.debug(f"Validation Sequence Batch Shape: {batch_seq.shape}")
+        # logger.debug(f"Validation Image Batch Shape: {batch_img.shape}")
+        # logger.debug(f"Validation Sequence Batch Shape: {batch_seq.shape}")
 
         # batch_seq = tf.expand_dims(batch_seq, axis=1)
 
@@ -454,8 +457,8 @@ class ImageCaptioningModel(keras.Model):
         for i in range(self.num_captions_per_image):
             batch_seq_inp = batch_seq[:, i, :-1]
             batch_seq_true = batch_seq[:, i, 1:]
-            logger.debug(f"Validation Sequence Input Shape: {batch_seq_inp.shape}")
-            logger.debug(f"Validation Sequence True Shape: {batch_seq_true.shape}")
+            # logger.debug(f"Validation Sequence Input Shape: {batch_seq_inp.shape}")
+            # logger.debug(f"Validation Sequence True Shape: {batch_seq_true.shape}")
 
             loss, acc = self._compute_caption_loss_and_acc(
                 img_embed, batch_seq[:, i, :], training=False
@@ -558,6 +561,15 @@ max_decoded_sentence_length = SEQ_LENGTH - 1
 
 # Generate Caption
 def generate(img_path):
+    """
+    Generate a caption for the given image.
+
+    Args:
+    - img_path: Path to the input image.
+
+    Returns:
+    - str: The generated caption or an error message.
+    """
     try:
         # Decode and resize the image
         sample_img = decode_and_resize(img_path)
@@ -570,9 +582,9 @@ def generate(img_path):
         # Process the image
         # Pass the image to the CNN
         img_tensor = tf.expand_dims(sample_img, 0)
-        logger.debug(f"Image tensor shape: {img_tensor.shape}")
+        # logger.debug(f"Image tensor shape: {img_tensor.shape}")
         img_features = caption_model.cnn_model(img_tensor)
-        logger.debug(f"Features shape after CNN: {img_features.shape}")
+        # logger.debug(f"Features shape after CNN: {img_features.shape}")
 
         # Expand dimensions to make it compatible with the encoder
         img_features = tf.expand_dims(
@@ -599,14 +611,14 @@ def generate(img_path):
             if tokenized_caption is None or not tf.is_tensor(tokenized_caption):
                 logger.error(f"Tokenization failed for caption: {decoded_caption}")
                 return "Error: Tokenization failed."
-            logger.debug(f"Tokenized caption shape: {tokenized_caption.shape}")
+            # logger.debug(f"Tokenized caption shape: {tokenized_caption.shape}")
 
             # Create mask for the tokenized caption
             mask = tf.math.not_equal(tokenized_caption, 0)
             if mask is None or not tf.is_tensor(mask):
                 logger.error("Mask creation failed.")
                 return "Error: Mask creation failed."
-            logger.debug(f"Mask shape and values: {mask.shape}, {mask}")
+            # logger.debug(f"Mask shape and values: {mask.shape}, {mask}")
 
             predictions = caption_model.decoder(
                 tokenized_caption, encoded_img, training=False, mask=mask
@@ -614,7 +626,7 @@ def generate(img_path):
             if predictions is None or not tf.is_tensor(predictions):
                 logger.error("Decoder predictions failed.")
                 return "Error: Decoder predictions failed."
-            logger.debug(f"Predictions shape: {predictions.shape}")
+            # logger.debug(f"Predictions shape: {predictions.shape}")
 
             # Get the predicted token
             sampled_token_index = np.argmax(predictions[0, -1, :])
@@ -654,7 +666,9 @@ def generate(img_path):
 
 # Load weights
 def load_weights(filepath):
+    # Check for the files
     try:
+        # Loading weights
         fls = os.listdir(WEIGHTS_DIR)
 
         # Look for specific weight files (like .index or .data-00000-of-00001)
@@ -664,11 +678,15 @@ def load_weights(filepath):
             logger.info("Found saved weights, loading them now...")
             caption_model.load_weights(filepath)
             logger.info("Saved weights loaded successfully")
+    except FileNotFoundError as e:
+        logger.error(f"Error: {e}")
     except Exception as e:
         logger.error(f"Error loading weights: {str(e)}")
 
 
 # Model construction
+
+# Initialize components
 cnn_model = get_cnn_model()
 encoder = TransformerEncoderBlock(embed_dim=EMBED_DIM, dense_dim=FF_DIM, num_heads=4)
 decoder = TransformerDecoderBlock(embed_dim=EMBED_DIM, ff_dim=FF_DIM, num_heads=4)
