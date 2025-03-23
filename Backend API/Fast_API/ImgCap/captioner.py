@@ -620,7 +620,7 @@ def generate(img_path):
             logger.error("Image could not be processed.")
             return "Image could not be processed."
 
-        sample_img = sample_img.numpy().clip(0, 255).astype(np.uint8)
+        img = sample_img.numpy().clip(0, 255).astype(np.uint8)
 
         # Process the image
         # Pass the image to the CNN
