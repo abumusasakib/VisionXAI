@@ -181,7 +181,7 @@ if __name__ == "__main__":
     try:
         hostname = socket.gethostname()
         local_ip = socket.gethostbyname(hostname)
-        port = 5000
+        port = int(os.environ.get("PORT", 5000))
         logger.info(f"Starting the API server at http://{local_ip}:{port}")
         import uvicorn
 
