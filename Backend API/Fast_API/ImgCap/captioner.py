@@ -51,6 +51,7 @@ def load_vocab(filepath):
             vocab = pickle.load(f)
         logger.info("Vocabulary loaded successfully")
 
+        # Update the vocabulary size
         global VOCAB_SIZE
         VOCAB_SIZE = len(vocab)
 
@@ -101,7 +102,7 @@ image_augmentation = keras.Sequential(
 )
 
 
-# Process input image
+# Decode, resize, and preprocess images
 def decode_and_resize(img_path):
     try:
         img = tf.io.read_file(img_path)
@@ -111,7 +112,6 @@ def decode_and_resize(img_path):
         return img
     except Exception as e:
         logger.error(f"❌ Error in decoding and resizing image {img_path}: {e}")
-        return None
 
 
 # Defining the Model
@@ -285,7 +285,7 @@ class TransformerDecoderBlock(layers.Layer):
         )
         self.out = layers.Dense(VOCAB_SIZE, activation="softmax")
 
-        # Dropout layers
+        # Dropout layers for regularization
         self.dropout_1 = layers.Dropout(dropout_rate)  # previously 0.1
         self.dropout_2 = layers.Dropout(dropout_rate)  # previously 0.1
         # self.supports_masking = True
@@ -538,7 +538,7 @@ class ImageCaptioningModel(keras.Model):
 
     @property
     def metrics(self):
-        # We need to list our metrics here so the reset_states() can be
+        # We need to list our metrics here so the `reset_states()` can be
         # called automatically.
         return [self.loss_tracker, self.acc_tracker]
 
@@ -621,6 +621,11 @@ def generate(img_path):
             return "Image could not be processed."
 
         img = sample_img.numpy().clip(0, 255).astype(np.uint8)
+
+        # Log or display the processed image
+        logger.debug(f"Processed image shape: {img.shape}")
+        logger.debug(f"Processed image dtype: {img.dtype}")
+        logger.debug(f"Processed image pixel range: {img.min()} - {img.max()}")
 
         # Process the image
         # Pass the image to the CNN
