@@ -188,7 +188,7 @@ class TransformerEncoderBlock(layers.Layer):
         inputs = self.layernorm_1(inputs)
         # logger.debug(f"Encoder Input Shape after LayerNorm: {inputs.shape}")
 
-        inputs = self.dense_1(inputs)
+        # inputs = self.dense_1(inputs)
 
         # Self-attention layer
         attention_output_1 = self.attention_1(
@@ -622,7 +622,7 @@ def generate(img_path):
 
         img = sample_img.numpy().clip(0, 255).astype(np.uint8)
 
-        # Log or display the processed image
+        # Log the processed image
         logger.debug(f"Processed image shape: {img.shape}")
         logger.debug(f"Processed image dtype: {img.dtype}")
         logger.debug(f"Processed image pixel range: {img.min()} - {img.max()}")
