@@ -11,7 +11,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:arb_utils/state_managers/l10n_provider.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
         statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.white,
+        systemNavigationBarColor: const Color(0xFFFEFDFC), // White 2
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
@@ -45,9 +44,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => HomeCubit()),
-        BlocProvider(
-          create: (context) => SettingsCubit(),
-        ),
+        BlocProvider(create: (context) => SettingsCubit()),
       ],
       child: ChangeNotifierProvider(
         create: (context) => ProviderL10n(),
@@ -55,7 +52,9 @@ class MyApp extends StatelessWidget {
           builder: (context) {
             return MaterialApp.router(
               onGenerateTitle: (cxt) => cxt.tr.appTitle,
-              locale: context.watch<ProviderL10n>().locale, // Dynamically update locale
+              locale: context
+                  .watch<ProviderL10n>()
+                  .locale, // Dynamically update locale
               localizationsDelegates: const [
                 AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
@@ -65,12 +64,57 @@ class MyApp extends StatelessWidget {
               supportedLocales: AppLocalizations.supportedLocales,
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0FC0B8)),
+                colorScheme: const ColorScheme(
+                  brightness: Brightness.light,
+                  primary: Color(0xFF089BB7), // Blue Green
+                  onPrimary: Colors.black,
+                  secondary: Color(0xFF0FC0B8), // Light Sea Green
+                  onSecondary: Colors.black,
+                  tertiary: Color(0xFFFEFDFC), // White 2
+                  onTertiary: Colors.black,
+                  surface: Color(0xFFB3D8E1), // Light Blue
+                  onSurface: Colors.black,
+                  error: Colors.red,
+                  onError: Colors.white,
+                ),
                 useMaterial3: true,
+                scaffoldBackgroundColor: const Color(0xFFFEFDFC), // White 2
+                appBarTheme: const AppBarTheme(
+                  backgroundColor: Color(0xFF089BB7), // Blue Green
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                ),
+                buttonTheme: const ButtonThemeData(
+                  buttonColor: Color(0xFF0FC0B8), // Light Sea Green
+                  textTheme: ButtonTextTheme.primary,
+                ),
+                // Ensure black text and icons on buttons
+                textButtonTheme: TextButtonThemeData(
+                  style: ButtonStyle(
+                    foregroundColor: WidgetStateProperty.all(Colors.black),
+                  ),
+                ),
+                elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ButtonStyle(
+                    foregroundColor: WidgetStateProperty.all(Colors.black),
+                  ),
+                ),
+                outlinedButtonTheme: OutlinedButtonThemeData(
+                  style: ButtonStyle(
+                    foregroundColor: WidgetStateProperty.all(Colors.black),
+                  ),
+                ),
+                // Make sure icons are white by default in the primary and secondary contexts
+                iconTheme: const IconThemeData(
+                  color: Colors.white,
+                ),
+                primaryIconTheme: const IconThemeData(
+                  color: Colors.white,
+                ),
               ),
               routerConfig: router,
             );
-          }
+          },
         ),
       ),
     );
