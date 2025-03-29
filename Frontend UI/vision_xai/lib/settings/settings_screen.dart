@@ -34,6 +34,14 @@ class SettingsUI extends StatelessWidget {
                 context.push(AppRoutes.ipSettings);
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: Text(context.tr.about),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                context.push(AppRoutes.about);
+              },
+            ),
           ],
         ),
       ),

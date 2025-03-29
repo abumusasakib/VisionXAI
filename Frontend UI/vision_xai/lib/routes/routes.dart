@@ -3,6 +3,7 @@ import 'package:vision_xai/home/home_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vision_xai/home/home_screen.dart';
 import 'package:vision_xai/routes/app_routes.dart';
+import 'package:vision_xai/settings/about/about_screen.dart';
 import 'package:vision_xai/settings/language_settings/language_settings_screen.dart';
 import 'package:vision_xai/settings/settings_cubit.dart';
 import 'package:vision_xai/settings/ip_settings/ip_settings_screen.dart';
@@ -37,6 +38,13 @@ final GoRouter router = GoRouter(
       builder: (context, state) => BlocProvider(
         create: (context) => SettingsCubit(),
         child: const LanguageSettings(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.about,
+      builder: (context, state) => BlocProvider(
+        create: (context) => SettingsCubit(),
+        child: const AboutScreen(),
       ),
     ),
   ],

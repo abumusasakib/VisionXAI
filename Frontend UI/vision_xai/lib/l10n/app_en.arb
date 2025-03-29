@@ -95,5 +95,13 @@
   "noLanguageSelected": "No Language Selected",
   "@noLanguageSelected": {
     "description": "Error message for no language selected."
+  },
+  "about": "About",
+  "@about": {
+    "description": "The title for the about screen."
+  },
+  "currentLanguage": "Current Language",
+  "@currentLanguage": {
+    "description": "Text for the current language."
   }
 }

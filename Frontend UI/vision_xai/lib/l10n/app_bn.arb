@@ -95,5 +95,13 @@
   "noLanguageSelected": "কোন ভাষা নির্বাচিত নেই",
   "@noLanguageSelected": {
     "description": "Error message for no language selected."
+  },
+  "about": "সম্পর্কিত",
+  "@about": {
+    "description": "Text for the about section."
+  },
+  "currentLanguage": "বর্তমান ভাষা",
+  "@currentLanguage": {
+    "description": "Text for displaying the current language."
   }
 }

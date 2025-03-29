@@ -3,4 +3,5 @@ class AppRoutes {
   static const settings = '/settings';
   static const languageSettings = '/languageSettings';
   static const ipSettings = '/ipSettings';
+  static const about = '/about';
 }

@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
               supportedLocales: AppLocalizations.supportedLocales,
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0FC0B8)),
                 useMaterial3: true,
               ),
               routerConfig: router,
