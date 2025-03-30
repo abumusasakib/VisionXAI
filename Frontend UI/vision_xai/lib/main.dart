@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:vision_xai/home/home_cubit.dart';
 import 'package:vision_xai/l10n/localization_extension.dart';
 import 'package:vision_xai/routes/routes.dart';
@@ -23,20 +26,66 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Color primaryColor = const Color(0xFF089BB7); // Blue Green
+  Color secondaryColor = const Color(0xFF0FC0B8); // Light Sea Green
+  Color backgroundColor = const Color(0xFFFEFDFC); // White 2
+
+  @override
+  void initState() {
+    super.initState();
+    _generatePalette(); // Generate colors on startup
+    _updateColors(); // Update colors based on the generated palette
+  }
+
+  Future<PaletteGenerator> _generatePalette() async {
+    final completer = Completer<ImageInfo>();
+
+    final ImageStream stream = const AssetImage('assets/icon/icon.png')
+        .resolve(ImageConfiguration.empty);
+    stream.addListener(ImageStreamListener((ImageInfo info, bool _) {
+      completer.complete(info);
+    }));
+
+    await completer.future; // Wait for image to be fully loaded
+
+    return await PaletteGenerator.fromImageProvider(
+      const AssetImage('assets/icon/icon.png'),
+    );
+  }
+
+  Future<void> _updateColors() async {
+    final palette = await _generatePalette();
+    setState(() {
+      primaryColor = palette.dominantColor?.color ??
+          const Color(0xFF089BB7); // Blue Green
+      secondaryColor = palette.lightVibrantColor?.color ??
+          const Color(0xFF0FC0B8); // Light Sea Green
+      backgroundColor = palette.lightMutedColor?.color ??
+          const Color(0xFFFEFDFC); // White 2
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
-        overlays: [SystemUiOverlay.top]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+      overlays: [SystemUiOverlay.top],
+    );
 
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(
         statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: const Color(0xFFFEFDFC), // White 2
+        systemNavigationBarColor: backgroundColor,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
@@ -52,9 +101,7 @@ class MyApp extends StatelessWidget {
           builder: (context) {
             return MaterialApp.router(
               onGenerateTitle: (cxt) => cxt.tr.appTitle,
-              locale: context
-                  .watch<ProviderL10n>()
-                  .locale, // Dynamically update locale
+              locale: context.watch<ProviderL10n>().locale,
               localizationsDelegates: const [
                 AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
@@ -64,28 +111,18 @@ class MyApp extends StatelessWidget {
               supportedLocales: AppLocalizations.supportedLocales,
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
-                colorScheme: const ColorScheme(
-                  brightness: Brightness.light,
-                  primary: Color(0xFF089BB7), // Blue Green
-                  onPrimary: Colors.black,
-                  secondary: Color(0xFF0FC0B8), // Light Sea Green
-                  onSecondary: Colors.black,
-                  tertiary: Color(0xFFFEFDFC), // White 2
-                  onTertiary: Colors.black,
-                  surface: Color(0xFFB3D8E1), // Light Blue
-                  onSurface: Colors.black,
-                  error: Colors.red,
-                  onError: Colors.white,
+                colorScheme: ColorScheme.light(
+                  primary: primaryColor,
+                  secondary: secondaryColor,
+                  tertiary: backgroundColor,
                 ),
-                useMaterial3: true,
-                scaffoldBackgroundColor: const Color(0xFFFEFDFC), // White 2
-                appBarTheme: const AppBarTheme(
-                  backgroundColor: Color(0xFF089BB7), // Blue Green
+                scaffoldBackgroundColor: backgroundColor,
+                appBarTheme: AppBarTheme(
+                  backgroundColor: primaryColor,
                   foregroundColor: Colors.white,
-                  elevation: 0,
                 ),
-                buttonTheme: const ButtonThemeData(
-                  buttonColor: Color(0xFF0FC0B8), // Light Sea Green
+                buttonTheme: ButtonThemeData(
+                  buttonColor: secondaryColor,
                   textTheme: ButtonTextTheme.primary,
                 ),
                 // Ensure black text and icons on buttons
@@ -104,13 +141,8 @@ class MyApp extends StatelessWidget {
                     foregroundColor: WidgetStateProperty.all(Colors.black),
                   ),
                 ),
-                // Make sure icons are white by default in the primary and secondary contexts
-                iconTheme: const IconThemeData(
-                  color: Colors.white,
-                ),
-                primaryIconTheme: const IconThemeData(
-                  color: Colors.white,
-                ),
+                // Make sure icons are white by default in the primary contexts
+                iconTheme: const IconThemeData(color: Colors.white),
               ),
               routerConfig: router,
             );

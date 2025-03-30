@@ -103,5 +103,13 @@
   "currentLanguage": "বর্তমান ভাষা",
   "@currentLanguage": {
     "description": "Text for displaying the current language."
+  },
+  "version": "সংস্করণ",
+  "@version": {
+    "description": "Text for displaying the application version."
+  },
+  "platform": "প্ল্যাটফর্ম",
+  "@platform": {
+    "description": "Text for displaying the platform information."
   }
 }

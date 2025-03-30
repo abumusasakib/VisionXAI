@@ -35,41 +35,41 @@ dependencies:
   flutter_localizations: # For localization support
     sdk: flutter
 
-  # BLoC for state management
+  # State management
   flutter_bloc: ^9.0.0
   bloc: ^9.0.0
+  provider: ^6.1.2
+  equatable: ^2.0.7
 
   # Routing
   go_router: ^14.6.1
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  # Network & HTTP
   http: ^1.1.0
+  dio: ^5.0.3
 
-  # Image picking
-  image_picker: ^1.1.2
+  # Localization & Utilities
+  intl: ^0.19.0 # For date and number formatting
+  locale_names: ^1.1.1
+  arb_utils: ^0.8.3
 
-  wifi_ip_details: ^1.0.0
-
-  # Persistence with Hive
+  # Persistence & Storage
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
-  # HTTP client
-  dio: ^5.0.3
+  # Image processing & UI
+  image_picker: ^1.1.2
+  palette_generator: ^0.3.3
 
-  # Utility packages
-  intl: 0.19.0 # For date and number formatting
-
-  locale_names: ^1.1.1
-  equatable: ^2.0.7
-  arb_utils: ^0.8.3
+  # Platform-specific & Device utilities
+  wifi_ip_details: ^1.0.0
   flutter_nsd: ^1.5.0
-  provider: ^6.1.2
+  package_info_plus: ^8.3.0
+
+  # UI Enhancements
+  cupertino_icons: ^1.0.2
   flutter_launcher_icons: ^0.14.3
   flutter_native_splash: ^2.4.1
-  palette_generator: ^0.3.3
 
 dev_dependencies:
   # Testing
@@ -103,6 +103,7 @@ flutter:
   assets:
     - assets/
     - assets/icon/ # Icon assets
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

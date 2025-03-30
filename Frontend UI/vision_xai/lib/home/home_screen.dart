@@ -148,7 +148,7 @@ class Home extends StatelessWidget {
         : Container(
             height: 200, // Providing a fixed height for this widget
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
+              border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
@@ -232,12 +232,12 @@ class Home extends StatelessWidget {
                 ? Text(
                     state.testOutput,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18, color: Colors.black),
                   )
                 : Text(
                     context.tr.captionText,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18, color: Colors.grey),
+                    style: const TextStyle(fontSize: 18, color: Colors.black54),
                   ),
           ),
         ),

@@ -30,10 +30,10 @@ class SettingsCubit extends Cubit<SettingsState> {
     final ip = box.get("ip") ?? IPDetails.defaultIP;
     final port = box.get("port") ?? IPDetails.defaultPort;
 
-    final localeCode = box.get('locale', defaultValue: 'bn');
+    final localeCode = box.get('locale', defaultValue: 'en');
     final newLocale = AppLocalizations.supportedLocales.firstWhere(
       (locale) => locale.languageCode == localeCode,
-      orElse: () => const Locale('bn'),
+      orElse: () => const Locale('en'),
     );
 
     emit(state.copyWith(ip: ip, port: port, currentLocale: newLocale));
