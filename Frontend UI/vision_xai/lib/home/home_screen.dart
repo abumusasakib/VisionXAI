@@ -148,7 +148,8 @@ class Home extends StatelessWidget {
         : Container(
             height: 200, // Providing a fixed height for this widget
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
+              border: Border.all(color: Colors.black54, width: 2),
+              color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
