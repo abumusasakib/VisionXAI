@@ -51,12 +51,6 @@ android {
         versionName flutterVersionName
     }
 
-    defaultConfig {
-        versionCode 1
-        versionName "1.0.0"
-    }
-
-
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

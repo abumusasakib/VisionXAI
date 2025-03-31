@@ -1,11 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:palette_generator/palette_generator.dart';
+import 'package:vision_xai/color_palette/palette_state.dart';
 import 'package:vision_xai/home/home_cubit.dart';
 import 'package:vision_xai/l10n/localization_extension.dart';
 import 'package:vision_xai/routes/routes.dart';
@@ -13,6 +11,7 @@ import 'package:vision_xai/settings/settings_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:arb_utils/state_managers/l10n_provider.dart';
+import 'package:vision_xai/color_palette/palette_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,52 +25,8 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  Color primaryColor = const Color(0xFF089BB7); // Blue Green
-  Color secondaryColor = const Color(0xFF0FC0B8); // Light Sea Green
-  Color backgroundColor = const Color(0xFFFEFDFC); // White 2
-
-  @override
-  void initState() {
-    super.initState();
-    _generatePalette(); // Generate colors on startup
-    _updateColors(); // Update colors based on the generated palette
-  }
-
-  Future<PaletteGenerator> _generatePalette() async {
-    final completer = Completer<ImageInfo>();
-
-    final ImageStream stream = const AssetImage('assets/icon/icon.png')
-        .resolve(ImageConfiguration.empty);
-    stream.addListener(ImageStreamListener((ImageInfo info, bool _) {
-      completer.complete(info);
-    }));
-
-    await completer.future; // Wait for image to be fully loaded
-
-    return await PaletteGenerator.fromImageProvider(
-      const AssetImage('assets/icon/icon.png'),
-    );
-  }
-
-  Future<void> _updateColors() async {
-    final palette = await _generatePalette();
-    setState(() {
-      primaryColor = palette.dominantColor?.color ??
-          const Color(0xFF089BB7); // Blue Green
-      secondaryColor = palette.lightVibrantColor?.color ??
-          const Color(0xFF0FC0B8); // Light Sea Green
-      backgroundColor = palette.lightMutedColor?.color ??
-          const Color(0xFFFEFDFC); // White 2
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +40,7 @@ class _MyAppState extends State<MyApp> {
         statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: backgroundColor,
+        systemNavigationBarColor: Colors.white,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
@@ -94,57 +49,69 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider(create: (context) => HomeCubit()),
         BlocProvider(create: (context) => SettingsCubit()),
+        BlocProvider(
+            create: (context) =>
+                PaletteCubit()..updateColors()), // Initialize colors
       ],
       child: ChangeNotifierProvider(
         create: (context) => ProviderL10n(),
         child: Builder(
           builder: (context) {
-            return MaterialApp.router(
-              onGenerateTitle: (cxt) => cxt.tr.appTitle,
-              locale: context.watch<ProviderL10n>().locale,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: AppLocalizations.supportedLocales,
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                colorScheme: ColorScheme.light(
-                  primary: primaryColor,
-                  secondary: secondaryColor,
-                  tertiary: backgroundColor,
-                ),
-                scaffoldBackgroundColor: backgroundColor,
-                appBarTheme: AppBarTheme(
-                  backgroundColor: primaryColor,
-                  foregroundColor: Colors.white,
-                ),
-                buttonTheme: ButtonThemeData(
-                  buttonColor: secondaryColor,
-                  textTheme: ButtonTextTheme.primary,
-                ),
-                // Ensure black text and icons on buttons
-                textButtonTheme: TextButtonThemeData(
-                  style: ButtonStyle(
-                    foregroundColor: WidgetStateProperty.all(Colors.black),
+            return BlocBuilder<PaletteCubit, PaletteState>(
+              builder: (context, paletteState) {
+                return MaterialApp.router(
+                  onGenerateTitle: (cxt) => cxt.tr.appTitle,
+                  locale: context.watch<ProviderL10n>().locale,
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  debugShowCheckedModeBanner: false,
+                  theme: ThemeData(
+                    colorScheme: ColorScheme.light(
+                      primary: paletteState.primaryColor,
+                      secondary: paletteState.secondaryColor,
+                      tertiary: paletteState.backgroundColor,
+                    ),
+                    scaffoldBackgroundColor: paletteState.backgroundColor,
+                    appBarTheme: AppBarTheme(
+                      backgroundColor: paletteState.primaryColor,
+                      foregroundColor: Colors.white,
+                    ),
+                    buttonTheme: ButtonThemeData(
+                      buttonColor: paletteState.secondaryColor,
+                      textTheme: ButtonTextTheme.primary,
+                    ),
+                    // Ensure black text and icons on buttons
+                    textButtonTheme: TextButtonThemeData(
+                      style: ButtonStyle(
+                        foregroundColor: WidgetStateProperty.all(Colors.black),
+                      ),
+                    ),
+                    elevatedButtonTheme: ElevatedButtonThemeData(
+                      style: ButtonStyle(
+                        foregroundColor: WidgetStateProperty.all(Colors.black),
+                      ),
+                    ),
+                    outlinedButtonTheme: OutlinedButtonThemeData(
+                      style: ButtonStyle(
+                        foregroundColor: WidgetStateProperty.all(Colors.black),
+                      ),
+                    ),
+                    // Make sure icons are white by default in the primary and secondary contexts
+                    iconTheme: const IconThemeData(
+                      color: Colors.white,
+                    ),
+                    primaryIconTheme: const IconThemeData(
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                elevatedButtonTheme: ElevatedButtonThemeData(
-                  style: ButtonStyle(
-                    foregroundColor: WidgetStateProperty.all(Colors.black),
-                  ),
-                ),
-                outlinedButtonTheme: OutlinedButtonThemeData(
-                  style: ButtonStyle(
-                    foregroundColor: WidgetStateProperty.all(Colors.black),
-                  ),
-                ),
-                // Make sure icons are white by default in the primary contexts
-                iconTheme: const IconThemeData(color: Colors.white),
-              ),
-              routerConfig: router,
+                  routerConfig: router,
+                );
+              },
             );
           },
         ),

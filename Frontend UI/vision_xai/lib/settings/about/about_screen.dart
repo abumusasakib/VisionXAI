@@ -1,56 +1,26 @@
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:locale_names/locale_names.dart';
 import 'package:vision_xai/l10n/localization_extension.dart';
+import 'package:vision_xai/settings/about/about_cubit.dart';
+import 'package:vision_xai/settings/about/about_state.dart';
 import 'package:vision_xai/settings/settings_cubit.dart';
 import 'package:vision_xai/settings/settings_state.dart';
 
-class AboutScreen extends StatefulWidget {
+class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
   @override
-  State<AboutScreen> createState() => _AboutScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => AboutCubit()..loadAppInfo(),
+      child: const AboutView(),
+    );
+  }
 }
 
-class _AboutScreenState extends State<AboutScreen> {
-  String appVersion = "Loading...";
-  String platform = "Unknown";
-
-  @override
-  void initState() {
-    super.initState();
-    _loadAppInfo();
-  }
-
-  Future<void> _loadAppInfo() async {
-    final packageInfo = await PackageInfo.fromPlatform();
-
-    setState(() {
-      appVersion = packageInfo.version;
-      try {
-        if (kIsWeb) {
-          platform = "Web";
-        } else if (Platform.isAndroid) {
-          platform = "Android";
-        } else if (Platform.isIOS) {
-          platform = "iOS";
-        } else if (Platform.isLinux) {
-          platform = "Linux";
-        } else if (Platform.isMacOS) {
-          platform = "macOS";
-        } else if (Platform.isWindows) {
-          platform = "Windows";
-        } else {
-          platform = "Unknown";
-        }
-      } catch (e) {
-        platform = "Unsupported Platform";
-      }
-    });
-  }
+class AboutView extends StatelessWidget {
+  const AboutView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -83,25 +53,33 @@ class _AboutScreenState extends State<AboutScreen> {
               },
             ),
             const SizedBox(height: 10),
-            if (appVersion != "Loading...")
-              Text(
-                '${context.tr.version}: $appVersion',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
-            const SizedBox(height: 5),
-            if (platform != "Unknown" && platform != "Unsupported Platform")
-              Text(
-                '${context.tr.platform}: $platform',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
+            BlocBuilder<AboutCubit, AboutState>(
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    if (state.appVersion != "Loading...")
+                      Text(
+                        '${context.tr.version}: ${state.appVersion}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    const SizedBox(height: 5),
+                    if (state.platform != "Unknown" && state.platform != "Unsupported Platform")
+                      Text(
+                        '${context.tr.platform}: ${state.platform}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),
