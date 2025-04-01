@@ -1,5 +1,0 @@
-Bangla Image Captioning
-https://data.mendeley.com/datasets/yxd9kr57f6/5
-
-BNATURE-Bengali Image Captioning Dataset
-https://www.kaggle.com/datasets/almominfaruk/bnaturebengali-image-captioning-dataset?select=Pictures
