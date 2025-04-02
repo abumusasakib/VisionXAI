@@ -48,6 +48,8 @@ Below is the detailed directory structure for the **VisionXAI** Flutter project.
 vision_xai/
 ├── analysis_options.yaml                # Analysis options for linting rules.
 ├── devtools_options.yaml                # DevTools configuration.
+├── flutter_launcher_icons.yaml          # Configuration for launcher icons.
+├── flutter_native_splash.yaml           # Splash screen configuration.
 ├── l10n.yaml                            # Configuration for Flutter localization.
 ├── l10n_errors.txt                      # Logs for localization errors.
 ├── pubspec.yaml                         # Flutter project dependencies and configurations.
@@ -62,36 +64,70 @@ vision_xai/
 ├── .metadata                            # Flutter project metadata.
 ├── .vscode/                             # Visual Studio Code configurations.
 │   ├── launch.json                      # Debugger configurations.
-│   └── settings.json                    # Editor-specific settings.
+│   └── settings.json                     # Editor-specific settings.
 ├── android/                             # Android-specific files and configurations.
+│   ├── .gitignore
 │   ├── app/
 │   │   ├── build.gradle
 │   │   └── src/
+│   │       ├── debug/
 │   │       ├── main/
-│   │       │   ├── AndroidManifest.xml  # Android configuration file.
-│   │       │   ├── kotlin/              # Kotlin code for MainActivity.
-│   │       │   └── res/                 # Resources for Android app.
-│   │           ├── drawable/            # Launch screen resources.
-│   │           ├── mipmap-hdpi/         # App launcher icons for different resolutions.
-│   │           └── values/              # Style definitions.
-│   └── gradle/                          # Gradle wrapper configurations.
+│   │       ├── profile/
+│   ├── build.gradle
+│   ├── gradle.properties
+│   ├── gradle/
+│   │   └── wrapper/
+│   │       └── gradle-wrapper.properties
+│   └── settings.gradle
 ├── web/                                 # Web-specific files.
 │   ├── index.html                       # HTML entry point for the web app.
 │   ├── favicon.png                      # Web favicon.
 │   ├── manifest.json                    # Web manifest for PWA features.
-│   └── icons/                           # App icons for web.
-│       ├── Icon-192.png
-│       ├── Icon-512.png
-│       ├── Icon-maskable-192.png
-│       └── Icon-maskable-512.png
+│   ├── icons/                           # App icons for web.
+│   │   ├── Icon-192.png
+│   │   ├── Icon-512.png
+│   │   ├── Icon-maskable-192.png
+│   │   └── Icon-maskable-512.png
+│   └── splash/
+│       └── img/
+│           ├── dark-1x.png
+│           ├── dark-2x.png
+│           ├── dark-3x.png
+│           ├── dark-4x.png
+│           ├── light-1x.png
+│           ├── light-2x.png
+│           ├── light-3x.png
+│           ├── light-4x.png
 ├── windows/                             # Windows-specific files.
+│   ├── .gitignore
 │   ├── CMakeLists.txt                   # CMake build configurations.
 │   ├── flutter/                         # Flutter-generated Windows integration files.
+│   │   ├── CMakeLists.txt
+│   │   ├── generated_plugin_registrant.cc
+│   │   ├── generated_plugin_registrant.h
+│   │   └── generated_plugins.cmake
 │   └── runner/                          # App runner configurations for Windows.
+│       ├── CMakeLists.txt
+│       ├── Runner.rc
+│       ├── flutter_window.cpp
+│       ├── flutter_window.h
+│       ├── main.cpp
+│       ├── resource.h
+│       ├── resources/
+│       │   └── app_icon.ico
+│       ├── runner.exe.manifest
+│       ├── utils.cpp
+│       ├── utils.h
+│       ├── win32_window.cpp
+│       └── win32_window.h
 ├── test/                                # Unit and widget tests.
 │   └── widget_test.dart                 # Example widget test.
 ├── lib/                                 # Main application source code.
 │   ├── main.dart                        # Application entry point.
+│   ├── color_palette/                   # Color theme management.
+│   │   ├── palette_cubit.dart
+│   │   ├── palette_manager.dart
+│   │   └── palette_state.dart
 │   ├── constants/                       # Constants for the app.
 │   │   └── ipDetails.dart               # IP configuration constants.
 │   ├── l10n/                            # Localization files and utilities.
@@ -106,6 +142,10 @@ vision_xai/
 │   │   ├── home_cubit.dart              # State management for home screen.
 │   │   └── home_state.dart              # State definitions for home screen.
 │   ├── settings/                        # Settings screen and logic.
+│   │   ├── about/                       # About screen module.
+│   │   │   ├── about_cubit.dart
+│   │   │   ├── about_screen.dart
+│   │   │   └── about_state.dart
 │   │   ├── ip_settings/                 # IP configuration UI.
 │   │   │   └── ip_settings_screen.dart
 │   │   ├── language_settings/           # Language selection UI.
@@ -115,6 +155,11 @@ vision_xai/
 │   │   └── settings_state.dart          # State definitions for settings.
 │   └── widgets/                         # Shared widgets.
 │       └── custom_language_selector_dropdown.dart # Dropdown for language selection.
+├── assets/                              # App assets.
+│   ├── about.png
+│   ├── icon/
+│   │   └── icon.png
+│   └── splash.png
 ```
 
 ---
@@ -125,6 +170,7 @@ vision_xai/
 - **`android/`**: Contains Android-specific configurations and resources.
 - **`web/`**: Contains web-specific resources, including `index.html`.
 - **`windows/`**: Contains Windows-specific build configurations and app runner files.
+- **`assets/`**: Holds images and other static resources.
 - **`test/`**: Includes unit and widget tests for validating app functionality.
 
 This directory structure ensures clarity, modularity, and scalability, making it easier for developers to navigate and maintain the **VisionXAI** project.

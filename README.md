@@ -59,13 +59,13 @@ This model is designed for generating textual captions given input images, utili
 - **Flutter**: For frontend mobile app development.
 - **FastAPI**: For backend API development.
 - **Grad-CAM**, **LIME**: For Explainable AI integration. (Proposed)
-- **Python 3.8.10**: For running the backend Flask API.
+- **Python 3.8.10**: For running the backend API.
 
 ## Prerequisites
 
 ### Backend API Setup
 
-Before running the Flask API, ensure the following are installed:
+Before running the API, ensure the following are installed:
 
 1. **Python 3.8.10 or above**: Check version compatibility.
 
@@ -79,7 +79,7 @@ Before running the Flask API, ensure the following are installed:
 
 ### Running the Flask API
 
-1. Start the API by running the `main.py` script in the project directory (Flask_API).
+1. Start the API by running the `main.py` script in the project directory (Fast_API).
 
    ```bash
    python main.py
@@ -108,21 +108,21 @@ Before running the Flask API, ensure the following are installed:
    ```
 
 3. **Install the backend dependencies**:
-Go to the Backend API's directory and then run this command:
+   Go to the Backend API's directory and then run this command:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-5. **Run the API**:
-Go to the Backend API's directory and then run this command:
+4. **Run the API**:
+   Go to the Backend API's directory and then run this command:
 
    ```bash
    python main.py
    ```
 
-7. **Run the Flutter app**:
-Go to the mobile application's directory and then run this command:
+5. **Run the Flutter app**:
+   Go to the mobile application's directory and then run this command:
 
    ```bash
    flutter run
@@ -132,6 +132,6 @@ Go to the mobile application's directory and then run this command:
 
 ## Notes
 
-- **Local Execution**: The Flask API is designed for local use, and the IP address shown in the console is dynamic. Make sure to update the IP address in the mobile app whenever the Flask server is restarted.
+- **Local Execution**: The API is designed for local use, and the IP address shown in the console is dynamic. Make sure to update the IP address in the mobile app whenever the Flask server is restarted.
 - **Model Weights**: Ensure the correct model weights are placed in the `ImgCap` package as they are crucial for generating accurate captions.
 - **Explainable AI**: The xAI features (using Grad-CAM or LIME) allow users to understand why specific parts of the image were selected for captioning.
