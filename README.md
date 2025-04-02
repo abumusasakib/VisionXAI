@@ -14,7 +14,7 @@ VisionXAI is a mobile application project designed to generate detailed image ca
 
 ### 1. Mobile Application (Frontend)
 
-- Developed using **Flutter** for cross-platform compatibility (iOS and Android).
+- Developed using **Flutter** for cross-platform compatibility (Android and Web).
 - Integrates with the FastAPI to upload images and retrieve Bengali captions.
 - Provides a user-friendly interface fully localized in Bengali.
 
@@ -108,24 +108,27 @@ Before running the Flask API, ensure the following are installed:
    ```
 
 3. **Install the backend dependencies**:
+Go to the Backend API's directory and then run this command:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Run the Flask API**:
+5. **Run the API**:
+Go to the Backend API's directory and then run this command:
 
    ```bash
    python main.py
    ```
 
-5. **Run the Flutter app**:
+7. **Run the Flutter app**:
+Go to the mobile application's directory and then run this command:
 
    ```bash
    flutter run
    ```
 
-   Open the Flutter project (vision_xai) in your preferred IDE (VSCode, Android Studio) and run the app on an Android/iOS device.
+   Open the Flutter project (vision_xai) in your preferred IDE (VSCode, Android Studio) and run the app on an Android device.
 
 ## Notes
 
