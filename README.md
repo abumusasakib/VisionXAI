@@ -132,6 +132,6 @@ Before running the API, ensure the following are installed:
 
 ## Notes
 
-- **Local Execution**: The API is designed for local use, and the IP address shown in the console is dynamic. Make sure to update the IP address in the mobile app whenever the Flask server is restarted.
+- **Local Execution**: The API is designed for local use, and the IP address shown in the console is dynamic. Make sure to update the IP address in the mobile app whenever the API server is restarted.
 - **Model Weights**: Ensure the correct model weights are placed in the `ImgCap` package as they are crucial for generating accurate captions.
 - **Explainable AI**: The xAI features (using Grad-CAM or LIME) allow users to understand why specific parts of the image were selected for captioning.
