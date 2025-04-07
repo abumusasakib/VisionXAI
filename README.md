@@ -77,7 +77,7 @@ Before running the API, ensure the following are installed:
 
 3. **Model Weights**: Ensure the pre-trained model weights are downloaded and saved in the `ImgCap` package. Without the weights, the API will not function.
 
-### Running the Flask API
+### Running the API
 
 1. Start the API by running the `main.py` script in the project directory (Fast_API).
 
