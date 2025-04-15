@@ -40,6 +40,54 @@ A Flutter application with dynamic localization, BLoC state management, Hive for
 
 ---
 
+## Run the Pre-configured Project in Docker
+
+Ensure you have Docker installed and running in your system and you are inside the `vision_xai` directory of the project. It is recommended that a stable and high-speed internet is there while using Docker to configure the project. You may need to run Docker as superuser if on Linux.
+
+### Automating build using Node.js
+
+You need to have Node.js installed before using the setup build scripts.
+
+#### How It Works
+
+- **Platform-Specific Check**: The shell and batch scripts handle the initial check for Node.js.
+- **Installation Prompt**: If Node.js isn't installed, the script provides a link and exits.
+- **Running the Node.js Script**: Once Node.js is confirmed to be installed, the script proceeds to execute `setup.js`, which will handle the rest of the setup.
+
+#### Usage Instructions
+
+1. **macOS/Linux**: Run `chmod +x setup.sh` to make the shell script executable, then execute it with `./setup.sh`.
+2. **Windows**: Double-click the `setup.bat` file, or run it in Command Prompt. To run the setup script on Powershell, use `./setup.bat`.
+
+### Running the Docker Compose
+
+1. **Build and Run the Docker Container**:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+   OR
+
+   ```bash
+   docker compose up --build
+   ```
+
+   This command will build the Docker image, run the container, build the APK, and copy the release apk` to the `./build` directory on your local machine, as well as run a web server to serve the web version of the app.
+
+   This would take a very long time; so please be patient. All processes will be finished as soon as it accepts connections for the Flutter web app.
+2. **Access the Flutter Web App:**
+
+   After the build completes and the web server starts, you can access the Flutter web app by opening your web browser and navigating to:
+
+   ```text
+   http://localhost:5000
+   ```
+
+   To exit, press Ctrl+C twice.
+
+---
+
 ## Directory Structure for VisionXAI
 
 Below is the detailed directory structure for the **VisionXAI** Flutter project. This structure organizes the app into logical modules, ensuring modularity and clarity in code maintenance.

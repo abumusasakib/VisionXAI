@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  flutter-build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vision_xai-container
+    volumes:
+      - ./build:/app/build
+    ports:
+      - "5000:5000"  # Expose the container's port 5000 to the host machine
+    command: /bin/bash -c "
+      flutter build apk --release &&
+      flutter build web --release &&
+      cp /output/vision_xai-release.apk /app/build/ &&
+      serve -s /app/build/web -l 5000"
+    # Automatically remove the container after copying the artifacts
+    restart: "no"
+    stop_grace_period: 30s  # Graceful stop for 30 seconds
