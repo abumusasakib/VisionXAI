@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart'; // Dio for advanced HTTP requests
 import 'package:vision_xai/home/home_state.dart';
@@ -8,10 +9,54 @@ class HomeCubit extends Cubit<HomeState> {
   final ImagePicker _picker = ImagePicker();
   final Dio _dio = Dio(); // Initialize Dio for HTTP requests
   CancelToken _cancelToken = CancelToken(); // Token to cancel the request
-  bool _isCaptionGenerationInProgress = false; // Track if caption generation is in progress
+  bool _isCaptionGenerationInProgress =
+      false; // Track if caption generation is in progress
   bool _shouldStopGeneration = false; // Flag for user stop action
 
-  HomeCubit() : super(HomeState.initial());
+  final FlutterTts _flutterTts = FlutterTts();
+
+  HomeCubit() : super(HomeState.initial()) {
+    _configureTts();
+  }
+
+  void _configureTts() async {
+    await _flutterTts.awaitSpeakCompletion(true);
+    await _flutterTts.setLanguage("bn-BD"); // Bengali (Bangladesh)
+    await _flutterTts.setSpeechRate(0.5);
+    await _flutterTts.setVolume(1.0);
+    await _flutterTts.setPitch(1.0);
+
+    if (Platform.isIOS) {
+      await _flutterTts.setSharedInstance(true);
+      await _flutterTts.setIosAudioCategory(
+        IosTextToSpeechAudioCategory.ambient,
+        [
+          IosTextToSpeechAudioCategoryOptions.allowBluetooth,
+          IosTextToSpeechAudioCategoryOptions.allowBluetoothA2DP,
+          IosTextToSpeechAudioCategoryOptions.mixWithOthers
+        ],
+        IosTextToSpeechAudioMode.voicePrompt,
+      );
+    }
+  }
+
+  Future<void> speakCaption(String text) async {
+    await _flutterTts.stop(); // Stop previous speech
+    final result = await _flutterTts.speak(text);
+    if (result != 1) {
+      emit(state.copyWith(errorMessage: "Failed to speak the caption."));
+    }
+  }
+
+  Future<void> stopSpeaking() async {
+    await _flutterTts.stop();
+  }
+
+  @override
+  Future<void> close() {
+    _flutterTts.stop();
+    return super.close();
+  }
 
   void setIpAndPort(String ip, String port) {
     emit(state.copyWith(ip: ip, port: port));
@@ -44,7 +89,9 @@ class HomeCubit extends Cubit<HomeState> {
       // Proceed to caption generation if upload succeeds
       await generateCaption(baseUrl);
     } catch (e) {
-      emit(state.copyWith(errorMessage: 'Error during upload or caption generation: $e', isLoading: false));
+      emit(state.copyWith(
+          errorMessage: 'Error during upload or caption generation: $e',
+          isLoading: false));
     }
   }
 
@@ -59,12 +106,14 @@ class HomeCubit extends Cubit<HomeState> {
         ),
       });
 
-      final response = await _dio.post(uri, data: formData, cancelToken: _cancelToken);
+      final response =
+          await _dio.post(uri, data: formData, cancelToken: _cancelToken);
 
       if (response.statusCode == 200) {
         emit(state.copyWith(testOutput: 'Image uploaded successfully.'));
       } else {
-        throw Exception('Failed to upload image. Status: ${response.statusCode}');
+        throw Exception(
+            'Failed to upload image. Status: ${response.statusCode}');
       }
     } catch (e) {
       if (e is DioException && e.type == DioExceptionType.cancel) {
@@ -78,12 +127,14 @@ class HomeCubit extends Cubit<HomeState> {
   /// Requests a caption from the server for the uploaded image
   Future<void> generateCaption(String baseUrl) async {
     if (_isCaptionGenerationInProgress) {
-      emit(state.copyWith(testOutput: 'Caption generation already in progress.'));
+      emit(state.copyWith(
+          testOutput: 'Caption generation already in progress.'));
       return;
     }
 
     _isCaptionGenerationInProgress = true;
-    _shouldStopGeneration = false; // Reset stop flag when starting a new process
+    _shouldStopGeneration =
+        false; // Reset stop flag when starting a new process
 
     try {
       final uri = '$baseUrl/caption';
@@ -91,7 +142,9 @@ class HomeCubit extends Cubit<HomeState> {
       final response = await _dio.get(uri, cancelToken: _cancelToken);
 
       if (_shouldStopGeneration) {
-        emit(state.copyWith(testOutput: 'Caption generation stopped by user.', isLoading: false));
+        emit(state.copyWith(
+            testOutput: 'Caption generation stopped by user.',
+            isLoading: false));
         return;
       }
 
@@ -101,13 +154,16 @@ class HomeCubit extends Cubit<HomeState> {
         emit(state.copyWith(testOutput: caption, isLoading: false));
       } else {
         emit(state.copyWith(
-          errorMessage: 'Failed to generate caption. Status: ${response.statusCode}',
+          errorMessage:
+              'Failed to generate caption. Status: ${response.statusCode}',
           isLoading: false,
         ));
       }
     } catch (e) {
       if (e is DioException && e.type == DioExceptionType.cancel) {
-        emit(state.copyWith(errorMessage: 'Caption generation was cancelled.', isLoading: false));
+        emit(state.copyWith(
+            errorMessage: 'Caption generation was cancelled.',
+            isLoading: false));
       } else {
         emit(state.copyWith(
           errorMessage: 'An error occurred: $e',
@@ -130,7 +186,8 @@ class HomeCubit extends Cubit<HomeState> {
     // Set the flag to stop the process and cancel the request
     _shouldStopGeneration = true;
     _cancelToken.cancel(); // Cancel the ongoing request
-    _cancelToken = CancelToken(); // Reinitialize the cancel token for future use
+    _cancelToken =
+        CancelToken(); // Reinitialize the cancel token for future use
     emit(state.copyWith(
       testOutput: 'Stopping caption generation...',
       isLoading: false,

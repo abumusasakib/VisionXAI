@@ -111,5 +111,13 @@
   "platform": "Platform",
   "@platform": {
     "description": "Text for the platform."
+  },
+  "listen": "Listen",
+  "@listen": {
+    "description": "Text for the listen button."
+  },
+  "stop": "Stop",
+  "@stop": {
+    "description": "Text for the stop button."
   }
 }

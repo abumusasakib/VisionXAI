@@ -226,14 +226,41 @@ class Home extends StatelessWidget {
         const SizedBox(height: 16),
         // Text Output for Caption
         Container(
-          constraints: const BoxConstraints(
-              minHeight: 100), // Ensuring it has a minimum height
+          constraints: const BoxConstraints(minHeight: 100),
           child: Center(
             child: state.testOutput.isNotEmpty
-                ? Text(
-                    state.testOutput,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18, color: Colors.black),
+                ? Column(
+                    children: [
+                      Text(
+                        state.testOutput,
+                        textAlign: TextAlign.center,
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              context
+                                  .read<HomeCubit>()
+                                  .speakCaption(state.testOutput);
+                            },
+                            icon: const Icon(Icons.volume_up),
+                            label: Text(context.tr.listen),
+                          ),
+                          const SizedBox(width: 12),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              context.read<HomeCubit>().stopSpeaking();
+                            },
+                            icon: const Icon(Icons.stop),
+                            label: Text(context.tr.stop),
+                          ),
+                        ],
+                      )
+                    ],
                   )
                 : Text(
                     context.tr.captionText,

@@ -111,5 +111,13 @@
   "platform": "প্ল্যাটফর্ম",
   "@platform": {
     "description": "Text for displaying the platform information."
+  },
+  "listen": "শুনুন",
+  "@listen": {
+    "description": "Text for the listen button."
+  },
+  "stop": "থামুন",
+  "@stop": {
+    "description": "Text for the stop button."
   }
 }
