@@ -1,10 +1,10 @@
-# hash:sha256:4116c74f85b41437b1a1b30f18291bd054c9643915ad6174c2ef359fb9923b88
+# hash:sha256:d3bb9149c823020028717ec6bf1c229fcf536163ceb633ced8054e6a319d8976
 FROM registry.codeocean.com/codeocean/miniconda3:4.9.2-cuda11.7.0-cudnn8-ubuntu20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN pip install -U --no-cache-dir \
-    jupyter==1.0.0 \
+    jupyter \
     keras==2.6.0 \
     matplotlib==3.5.3 \
     nltk==3.6.5 \

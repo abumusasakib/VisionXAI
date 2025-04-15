@@ -6,8 +6,7 @@
 		"pip": {
 			"packages": [
 				{
-					"name": "jupyter",
-					"version": "1.0.0"
+					"name": "jupyter"
 				},
 				{
 					"name": "keras",
