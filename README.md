@@ -6,15 +6,15 @@ VisionXAI is a mobile application project designed to generate detailed image ca
 
 - **Image Caption Generation**: Captions images in Bengali by using pre-trained AI models.
 - **Explainable AI (xAI)**: Provides an explainability layer that highlights important features in the image and explains how the captions were generated.
-- **Mobile Application**: Cross-platform app built using Flutter.
+- **Flutter Application**: Cross-platform app built using Flutter.
 - **FastAPI**: A backend API for handling image uploads and caption generation.
 - **Local Execution**: The backend API runs locally and processes images to return Bengali captions.
 
 ## Project Components
 
-### 1. Mobile Application (Frontend)
+### 1. Flutter Application (Frontend)
 
-- Developed using **Flutter** for cross-platform compatibility (Android and Web).
+- Developed using **Flutter** for cross-platform compatibility (Android, Web and Windows).
 - Integrates with the FastAPI to upload images and retrieve Bengali captions.
 - Provides a user-friendly interface fully localized in Bengali.
 
@@ -29,6 +29,7 @@ VisionXAI is a mobile application project designed to generate detailed image ca
 This project involves training a multimodal Transformer model for image captioning.
 
 1. Dataset:
+
    - The dataset is a collection of 1333 images paired with five captions in Bengali.
    - It's split into an 80% training set and a 20% test set.
    - Image augmentation is applied to increase data diversity.
@@ -36,6 +37,7 @@ This project involves training a multimodal Transformer model for image captioni
    - The data is prepared using TensorFlow Dataset API.
 
 2. Model Architecture:
+
    - The model is a Transformer-based architecture designed for image-to-text tasks.
    - It uses EfficientNetB4 as the CNN backbone for image feature extraction.
    - Custom Encoder and Decoder blocks are implemented by inheriting from TensorFlow's Layer class.
@@ -43,9 +45,9 @@ This project involves training a multimodal Transformer model for image captioni
    - The final model is created by compiling these layers and inheriting from TensorFlow's Model class.
 
 3. Training Process:
+
    - A custom loss function is defined.
    - Early stopping is implemented to prevent overfitting.
-   - The model is compiled with the defined loss function and other unspecified parameters.
    - The training process checks for previously saved weights and loads them if available.
 
 4. Text Generation:
@@ -59,7 +61,7 @@ This model is designed for generating textual captions given input images, utili
 - **Flutter**: For frontend mobile app development.
 - **FastAPI**: For backend API development.
 - **Grad-CAM**, **LIME**: For Explainable AI integration. (Proposed)
-- **Python 3.8.10**: For running the backend API.
+- **Python 3.8.5**: For running the backend API.
 
 ## Prerequisites
 
@@ -67,13 +69,15 @@ This model is designed for generating textual captions given input images, utili
 
 Before running the API, ensure the following are installed:
 
-1. **Python 3.8.10 or above**: Check version compatibility.
+1. **Python 3.8.5**: Use venv to setup Python 3.8.5 after installing it on the system first.
 
-2. **Required Dependencies**: Install the necessary Python packages.
+2. **Required Dependencies**: Install the necessary Python packages on the environment.
 
    ```bash
    pip install -r requirements.txt
    ```
+
+   You can also use Docker to setup and run the backend API, more details in the Backend API's README.
 
 3. **Model Weights**: Ensure the pre-trained model weights are downloaded and saved in the `ImgCap` package. Without the weights, the API will not function.
 
@@ -94,6 +98,8 @@ Before running the API, ensure the following are installed:
 - **Dataset**: The model is trained on a dataset of images paired with captions in Bengali, sourced from [the Bangla Image Captioning dataset](https://data.mendeley.com/datasets/yxd9kr57f6/5) and the testing dataset is sourced from [the BNATURE dataset](https://www.kaggle.com/datasets/almominfaruk/bnaturebengali-image-captioning-dataset?select=Pictures).
 
 ## Local Development Setup
+
+Remeber to setup the environments properly before setup.
 
 1. **Clone the repository**:
 
@@ -128,7 +134,7 @@ Before running the API, ensure the following are installed:
    flutter run
    ```
 
-   Open the Flutter project (vision_xai) in your preferred IDE (VSCode, Android Studio) and run the app on an Android device.
+   Open the Flutter project (vision_xai) in your preferred IDE (VSCode, Android Studio) and run the app on a supported device.
 
 ## Notes
 
