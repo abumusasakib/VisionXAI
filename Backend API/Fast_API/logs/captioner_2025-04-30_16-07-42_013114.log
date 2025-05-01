@@ -1,0 +1,22 @@
+2025-04-30 16:07:42.038 | INFO     | ImgCap.captioner:load_vocab:49 - Loading vocabulary from ImgCap/weights/vocab_231005
+2025-04-30 16:07:42.048 | INFO     | ImgCap.captioner:load_vocab:52 - Vocabulary loaded successfully
+2025-04-30 16:08:02.501 | INFO     | ImgCap.captioner:get_cnn_model:142 - CNN Model Loaded
+2025-04-30 16:08:03.312 | INFO     | ImgCap.captioner:load_weights:573 - Found saved weights, loading them now...
+2025-04-30 16:08:03.400 | ERROR    | ImgCap.captioner:load_weights:579 - Error loading weights: Read less bytes than requested
+2025-04-30 16:08:03.478 | INFO     | ImgCap.captioner:<module>:591 - Vocabulary size: 2463
+2025-04-30 16:08:03.914 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
+2025-04-30 16:08:03.919 | INFO     | __main__:<module>:48 - CORS middleware configured
+2025-04-30 16:08:04.176 | INFO     | __main__:<module>:178 - Registering mDNS service...
+2025-04-30 16:08:04.256 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x12\x00\x02'], port=5353, weight=0, priority=0, server='a58c734d8369.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
+2025-04-30 16:08:04.271 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
+2025-04-30 16:08:05.095 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
+2025-04-30 16:08:05.100 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.18.0.2:5353
+2025-04-30 16:08:05.104 | INFO     | __main__:<module>:185 - Starting the API server at http://172.18.0.2:5000
+2025-04-30 16:12:31.659 | INFO     | __main__:read_root:108 - Root endpoint accessed
+2025-04-30 16:14:30.311 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-04-30 16:14:30.312 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-04-30 16:14:30.380 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-04-30 16:14:30.413 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-04-30 16:14:30.416 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-04-30 16:14:40.069 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: বাচ্চারা মাথা হাওয়া ফলের যেতে পটভূমি হয়েছে,
+2025-04-30 16:14:40.075 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg

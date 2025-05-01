@@ -1,0 +1,18 @@
+2025-04-30 16:28:01.508 | INFO     | ImgCap.captioner:load_vocab:49 - Loading vocabulary from ImgCap/weights/vocab_231005
+2025-04-30 16:28:01.518 | INFO     | ImgCap.captioner:load_vocab:52 - Vocabulary loaded successfully
+2025-04-30 16:28:21.857 | INFO     | ImgCap.captioner:get_cnn_model:142 - CNN Model Loaded
+2025-04-30 16:28:22.666 | INFO     | ImgCap.captioner:load_weights:573 - Found saved weights, loading them now...
+2025-04-30 16:28:22.766 | ERROR    | ImgCap.captioner:load_weights:579 - Error loading weights: Read less bytes than requested
+2025-04-30 16:28:22.841 | INFO     | ImgCap.captioner:<module>:591 - Vocabulary size: 2463
+2025-04-30 16:28:23.242 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
+2025-04-30 16:28:23.246 | INFO     | __main__:<module>:48 - CORS middleware configured
+2025-04-30 16:28:23.355 | INFO     | __main__:<module>:178 - Registering mDNS service...
+2025-04-30 16:28:23.443 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x12\x00\x02'], port=5353, weight=0, priority=0, server='a58c734d8369.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
+2025-04-30 16:28:23.458 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
+2025-04-30 16:28:24.283 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
+2025-04-30 16:28:24.287 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.18.0.2:5353
+2025-04-30 16:28:24.289 | INFO     | __main__:<module>:185 - Starting the API server at http://172.18.0.2:5000
+2025-04-30 17:03:36.799 | INFO     | __main__:lifespan:91 - Unregistering mDNS service...
+2025-04-30 17:03:37.064 | INFO     | __main__:lifespan:94 - mDNS service unregistered.
+2025-04-30 17:03:37.073 | INFO     | __main__:<module>:194 - Shutting down the server
+2025-04-30 17:03:37.077 | INFO     | __main__:<module>:196 - Unregistering mDNS service...
