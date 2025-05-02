@@ -143,7 +143,7 @@ pyenv global 3.8.5
 
 ## 🔁 Sync Weights from Local Machine (Optional)
 
-Use `transfer_weight_files.ps1` for syncing model weights via `rsync` over SSH:
+Use `transfer_weight_files.ps1` for syncing model weights via `scp` over SSH:
 
 > Copy `.env.example` to `.env` and fill in your actual values.
 
