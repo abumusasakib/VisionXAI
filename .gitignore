@@ -125,3 +125,4 @@ README.md~              # Backup versions of README files
 *.7z                     # 7z compressed files
 *.tgz                    # Tarball compressed files
 .qodo
+.env
