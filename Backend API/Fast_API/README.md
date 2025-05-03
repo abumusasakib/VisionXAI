@@ -153,7 +153,7 @@ Example `.env.example`:
 LOCAL_PATH=D:/your/local/path/to/weights
 REMOTE_USER=root
 REMOTE_HOST=192.168.0.101
-REMOTE_PATH=/mnt/dietpi_userdata/visionxai/weights
+REMOTE_PATH=/mnt/dietpi_userdata/visionxai/
 ```
 
 Then run:
