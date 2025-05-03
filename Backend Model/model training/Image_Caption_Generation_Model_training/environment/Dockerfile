@@ -9,12 +9,20 @@ RUN apt-get update \
         libglib2.0-0=2.64.6-1~ubuntu20.04.8 \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        libgl1=1.3.2-1~ubuntu0.20.04.2 \
+        libglib2.0-0=2.64.6-1~ubuntu20.04.8 \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN pip install -U --no-cache-dir \
+    jupyter==1.1.1 \
     jupyter==1.1.1 \
     keras==2.6.0 \
     matplotlib==3.5.3 \
     nltk==3.6.5 \
     numpy==1.21.5 \
+    opencv-python==4.11.0.86 \
     opencv-python==4.11.0.86 \
     protobuf==3.20.0 \
     pydot==2.0.0 \

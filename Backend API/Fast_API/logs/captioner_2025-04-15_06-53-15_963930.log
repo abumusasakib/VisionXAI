@@ -1,0 +1,46 @@
+2025-04-15 06:53:15.972 | INFO     | ImgCap.captioner:load_vocab:49 - Loading vocabulary from ImgCap/weights/vocab_231005
+2025-04-15 06:53:16.082 | INFO     | ImgCap.captioner:load_vocab:52 - Vocabulary loaded successfully
+2025-04-15 06:54:32.388 | INFO     | ImgCap.captioner:get_cnn_model:142 - CNN Model Loaded
+2025-04-15 06:54:32.427 | INFO     | ImgCap.captioner:load_weights:573 - Found saved weights, loading them now...
+2025-04-15 06:54:36.729 | INFO     | ImgCap.captioner:load_weights:575 - Saved weights loaded successfully
+2025-04-15 06:54:36.736 | INFO     | ImgCap.captioner:<module>:591 - Vocabulary size: 2463
+2025-04-15 06:54:36.773 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
+2025-04-15 06:54:36.778 | INFO     | __main__:<module>:48 - CORS middleware configured
+2025-04-15 06:54:36.791 | INFO     | __main__:<module>:178 - Registering mDNS service...
+2025-04-15 06:54:36.792 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x12\x00\x02'], port=5353, weight=0, priority=0, server='9ca20cfc9a83.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
+2025-04-15 06:54:36.796 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
+2025-04-15 06:54:37.611 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
+2025-04-15 06:54:37.615 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.18.0.2:5353
+2025-04-15 06:54:37.621 | INFO     | __main__:<module>:185 - Starting the API server at http://172.18.0.2:5000
+2025-04-15 06:55:22.942 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-04-15 06:55:22.943 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-04-15 06:55:23.047 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-04-15 06:55:23.146 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-04-15 06:55:23.151 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-04-15 06:55:27.927 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: একটা মেয়ে ভাঙ্গা ঘরের সামনে বসে আছে
+2025-04-15 06:55:27.928 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-04-15 06:58:07.579 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-04-15 06:58:07.581 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-04-15 06:58:07.665 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-04-15 06:58:07.712 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-04-15 06:58:07.717 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-04-15 06:58:08.681 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: একটা মেয়ে ভাঙ্গা ঘরের সামনে বসে আছে
+2025-04-15 06:58:08.683 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-04-15 06:58:27.770 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-04-15 06:58:27.771 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-04-15 06:58:27.853 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-04-15 06:58:27.865 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-04-15 06:58:27.870 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-04-15 06:58:28.880 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: লোকটির পোরনে সাদা শার্ট মাফলার ও কালো
+2025-04-15 06:58:28.881 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-04-15 06:59:13.174 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-04-15 06:59:13.176 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-04-15 06:59:13.197 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-04-15 06:59:13.760 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-04-15 06:59:13.775 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-04-15 06:59:14.869 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: একটা ছেলে লাল জামা পড়ে বসে আছে
+2025-04-15 06:59:14.870 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-04-15 07:01:05.919 | INFO     | __main__:lifespan:91 - Unregistering mDNS service...
+2025-04-15 07:01:06.174 | INFO     | __main__:lifespan:94 - mDNS service unregistered.
+2025-04-15 07:01:06.178 | INFO     | __main__:<module>:194 - Shutting down the server
+2025-04-15 07:01:06.183 | INFO     | __main__:<module>:196 - Unregistering mDNS service...
