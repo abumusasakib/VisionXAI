@@ -126,3 +126,5 @@ README.md~              # Backup versions of README files
 *.tgz                    # Tarball compressed files
 .qodo
 .env
+*.pyc
+__pycache__/
