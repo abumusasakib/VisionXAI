@@ -10,7 +10,7 @@ from tensorflow.keras.applications import efficientnet
 from loguru import logger
 
 # Desired image dimensions
-IMAGE_SIZE = (380, 380)
+IMAGE_SIZE = (224, 224)
 
 # Vocabulary size
 VOCAB_SIZE = 6000
@@ -19,10 +19,10 @@ VOCAB_SIZE = 6000
 SEQ_LENGTH = 8
 
 # Dimension for the image embeddings and token embeddings
-EMBED_DIM = 768
+EMBED_DIM = 256
 
 # Per-layer units in the feed-forward network
-FF_DIM = 2048
+FF_DIM = 128
 
 # Model Version
 mdx = "231005"
