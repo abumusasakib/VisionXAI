@@ -80,6 +80,25 @@ class Home extends StatelessWidget {
               }
             },
           ),
+          BlocListener<HomeCubit, HomeState>(
+            listenWhen: (previous, current) =>
+                current.infoMessage != null &&
+                current.infoMessage != previous.infoMessage,
+            listener: (context, state) {
+              if (state.infoMessage != null) {
+                final messenger = ScaffoldMessenger.of(context);
+                messenger.hideCurrentSnackBar();
+                messenger.showSnackBar(
+                  SnackBar(
+                    content: Text(state.infoMessage!),
+                    behavior: SnackBarBehavior.floating,
+                    duration: const Duration(milliseconds: 2500),
+                  ),
+                );
+                context.read<HomeCubit>().clearInfoMessage();
+              }
+            },
+          ),
         ],
         child: BlocConsumer<HomeCubit, HomeState>(
           listener: (context, state) {
@@ -138,24 +157,73 @@ class Home extends StatelessWidget {
   }
 
   Widget _buildImageDisplay(BuildContext context, HomeState state) {
-    // Image or Placeholder
-    return state.imageFile != null
-        ? Image.file(
-            File(state.imageFile!.path),
-            height: 200,
-            fit: BoxFit.cover,
-          )
-        : Container(
-            height: 200, // Providing a fixed height for this widget
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black54, width: 2),
-              color: Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(10),
+    if (state.imageFile != null) {
+      return GestureDetector(
+        onLongPress: () =>
+            _showPreviewDialog(context, File(state.imageFile!.path)),
+        child: Image.file(
+          File(state.imageFile!.path),
+          height: 200,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black54, width: 2),
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child: Text(context.tr.noImageSelected),
+      ),
+    );
+  }
+
+  void _showPreviewDialog(BuildContext context, File imageFile) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.all(16),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: screenHeight * 0.8,
+              maxWidth: screenWidth * 0.9,
             ),
-            child: Center(
-              child: Text(context.tr.noImageSelected),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: ClipRRect(
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(4)),
+                    child: Image.file(
+                      imageFile,
+                      fit: BoxFit.contain,
+                      width: double.infinity,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(context.tr.ok),
+                  ),
+                ),
+              ],
             ),
-          );
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildControls(BuildContext context, HomeCubit cubit, HomeState state,
@@ -197,7 +265,7 @@ class Home extends StatelessWidget {
               ? null
               : () async {
                   final baseUrl = await _getBaseUrl();
-                  cubit.uploadAndGenerateCaption(baseUrl);
+                  cubit.uploadAndGenerateCaption(baseUrl, context);
                 },
           icon: const Icon(Icons.cloud_upload),
           label: state.isLoading
@@ -210,7 +278,7 @@ class Home extends StatelessWidget {
         if (state.isLoading)
           ElevatedButton.icon(
             onPressed: () {
-              cubit.stopCaptionGeneration();
+              cubit.stopCaptionGeneration(context);
             },
             icon: const Icon(Icons.stop),
             label: Text(context.tr.stopCaptionGeneration),
@@ -229,28 +297,28 @@ class Home extends StatelessWidget {
           constraints: const BoxConstraints(minHeight: 100),
           child: Center(
             child: state.testOutput.isNotEmpty
-                ? Column(
-                    children: [
-                      Text(
-                        state.testOutput,
-                        textAlign: TextAlign.center,
-                        style:
-                            const TextStyle(fontSize: 18, color: Colors.black),
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                ? Column(children: [
+                    Text(
+                      state.testOutput,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 18, color: Colors.black),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (!state
+                            .isSpeaking) // Show only if not already speaking
                           ElevatedButton.icon(
                             onPressed: () {
                               context
                                   .read<HomeCubit>()
-                                  .speakCaption(state.testOutput);
+                                  .speakCaption(state.testOutput, context);
                             },
                             icon: const Icon(Icons.volume_up),
                             label: Text(context.tr.listen),
                           ),
-                          const SizedBox(width: 12),
+                        if (state.isSpeaking) ...[
                           ElevatedButton.icon(
                             onPressed: () {
                               context.read<HomeCubit>().stopSpeaking();
@@ -259,9 +327,9 @@ class Home extends StatelessWidget {
                             label: Text(context.tr.stop),
                           ),
                         ],
-                      )
-                    ],
-                  )
+                      ],
+                    )
+                  ])
                 : Text(
                     context.tr.captionText,
                     textAlign: TextAlign.center,

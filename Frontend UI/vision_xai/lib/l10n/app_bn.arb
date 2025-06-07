@@ -119,5 +119,32 @@
   "stop": "থামুন",
   "@stop": {
     "description": "Text for the stop button."
-  }
+  },
+  "uploadFailed": "ছবি আপলোড ব্যর্থ হয়েছে। স্ট্যাটাস: {statusCode}",
+  "uploadCancelled": "ছবি আপলোড বাতিল করা হয়েছে।",
+  "uploadError": "ছবি আপলোডের সময় একটি ত্রুটি ঘটেছে: {error}",
+  "captionCancelled": "ক্যাপশন তৈরি বাতিল করা হয়েছে।",
+  "captionStopped": "ব্যবহারকারী ক্যাপশন তৈরি বন্ধ করেছেন।",
+  "captionFailed": "ক্যাপশন তৈরি ব্যর্থ হয়েছে। স্ট্যাটাস: {statusCode}",
+  "captionInProgress": "ক্যাপশন তৈরি ইতিমধ্যেই চলছে।",
+  "generalError": "একটি ত্রুটি ঘটেছে: {error}",
+  "noCaptionInProgress": "কোনো ক্যাপশন তৈরি চলছে না।",
+  "captionStoppedShort": "ক্যাপশন তৈরি বন্ধ করা হয়েছে...",
+  "imageUploaded": "ছবি সফলভাবে আপলোড করা হয়েছে।",
+  "@imageUploaded": {
+    "description": "Message indicating the image was uploaded successfully."
+  },
+  "captionGenerationStopped": "ক্যাপশন তৈরি বন্ধ করা হয়েছে।",
+  "@captionGenerationStopped": {
+    "description": "Message indicating caption generation has been stopped."
+  },
+  "failedToSpeak": "টেক্সট-টু-স্পিচ ব্যর্থ হয়েছে।",
+  "@failedToSpeak": {
+    "description": "Error message when text-to-speech fails."
+  },
+  "connectionTimeout": "সংযোগে সময় শেষ হয়েছে। আবার চেষ্টা করুন।",
+  "badResponse": "সার্ভারে সমস্যা হয়েছে (স্ট্যাটাস কোড: {statusCode})।",
+  "requestCancelled": "অনুরোধ বাতিল করা হয়েছে।",
+  "noInternetOrServerUnreachable": "সংযোগ ব্যর্থ হয়েছে। অনুগ্রহ করে ইন্টারনেট বা সার্ভার ঠিকানা যাচাই করুন।",
+  "unknownError": "একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। পরে আবার চেষ্টা করুন।"
 }

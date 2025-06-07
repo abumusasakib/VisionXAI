@@ -12,6 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:arb_utils/state_managers/l10n_provider.dart';
 import 'package:vision_xai/color_palette/palette_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,12 @@ void main() async {
 
   // Open a box for settings
   await Hive.openBox('settings');
+
+  // Ensure locale is set to 'bn' on first launch if not set yet
+  final prefs = await SharedPreferences.getInstance();
+  if (!prefs.containsKey('locale')) {
+    await prefs.setString('locale', 'bn');
+  }
 
   runApp(const MyApp());
 }
@@ -101,7 +108,6 @@ class MyApp extends StatelessWidget {
                         foregroundColor: WidgetStateProperty.all(Colors.black),
                       ),
                     ),
-                    // Make sure icons are white by default in the primary and secondary contexts
                     iconTheme: const IconThemeData(
                       color: Colors.white,
                     ),

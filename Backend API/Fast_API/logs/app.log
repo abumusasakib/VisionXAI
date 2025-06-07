@@ -1,52 +1,172 @@
-2025-05-15 15:12:35.184 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
-2025-05-15 15:12:35.270 | INFO     | __main__:<module>:48 - CORS middleware configured
-2025-05-15 15:12:35.277 | INFO     | __main__:<module>:178 - Registering mDNS service...
-2025-05-15 15:12:35.282 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x12\x00\x02'], port=5353, weight=0, priority=0, server='9ca20cfc9a83.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
-2025-05-15 15:12:35.284 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
-2025-05-15 15:12:36.089 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
-2025-05-15 15:12:36.090 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.18.0.2:5353
-2025-05-15 15:12:36.091 | INFO     | __main__:<module>:185 - Starting the API server at http://172.18.0.2:5000
-2025-05-15 15:15:40.534 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
-2025-05-15 15:15:40.552 | INFO     | __main__:<module>:48 - CORS middleware configured
-2025-05-15 15:15:40.560 | INFO     | __main__:<module>:178 - Registering mDNS service...
-2025-05-15 15:15:40.562 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x12\x00\x02'], port=5353, weight=0, priority=0, server='9ca20cfc9a83.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
-2025-05-15 15:15:40.564 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
-2025-05-15 15:15:41.370 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
-2025-05-15 15:15:41.371 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.18.0.2:5353
-2025-05-15 15:15:41.371 | INFO     | __main__:<module>:185 - Starting the API server at http://172.18.0.2:5000
-2025-05-16 14:41:43.721 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
-2025-05-16 14:41:43.730 | INFO     | __main__:<module>:48 - CORS middleware configured
-2025-05-16 14:41:43.736 | INFO     | __main__:<module>:178 - Registering mDNS service...
-2025-05-16 14:41:43.741 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x12\x00\x02'], port=5353, weight=0, priority=0, server='9ca20cfc9a83.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
-2025-05-16 14:41:43.743 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
-2025-05-16 14:41:44.547 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
-2025-05-16 14:41:44.548 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.18.0.2:5353
-2025-05-16 14:41:44.549 | INFO     | __main__:<module>:185 - Starting the API server at http://172.18.0.2:5000
-2025-05-16 15:30:47.752 | INFO     | __main__:lifespan:91 - Unregistering mDNS service...
-2025-05-16 15:30:48.064 | INFO     | __main__:lifespan:94 - mDNS service unregistered.
-2025-05-16 15:30:48.086 | INFO     | __main__:<module>:194 - Shutting down the server
-2025-05-16 15:30:48.086 | INFO     | __main__:<module>:196 - Unregistering mDNS service...
-2025-05-16 15:31:32.445 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
-2025-05-16 15:31:32.447 | INFO     | __main__:<module>:48 - CORS middleware configured
-2025-05-16 15:31:32.459 | INFO     | __main__:<module>:178 - Registering mDNS service...
-2025-05-16 15:31:32.460 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x12\x00\x02'], port=5353, weight=0, priority=0, server='056581ca9378.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
-2025-05-16 15:31:32.482 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
-2025-05-16 15:31:33.286 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
-2025-05-16 15:31:33.287 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.18.0.2:5353
-2025-05-16 15:31:33.287 | INFO     | __main__:<module>:185 - Starting the API server at http://172.18.0.2:5000
-2025-05-16 15:42:44.142 | INFO     | __main__:lifespan:91 - Unregistering mDNS service...
-2025-05-16 15:42:44.397 | INFO     | __main__:lifespan:94 - mDNS service unregistered.
-2025-05-16 15:42:44.399 | INFO     | __main__:<module>:194 - Shutting down the server
-2025-05-16 15:42:44.400 | INFO     | __main__:<module>:196 - Unregistering mDNS service...
-2025-05-20 05:14:47.357 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
-2025-05-20 05:14:47.359 | INFO     | __main__:<module>:48 - CORS middleware configured
-2025-05-20 05:14:47.366 | INFO     | __main__:<module>:178 - Registering mDNS service...
-2025-05-20 05:14:47.367 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x12\x00\x02'], port=5353, weight=0, priority=0, server='08bf5e3e095b.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
-2025-05-20 05:14:47.369 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
-2025-05-20 05:14:48.175 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
-2025-05-20 05:14:48.176 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.18.0.2:5353
-2025-05-20 05:14:48.177 | INFO     | __main__:<module>:185 - Starting the API server at http://172.18.0.2:5000
-2025-05-20 05:14:57.051 | INFO     | __main__:lifespan:91 - Unregistering mDNS service...
-2025-05-20 05:14:57.305 | INFO     | __main__:lifespan:94 - mDNS service unregistered.
-2025-05-20 05:14:57.307 | INFO     | __main__:<module>:194 - Shutting down the server
-2025-05-20 05:14:57.308 | INFO     | __main__:<module>:196 - Unregistering mDNS service...
+2025-06-07 06:44:15.898 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
+2025-06-07 06:44:16.112 | INFO     | __main__:<module>:48 - CORS middleware configured
+2025-06-07 06:44:16.122 | INFO     | __main__:<module>:178 - Registering mDNS service...
+2025-06-07 06:44:16.131 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x13\x00\x02'], port=5353, weight=0, priority=0, server='1f8b93e316a4.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
+2025-06-07 06:44:16.136 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
+2025-06-07 06:44:16.947 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
+2025-06-07 06:44:16.949 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.19.0.2:5353
+2025-06-07 06:44:16.950 | INFO     | __main__:<module>:185 - Starting the API server at http://172.19.0.2:5000
+2025-06-07 06:51:00.002 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
+2025-06-07 06:51:00.083 | INFO     | __main__:<module>:48 - CORS middleware configured
+2025-06-07 06:51:00.129 | INFO     | __main__:<module>:178 - Registering mDNS service...
+2025-06-07 06:51:00.139 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x13\x00\x02'], port=5353, weight=0, priority=0, server='1f8b93e316a4.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
+2025-06-07 06:51:00.143 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
+2025-06-07 06:51:00.952 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
+2025-06-07 06:51:00.954 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.19.0.2:5353
+2025-06-07 06:51:00.956 | INFO     | __main__:<module>:185 - Starting the API server at http://172.19.0.2:5000
+2025-06-07 06:54:46.999 | INFO     | __main__:lifespan:91 - Unregistering mDNS service...
+2025-06-07 06:54:47.265 | INFO     | __main__:lifespan:94 - mDNS service unregistered.
+2025-06-07 06:54:47.274 | INFO     | __main__:<module>:194 - Shutting down the server
+2025-06-07 06:54:47.288 | INFO     | __main__:<module>:196 - Unregistering mDNS service...
+2025-06-07 07:05:26.697 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
+2025-06-07 07:05:26.710 | INFO     | __main__:<module>:48 - CORS middleware configured
+2025-06-07 07:05:26.725 | INFO     | __main__:<module>:178 - Registering mDNS service...
+2025-06-07 07:05:26.727 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x13\x00\x02'], port=5353, weight=0, priority=0, server='9bfb0b888ca0.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
+2025-06-07 07:05:26.731 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
+2025-06-07 07:05:27.546 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
+2025-06-07 07:05:27.549 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.19.0.2:5353
+2025-06-07 07:05:27.552 | INFO     | __main__:<module>:185 - Starting the API server at http://172.19.0.2:5000
+2025-06-07 07:09:45.659 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 07:09:45.665 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 07:09:45.978 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 07:09:46.115 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 07:09:46.218 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 07:09:55.787 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 07:09:55.791 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 08:55:48.904 | INFO     | __main__:read_root:108 - Root endpoint accessed
+2025-06-07 08:57:49.581 | INFO     | __main__:read_root:108 - Root endpoint accessed
+2025-06-07 09:02:14.884 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:02:14.887 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:02:14.966 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:02:15.100 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:02:15.167 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:02:19.120 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 09:02:19.139 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:05:45.642 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:05:45.645 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:05:45.656 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:05:45.856 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:05:45.862 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:05:46.591 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 09:05:46.593 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:10:09.190 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:10:09.191 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:10:09.200 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:11:31.999 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:11:32.002 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:11:32.017 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:11:39.751 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:11:39.752 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:11:39.762 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:11:45.951 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:11:45.952 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:11:45.965 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:11:47.565 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:11:47.567 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:11:47.576 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:15:28.164 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:15:28.166 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:15:28.176 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:15:28.246 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:15:28.252 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:15:29.010 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: 
+2025-06-07 09:15:29.011 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:15:45.922 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:15:45.923 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:15:45.932 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:15:45.981 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:15:45.984 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:15:46.701 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: 
+2025-06-07 09:15:46.702 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:15:49.657 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:15:49.659 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:15:49.668 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:15:49.848 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:15:49.853 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:15:50.515 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: 
+2025-06-07 09:15:50.517 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:16:00.066 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:16:00.067 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:16:00.082 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:16:00.116 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:16:00.120 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:16:00.769 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 09:16:00.771 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:16:06.478 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:16:06.480 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:16:06.500 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:16:06.651 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:16:06.661 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:16:07.299 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 09:16:07.301 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:25:39.648 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:25:39.650 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:25:39.682 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:25:39.929 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:25:39.946 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:25:40.694 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 09:25:41.341 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:25:49.492 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:25:49.493 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:25:49.500 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:25:49.532 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:25:49.535 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:25:50.250 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 09:25:50.252 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:26:37.832 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:26:37.833 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:26:37.845 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:26:37.920 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:26:37.924 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:26:38.574 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 09:26:38.575 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:29:24.843 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:29:24.845 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:29:24.858 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:29:24.954 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:29:24.958 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:29:25.648 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 09:29:25.649 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:41:18.922 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:41:18.924 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:41:18.938 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:41:19.081 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:41:19.085 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:41:19.802 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 09:41:19.803 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:41:27.126 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:41:27.127 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:41:27.138 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:41:27.269 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:41:27.275 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:41:27.918 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 09:41:27.919 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 09:41:31.927 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 09:41:31.929 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 09:41:31.950 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 09:41:32.022 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 09:41:32.027 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 09:41:32.733 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 09:41:32.734 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 10:40:55.957 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 10:40:55.964 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 10:40:55.978 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 10:40:56.069 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 10:40:56.075 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 10:40:57.703 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 10:40:57.704 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 10:56:10.347 | INFO     | __main__:read_root:108 - Root endpoint accessed
+2025-06-07 11:29:34.095 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 11:29:34.106 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 11:29:34.140 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 11:29:34.349 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 11:29:34.355 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 11:29:36.713 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 11:29:36.715 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 11:30:02.053 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 11:30:02.055 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 11:30:02.079 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 11:30:02.155 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 11:30:02.164 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 11:30:03.053 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-07 11:30:03.055 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg

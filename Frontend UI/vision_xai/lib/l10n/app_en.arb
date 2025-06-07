@@ -119,5 +119,102 @@
   "stop": "Stop",
   "@stop": {
     "description": "Text for the stop button."
+  },
+  "uploadFailed": "Failed to upload image. Status: {statusCode}",
+  "@uploadFailed": {
+    "description": "Error message for image upload failure with status code.",
+    "placeholders": {
+      "statusCode": {
+        "description": "The status code returned from the image upload request."
+      }
+    }
+  },
+  "uploadCancelled": "Image upload was cancelled.",
+  "@uploadCancelled": {
+    "description": "Message when image upload is cancelled."
+  },
+  "uploadError": "An error occurred during image upload: {error}",
+  "@uploadError": {
+    "description": "Error message for image upload with error details.",
+    "placeholders": {
+      "error": {
+        "description": "The error message returned from the image upload request."
+      }
+    }
+  },
+  "captionCancelled": "Caption generation was cancelled.",
+  "@captionCancelled": {
+    "description": "Message when caption generation is cancelled."
+  },
+  "captionStopped": "Caption generation stopped by user.",
+  "@captionStopped": {
+    "description": "Message when caption generation is stopped by the user."
+  },
+  "captionFailed": "Failed to generate caption. Status: {statusCode}",
+  "@captionFailed": {
+    "description": "Error message for caption generation failure with status code.",
+    "placeholders": {
+      "statusCode": {
+        "description": "The status code returned from the caption generation request."
+      }
+    }
+  },
+  "captionInProgress": "Caption generation already in progress.",
+  "@captionInProgress": {
+    "description": "Message when caption generation is already in progress."
+  },
+  "generalError": "An error occurred: {error}",
+  "@generalError": {
+    "description": "General error message with error details.",
+    "placeholders": {
+      "error": {
+        "description": "The error message returned from the operation."
+      }
+    }
+  },
+  "noCaptionInProgress": "No caption generation in progress.",
+  "@noCaptionInProgress": {
+    "description": "Message when there is no caption generation in progress."
+  },
+  "captionStoppedShort": "Stopped caption generation...",
+  "@captionStoppedShort": {
+    "description": "Short message indicating caption generation was stopped."
+  },
+  "imageUploaded": "Image uploaded successfully.",
+  "@imageUploaded": {
+    "description": "Message indicating the image was uploaded successfully."
+  },
+  "captionGenerationStopped": "Caption generation has been stopped.",
+  "@captionGenerationStopped": {
+    "description": "Message indicating caption generation has been stopped."
+  },
+  "failedToSpeak": "Failed to speak the caption",
+  "@failedToSpeak": {
+    "description": "Error message when text-to-speech fails."
+  },
+  "connectionTimeout": "Connection timed out. Please try again.",
+  "@connectionTimeout": {
+    "description": "Error message when the connection times out."
+  },
+  "badResponse": "Server error occurred (Status code: {statusCode}).",
+  "@badResponse": {
+    "description": "Error message when the server returns a bad response.",
+    "placeholders": {
+      "statusCode": {
+        "description": "The status code returned from the server."
+      }
+    }
+  },
+  "requestCancelled": "Request was cancelled.",
+  "@requestCancelled": {
+    "description": "Message when the request is cancelled."
+  },
+  "noInternetOrServerUnreachable": "Unable to connect. Please check your internet or server address.",
+  "@noInternetOrServerUnreachable": {
+    "description": "Error message when there is no internet connection or the server is unreachable."
+  },
+  "unknownError": "An unexpected error occurred. Please try again later.",
+  "@unknownError": {
+    "description": "General error message for unexpected issues."
   }
 }
