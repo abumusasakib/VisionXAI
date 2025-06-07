@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:vision_xai/constants/ipDetails.dart';
+import 'package:vision_xai/constants/ip_details.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart'; // Import for kIsWeb
 
@@ -265,7 +265,9 @@ class Home extends StatelessWidget {
               ? null
               : () async {
                   final baseUrl = await _getBaseUrl();
-                  cubit.uploadAndGenerateCaption(baseUrl, context);
+                  if (context.mounted) {
+                    cubit.uploadAndGenerateCaption(baseUrl, context);
+                  }
                 },
           icon: const Icon(Icons.cloud_upload),
           label: state.isLoading

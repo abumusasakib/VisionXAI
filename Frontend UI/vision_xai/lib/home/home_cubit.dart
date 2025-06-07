@@ -196,8 +196,23 @@ class HomeCubit extends Cubit<HomeState> {
 
       if (response.statusCode == 200) {
         final responseData = response.data as Map<String, dynamic>;
-        final caption = responseData['caption'] as String;
-        emit(state.copyWith(testOutput: caption, isLoading: false));
+        final caption = responseData['caption'];
+
+        if (caption == null || (caption is String && caption.trim().isEmpty)) {
+          if (context.mounted) {
+            // Handle empty or null caption
+            _isCaptionGenerationInProgress = false;
+            emit(state.copyWith(
+              errorMessage: context.tr.captionMissing,
+              isLoading: false,
+            ));
+          }
+        } else {
+          emit(state.copyWith(
+            testOutput: caption,
+            isLoading: false,
+          ));
+        }
       } else {
         if (context.mounted) {
           // Handle non-200 responses

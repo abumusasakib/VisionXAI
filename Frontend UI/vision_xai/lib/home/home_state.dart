@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:vision_xai/constants/ipDetails.dart';
+import 'package:vision_xai/constants/ip_details.dart';
 
 class HomeState {
   final String ip;

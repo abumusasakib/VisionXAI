@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_nsd/flutter_nsd.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:locale_names/locale_names.dart';
-import 'package:vision_xai/constants/ipDetails.dart';
+import 'package:vision_xai/constants/ip_details.dart';
 import 'package:vision_xai/settings/settings_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

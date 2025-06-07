@@ -216,5 +216,9 @@
   "unknownError": "An unexpected error occurred. Please try again later.",
   "@unknownError": {
     "description": "General error message for unexpected issues."
+  },
+  "captionMissing": "No caption available.",
+  "@captionMissing": {
+    "description": "Error message when the server does not provide a caption."
   }
 }

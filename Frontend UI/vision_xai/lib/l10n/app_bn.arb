@@ -146,5 +146,9 @@
   "badResponse": "সার্ভারে সমস্যা হয়েছে (স্ট্যাটাস কোড: {statusCode})।",
   "requestCancelled": "অনুরোধ বাতিল করা হয়েছে।",
   "noInternetOrServerUnreachable": "সংযোগ ব্যর্থ হয়েছে। অনুগ্রহ করে ইন্টারনেট বা সার্ভার ঠিকানা যাচাই করুন।",
-  "unknownError": "একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। পরে আবার চেষ্টা করুন।"
+  "unknownError": "একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। পরে আবার চেষ্টা করুন।",
+  "captionMissing": "কোনো ক্যাপশন প্রাপ্ত হয়নি।",
+  "@captionMissing": {
+    "description": "Error message when no caption is received from the server."
+  }
 }
