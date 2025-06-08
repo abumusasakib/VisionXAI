@@ -10,4 +10,12 @@ extension LocalizationExtension on BuildContext {
     }
     return localizations!;
   }
+
+  String get connectionTimeout => AppLocalizations.of(this)!.connectionTimeout;
+  String badResponse(String statusCode) =>
+      AppLocalizations.of(this)!.badResponse(statusCode);
+  String get requestCancelled => AppLocalizations.of(this)!.requestCancelled;
+  String get noInternetOrServerUnreachable =>
+      AppLocalizations.of(this)!.noInternetOrServerUnreachable;
+  String get unknownError => AppLocalizations.of(this)!.unknownError;
 }

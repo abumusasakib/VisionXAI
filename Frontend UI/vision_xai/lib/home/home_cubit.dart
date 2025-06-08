@@ -1,9 +1,12 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart'; // Dio for advanced HTTP requests
 import 'package:vision_xai/home/home_state.dart';
+import 'package:vision_xai/l10n/localization_extension.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final ImagePicker _picker = ImagePicker();
@@ -26,6 +29,22 @@ class HomeCubit extends Cubit<HomeState> {
     await _flutterTts.setVolume(1.0);
     await _flutterTts.setPitch(1.0);
 
+    _flutterTts.setStartHandler(() {
+      emit(state.copyWith(isSpeaking: true));
+    });
+
+    _flutterTts.setCompletionHandler(() {
+      emit(state.copyWith(isSpeaking: false));
+    });
+
+    _flutterTts.setCancelHandler(() {
+      emit(state.copyWith(isSpeaking: false));
+    });
+
+    _flutterTts.setErrorHandler((msg) {
+      emit(state.copyWith(isSpeaking: false));
+    });
+
     if (Platform.isIOS) {
       await _flutterTts.setSharedInstance(true);
       await _flutterTts.setIosAudioCategory(
@@ -40,11 +59,13 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<void> speakCaption(String text) async {
-    await _flutterTts.stop(); // Stop previous speech
+  Future<void> speakCaption(String text, BuildContext context) async {
+    await _flutterTts.stop(); // Stop any previous speech
     final result = await _flutterTts.speak(text);
     if (result != 1) {
-      emit(state.copyWith(errorMessage: "Failed to speak the caption."));
+      if (context.mounted) {
+        emit(state.copyWith(errorMessage: context.tr.failedToSpeak));
+      }
     }
   }
 
@@ -74,29 +95,35 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   /// Combined function to handle both upload and caption generation sequentially
-  Future<void> uploadAndGenerateCaption(String baseUrl) async {
+  Future<void> uploadAndGenerateCaption(
+      String baseUrl, BuildContext context) async {
     if (state.imageFile == null) {
-      emit(state.copyWith(errorMessage: 'No image selected.'));
+      emit(state.copyWith(errorMessage: context.tr.noImageSelected));
       return;
     }
+
+    _shouldStopGeneration = false; // 🔁 Reset stop flag
 
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
     try {
       // Upload the image first
-      await uploadImage(baseUrl);
+      await uploadImage(baseUrl, context);
+
+      _isCaptionGenerationInProgress = true;
 
       // Proceed to caption generation if upload succeeds
-      await generateCaption(baseUrl);
-    } catch (e) {
-      emit(state.copyWith(
-          errorMessage: 'Error during upload or caption generation: $e',
-          isLoading: false));
+      if (context.mounted) {
+        await generateCaption(baseUrl, context);
+      }
+    } catch (e, stackTrace) {
+      log('Exception in uploadAndGenerateCaption: $e',
+          stackTrace: stackTrace, name: 'HomeCubit');
     }
   }
 
   /// Uploads the image to the server
-  Future<void> uploadImage(String baseUrl) async {
+  Future<void> uploadImage(String baseUrl, BuildContext context) async {
     try {
       final uri = '$baseUrl/upload';
       final formData = FormData.fromMap({
@@ -110,29 +137,45 @@ class HomeCubit extends Cubit<HomeState> {
           await _dio.post(uri, data: formData, cancelToken: _cancelToken);
 
       if (response.statusCode == 200) {
-        emit(state.copyWith(testOutput: 'Image uploaded successfully.'));
+        if (context.mounted) {
+          emit(state.copyWith(infoMessage: context.tr.imageUploaded));
+        }
       } else {
-        throw Exception(
-            'Failed to upload image. Status: ${response.statusCode}');
+        if (context.mounted) {
+          emit(state.copyWith(
+              errorMessage:
+                  context.tr.uploadError(response.statusMessage.toString()),
+              isLoading: false));
+        }
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      log('Exception in uploadImage: $e',
+          stackTrace: stackTrace, name: 'HomeCubit');
       if (e is DioException && e.type == DioExceptionType.cancel) {
-        emit(state.copyWith(errorMessage: 'Image upload was cancelled.'));
+        if (context.mounted) {
+          // Handle cancellation specifically
+          emit(state.copyWith(errorMessage: context.tr.uploadCancelled));
+        }
       } else {
-        throw Exception('An error occurred during image upload: $e');
+        if (context.mounted) {
+          if (e is DioException) {
+            emit(state.copyWith(
+              errorMessage: _mapDioErrorToMessage(e, context),
+              isLoading: false,
+            ));
+          } else {
+            emit(state.copyWith(
+              errorMessage: context.tr.unknownError,
+              isLoading: false,
+            ));
+          }
+        }
       }
     }
   }
 
   /// Requests a caption from the server for the uploaded image
-  Future<void> generateCaption(String baseUrl) async {
-    if (_isCaptionGenerationInProgress) {
-      emit(state.copyWith(
-          testOutput: 'Caption generation already in progress.'));
-      return;
-    }
-
-    _isCaptionGenerationInProgress = true;
+  Future<void> generateCaption(String baseUrl, BuildContext context) async {
     _shouldStopGeneration =
         false; // Reset stop flag when starting a new process
 
@@ -142,33 +185,54 @@ class HomeCubit extends Cubit<HomeState> {
       final response = await _dio.get(uri, cancelToken: _cancelToken);
 
       if (_shouldStopGeneration) {
-        emit(state.copyWith(
-            testOutput: 'Caption generation stopped by user.',
-            isLoading: false));
+        if (context.mounted) {
+          // If the user requested to stop the caption generation
+          _isCaptionGenerationInProgress = false;
+          emit(state.copyWith(
+              infoMessage: context.tr.captionStopped, isLoading: false));
+        }
         return;
       }
 
       if (response.statusCode == 200) {
         final responseData = response.data as Map<String, dynamic>;
-        final caption = responseData['caption'] as String;
-        emit(state.copyWith(testOutput: caption, isLoading: false));
+        final caption = responseData['caption'];
+
+        if (caption == null || (caption is String && caption.trim().isEmpty)) {
+          if (context.mounted) {
+            // Handle empty or null caption
+            _isCaptionGenerationInProgress = false;
+            emit(state.copyWith(
+              errorMessage: context.tr.captionMissing,
+              isLoading: false,
+            ));
+          }
+        } else {
+          emit(state.copyWith(
+            testOutput: caption,
+            isLoading: false,
+          ));
+        }
       } else {
-        emit(state.copyWith(
-          errorMessage:
-              'Failed to generate caption. Status: ${response.statusCode}',
-          isLoading: false,
-        ));
+        if (context.mounted) {
+          // Handle non-200 responses
+          emit(state.copyWith(
+            errorMessage:
+                context.tr.captionFailed(response.statusCode.toString()),
+            isLoading: false,
+          ));
+        }
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      log('Exception in generateCaption: $e',
+          stackTrace: stackTrace, name: 'HomeCubit');
       if (e is DioException && e.type == DioExceptionType.cancel) {
-        emit(state.copyWith(
-            errorMessage: 'Caption generation was cancelled.',
-            isLoading: false));
-      } else {
-        emit(state.copyWith(
-          errorMessage: 'An error occurred: $e',
-          isLoading: false,
-        ));
+        if (context.mounted) {
+          // Handle cancellation specifically
+          emit(state.copyWith(
+              errorMessage: context.tr.captionGenerationStopped,
+              isLoading: false));
+        }
       }
     } finally {
       _isCaptionGenerationInProgress = false;
@@ -177,9 +241,9 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   /// Stops the caption generation process
-  void stopCaptionGeneration() {
+  void stopCaptionGeneration(BuildContext context) {
     if (!_isCaptionGenerationInProgress) {
-      emit(state.copyWith(errorMessage: 'No caption generation in progress.'));
+      emit(state.copyWith(errorMessage: context.tr.noCaptionInProgress));
       return;
     }
 
@@ -189,9 +253,36 @@ class HomeCubit extends Cubit<HomeState> {
     _cancelToken =
         CancelToken(); // Reinitialize the cancel token for future use
     emit(state.copyWith(
-      testOutput: 'Stopping caption generation...',
+      infoMessage: context.tr.captionStoppedShort,
       isLoading: false,
     ));
+  }
+
+  /// Clears the info message from the state
+  void clearInfoMessage() {
+    emit(state.copyWith(infoMessage: null));
+  }
+
+  String _mapDioErrorToMessage(DioException e, BuildContext context) {
+    if (e.type == DioExceptionType.connectionTimeout ||
+        e.type == DioExceptionType.sendTimeout ||
+        e.type == DioExceptionType.receiveTimeout) {
+      return context.tr.connectionTimeout;
+    }
+
+    if (e.type == DioExceptionType.badResponse) {
+      return context.tr.badResponse(e.response?.statusCode?.toString() ?? '');
+    }
+
+    if (e.type == DioExceptionType.cancel) {
+      return context.tr.requestCancelled;
+    }
+
+    if (e.type == DioExceptionType.connectionError ||
+        e.error is SocketException) {
+      return context.tr.noInternetOrServerUnreachable;
+    }
+    return context.tr.unknownError;
   }
 
   /// Resets the state of the HomeCubit
