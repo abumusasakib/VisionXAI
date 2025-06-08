@@ -1,5 +1,5 @@
 {
-  "cmake.sourceDirectory": "D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/runner",
+  "cmake.sourceDirectory": "D:/sakib/VisionXAI/Frontend UI/vision_xai/windows",
   "dart.flutterSdkPath": ".fvm/versions/3.22.1",
   "java.configuration.updateBuildConfiguration": "interactive"
 }
