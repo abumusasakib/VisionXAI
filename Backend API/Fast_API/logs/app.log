@@ -170,3 +170,21 @@
 2025-06-07 11:30:02.164 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
 2025-06-07 11:30:03.053 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
 2025-06-07 11:30:03.055 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 13:40:49.352 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 13:40:49.761 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 13:40:49.818 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 13:40:49.972 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 13:40:49.994 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 13:40:54.014 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: 
+2025-06-07 13:40:54.017 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 13:48:13.672 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-07 13:48:13.674 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-07 13:48:13.723 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-07 13:48:13.750 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-07 13:48:13.753 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-07 13:48:14.691 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: সবুজ ঘাসের মাঝে কিছু ছেলে লাল শার্ট
+2025-06-07 13:48:14.693 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-07 13:49:10.633 | INFO     | __main__:lifespan:91 - Unregistering mDNS service...
+2025-06-07 13:49:10.927 | INFO     | __main__:lifespan:94 - mDNS service unregistered.
+2025-06-07 13:49:10.970 | INFO     | __main__:<module>:194 - Shutting down the server
+2025-06-07 13:49:10.971 | INFO     | __main__:<module>:196 - Unregistering mDNS service...
