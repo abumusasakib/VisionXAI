@@ -73,7 +73,7 @@ You need to have Node.js installed before using the setup build scripts.
    docker compose up --build
    ```
 
-   This command will build the Docker image, run the container, build the APK, and copy the release apk` to the `./build` directory on your local machine, as well as run a web server to serve the web version of the app.
+   This command will build the Docker image, run the container, build the APK, and copy the release apk to the `./build` directory on your local machine, as well as run a web server to serve the web version of the app.
 
    This would take a very long time; so please be patient. All processes will be finished as soon as it accepts connections for the Flutter web app.
 2. **Access the Flutter Web App:**
@@ -177,7 +177,7 @@ vision_xai/
 │   │   ├── palette_manager.dart
 │   │   └── palette_state.dart
 │   ├── constants/                       # Constants for the app.
-│   │   └── ipDetails.dart               # IP configuration constants.
+│   │   └── ip_details.dart               # IP configuration constants.
 │   ├── l10n/                            # Localization files and utilities.
 │   │   ├── app_en.arb                   # English language translations.
 │   │   ├── app_bn.arb                   # Bengali language translations.

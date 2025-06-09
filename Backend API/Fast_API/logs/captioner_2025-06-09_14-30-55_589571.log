@@ -1,4 +1,9 @@
-2025-06-09 07:55:59.956 | INFO     | __main__:lifespan:91 - Unregistering mDNS service...
+2025-06-09 14:30:55.595 | INFO     | ImgCap.captioner:load_vocab:49 - Loading vocabulary from ImgCap/weights/vocab_20250609_104442
+2025-06-09 14:30:55.608 | INFO     | ImgCap.captioner:load_vocab:52 - Vocabulary loaded successfully
+2025-06-09 14:31:09.845 | INFO     | ImgCap.captioner:get_cnn_model:142 - CNN Model Loaded
+2025-06-09 14:31:09.872 | INFO     | ImgCap.captioner:load_weights:573 - Found saved weights, loading them now...
+2025-06-09 14:31:12.105 | INFO     | ImgCap.captioner:load_weights:575 - Saved weights loaded successfully
+2025-06-09 14:31:12.111 | INFO     | ImgCap.captioner:<module>:591 - Vocabulary size: 2685
 2025-06-09 14:31:12.145 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
 2025-06-09 14:31:12.147 | INFO     | __main__:<module>:48 - CORS middleware configured
 2025-06-09 14:31:12.154 | INFO     | __main__:<module>:178 - Registering mDNS service...
