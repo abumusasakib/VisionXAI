@@ -57,6 +57,7 @@ dependencies:
   # Persistence & Storage
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  shared_preferences: ^2.3.3
 
   # Image processing & UI
   image_picker: ^1.1.2
@@ -71,7 +72,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_launcher_icons: ^0.14.3
   flutter_native_splash: ^2.4.1
-  shared_preferences: ^2.3.3
 
 dev_dependencies:
   # Testing

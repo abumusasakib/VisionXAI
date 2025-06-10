@@ -30,7 +30,7 @@ This project involves training a multimodal Transformer model for image captioni
 
 1. Dataset:
 
-   - The dataset is a collection of 1333 images paired with five captions in Bengali.
+   - The dataset is a collection of 1333 images paired with five captions in Bengali, and some additional images are added via a custom dataset.
    - It's split into an 80% training set and a 20% test set.
    - Image augmentation is applied to increase data diversity.
    - Captions are vectorized.
@@ -95,7 +95,7 @@ Before running the API, ensure the following are installed:
 
 ## Image Captioning Model
 
-- **Dataset**: The model is trained on a dataset of images paired with captions in Bengali, sourced from [the Bangla Image Captioning dataset](https://data.mendeley.com/datasets/yxd9kr57f6/5) and the testing dataset is sourced from [the BNATURE dataset](https://www.kaggle.com/datasets/almominfaruk/bnaturebengali-image-captioning-dataset?select=Pictures).
+- **Dataset**: The model is trained on a dataset of images paired with captions in Bengali, sourced from [the Bangla Image Captioning dataset](https://data.mendeley.com/datasets/yxd9kr57f6/5) and the testing dataset is sourced from [the BNATURE dataset](https://www.kaggle.com/datasets/almominfaruk/bnaturebengali-image-captioning-dataset?select=Pictures). Some additional images are added via a custom dataset for improving model performance.
 
 ## Local Development Setup
 
