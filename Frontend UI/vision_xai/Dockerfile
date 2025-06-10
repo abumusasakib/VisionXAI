@@ -59,7 +59,7 @@ RUN flutter pub get
 RUN flutter gen-l10n
 
 # Run the build_runner to generate code
-RUN flutter pub run build_runner build
+RUN flutter pub run build_runner build --delete-conflicting-outputs
 
 # Build the Flutter app for Android (APK)
 # For Android:
