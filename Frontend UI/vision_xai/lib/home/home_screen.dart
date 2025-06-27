@@ -159,16 +159,22 @@ class Home extends StatelessWidget {
   Widget _buildImageDisplay(BuildContext context, HomeState state) {
     if (state.imageFile != null) {
       return GestureDetector(
-        onLongPress: () =>
-            _showPreviewDialog(context, File(state.imageFile!.path)),
-        child: Image.file(
-          File(state.imageFile!.path),
-          height: 200,
-          fit: BoxFit.cover,
-        ),
+        onLongPress: () => _showPreviewDialog(context, state.imageFile!),
+        child: kIsWeb
+            ? Image.network(
+                state.imageFile!.path,
+                height: 200,
+                fit: BoxFit.cover,
+              )
+            : Image.file(
+                File(state.imageFile!.path),
+                height: 200,
+                fit: BoxFit.cover,
+              ),
       );
     }
 
+    // Fallback placeholder
     return Container(
       height: 200,
       decoration: BoxDecoration(
@@ -182,7 +188,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  void _showPreviewDialog(BuildContext context, File imageFile) {
+  void _showPreviewDialog(BuildContext context, XFile imageFile) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -203,11 +209,17 @@ class Home extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius:
                         const BorderRadius.vertical(top: Radius.circular(4)),
-                    child: Image.file(
-                      imageFile,
-                      fit: BoxFit.contain,
-                      width: double.infinity,
-                    ),
+                    child: kIsWeb
+                        ? Image.network(
+                            imageFile.path,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(imageFile.path),
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -238,7 +250,7 @@ class Home extends StatelessWidget {
               source: ImageSource.gallery,
             );
             if (pickedImage != null) {
-              cubit.selectImage(File(pickedImage.path));
+              cubit.selectImage(pickedImage);
             }
           },
           icon: const Icon(Icons.photo_library),
@@ -252,7 +264,7 @@ class Home extends StatelessWidget {
                 source: ImageSource.camera,
               );
               if (pickedImage != null) {
-                cubit.selectImage(File(pickedImage.path));
+                cubit.selectImage(pickedImage);
               }
             },
             icon: const Icon(Icons.camera_alt),
@@ -299,39 +311,45 @@ class Home extends StatelessWidget {
           constraints: const BoxConstraints(minHeight: 100),
           child: Center(
             child: state.testOutput.isNotEmpty
-                ? Column(children: [
-                    Text(
-                      state.testOutput,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 18, color: Colors.black),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (!state
-                            .isSpeaking) // Show only if not already speaking
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              context
-                                  .read<HomeCubit>()
-                                  .speakCaption(state.testOutput, context);
-                            },
-                            icon: const Icon(Icons.volume_up),
-                            label: Text(context.tr.listen),
-                          ),
-                        if (state.isSpeaking) ...[
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              context.read<HomeCubit>().stopSpeaking();
-                            },
-                            icon: const Icon(Icons.stop),
-                            label: Text(context.tr.stop),
-                          ),
-                        ],
-                      ],
-                    )
-                  ])
+                ? Column(
+                    children: [
+                      Text(
+                        state.testOutput,
+                        textAlign: TextAlign.center,
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                      const SizedBox(height: 12),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder: (child, animation) => FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        ),
+                        child: state.isSpeaking
+                            // Stop button (only visible when speaking)
+                            ? ElevatedButton.icon(
+                                key: const ValueKey('stopButton'),
+                                onPressed: () {
+                                  context.read<HomeCubit>().stopSpeaking();
+                                },
+                                icon: const Icon(Icons.stop),
+                                label: Text(context.tr.stop),
+                              )
+                            // Listen button (only visible when not speaking)
+                            : ElevatedButton.icon(
+                                key: const ValueKey('listenButton'),
+                                onPressed: () {
+                                  context
+                                      .read<HomeCubit>()
+                                      .speakCaption(state.testOutput, context);
+                                },
+                                icon: const Icon(Icons.volume_up),
+                                label: Text(context.tr.listen),
+                              ),
+                      ),
+                    ],
+                  )
                 : Text(
                     context.tr.captionText,
                     textAlign: TextAlign.center,
