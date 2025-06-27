@@ -1,11 +1,10 @@
-import 'dart:io';
-
+import 'package:image_picker/image_picker.dart';
 import 'package:vision_xai/constants/ip_details.dart';
 
 class HomeState {
   final String ip;
   final String port;
-  final File? imageFile;
+  final XFile? imageFile;
   final bool isLoading;
   final bool isFetching;
   final bool isSpeaking;
@@ -40,7 +39,7 @@ class HomeState {
   HomeState copyWith({
     String? ip,
     String? port,
-    File? imageFile,
+    XFile? imageFile,
     bool? isLoading,
     bool? isFetching,
     bool? isSpeaking,

@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:http_parser/http_parser.dart'; // Needed for MediaType
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart'; // Dio for advanced HTTP requests
+import 'package:mime/mime.dart';
 import 'package:vision_xai/home/home_state.dart';
 import 'package:vision_xai/l10n/localization_extension.dart';
 
@@ -60,17 +62,25 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> speakCaption(String text, BuildContext context) async {
-    await _flutterTts.stop(); // Stop any previous speech
-    final result = await _flutterTts.speak(text);
-    if (result != 1) {
+    try {
+      await _flutterTts.stop(); // Stop any previous speech
+      emit(state.copyWith(isSpeaking: true));
+      await _flutterTts.speak(text);
+      emit(state.copyWith(isSpeaking: false));
+    } catch (e, stackTrace) {
+      emit(state.copyWith(isSpeaking: false));
       if (context.mounted) {
-        emit(state.copyWith(errorMessage: context.tr.failedToSpeak));
+        emit(state.copyWith(
+            errorMessage: context.tr.failedToSpeak, isSpeaking: false));
       }
+      log('Exception in speakCaption: $e',
+          stackTrace: stackTrace, name: 'HomeCubit');
     }
   }
 
   Future<void> stopSpeaking() async {
     await _flutterTts.stop();
+    emit(state.copyWith(isSpeaking: false));
   }
 
   @override
@@ -83,14 +93,14 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(ip: ip, port: port));
   }
 
-  Future<void> selectImage(File file) async {
+  Future<void> selectImage(XFile file) async {
     emit(state.copyWith(imageFile: file));
   }
 
   Future<void> pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
-      emit(state.copyWith(imageFile: File(pickedFile.path)));
+      emit(state.copyWith(imageFile: pickedFile));
     }
   }
 
@@ -126,11 +136,26 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> uploadImage(String baseUrl, BuildContext context) async {
     try {
       final uri = '$baseUrl/upload';
+
+      final xFile = state.imageFile!;
+      final fileName = xFile.name;
+
+      // Determine MIME type (e.g., image/jpeg)
+      final mimeType = lookupMimeType(fileName);
+      final mediaTypeParts = mimeType?.split('/') ?? ['image', 'jpeg'];
+      final mediaType = MediaType(mediaTypeParts[0], mediaTypeParts[1]);
+
+      // Cross-platform way to get bytes from XFile
+      final bytes = await xFile.readAsBytes();
+
+      final imageFile = MultipartFile.fromBytes(
+        bytes,
+        filename: fileName,
+        contentType: mediaType,
+      );
+
       final formData = FormData.fromMap({
-        "image": await MultipartFile.fromFile(
-          state.imageFile!.path,
-          filename: state.imageFile!.path.split('/').last,
-        ),
+        "image": imageFile,
       });
 
       final response =
