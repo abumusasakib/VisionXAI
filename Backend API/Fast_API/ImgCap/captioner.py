@@ -25,7 +25,7 @@ EMBED_DIM = 768
 FF_DIM = 2048
 
 # Model Version
-mdx = "231005"
+mdx = "20250625_042759"
 
 # Directory Path
 WEIGHTS_DIR = "ImgCap/weights/"

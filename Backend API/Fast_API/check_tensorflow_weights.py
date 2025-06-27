@@ -74,5 +74,7 @@ def check_tensorflow_weights(directory, prefix="imgcap_231005", expected_sha256=
 # Example usage
 if __name__ == "__main__":
     # Expected hash from known good system
-    expected_hash = "A694693BA8BC686F78E64AA71DFAB411BB8D66FB4B0DD34B6395220705C33C7C"
-    check_tensorflow_weights("ImgCap/weights", expected_sha256=expected_hash)
+    expected_hash = "33463E9AD1BD74C2B66765773FF69667BB99783693C369FDF16DAB86DC340925"
+    model_version = "20250625_042759"
+    prefix=f"imgcap_{model_version}"
+    check_tensorflow_weights("ImgCap/weights", prefix=prefix, expected_sha256=expected_hash)

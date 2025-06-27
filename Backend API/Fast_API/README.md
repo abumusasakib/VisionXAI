@@ -197,6 +197,20 @@ Run this script to verify that your TensorFlow model weights are present, readab
 python check_tensorflow_weights.py
 ```
 
+Run this command to generate SHA-256 checksums for the model weights:
+
+On Windows:
+
+```powershell
+Get-FileHash -Algorithm SHA256 "ImgCap\weights\imgcap__model_version_.data-00000-of-00001"
+```
+
+On Linux:
+
+```bash
+openssl dgst -sha256 ImgCap/weights/imgcap__model_version_.data-00000-of-00001
+```
+
 ---
 
 ## 📚 Resources

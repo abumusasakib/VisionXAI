@@ -1,12 +1,12 @@
-# hash:sha256:910977a567ba90ef66831fc972782b8013a23bba486e56dc97aa4464410807ae
+# hash:sha256:7f5e94e01ed9dbafefcd486bcdbf52be33d5ca54dc4092821bc7bcf51cfd5687
 FROM registry.codeocean.com/codeocean/miniconda3:4.9.2-cuda11.7.0-cudnn8-ubuntu20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        libgl1=1.3.2-1~ubuntu0.20.04.2 \
-        libglib2.0-0=2.64.6-1~ubuntu20.04.8 \
+        libgl1 \
+        libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install -U --no-cache-dir \
