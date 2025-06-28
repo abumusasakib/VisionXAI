@@ -332,7 +332,7 @@ build flutter/CMakeFiles/flutter_assemble | ${cmake_ninja_workdir}flutter/CMakeF
 build cmake_object_order_depends_target_vision_xai: phony || cmake_object_order_depends_target_file_selector_windows_plugin cmake_object_order_depends_target_flutter_nsd_plugin cmake_object_order_depends_target_flutter_tts_plugin cmake_object_order_depends_target_flutter_wrapper_app flutter/flutter_assemble
 
 build runner/CMakeFiles/vision_xai.dir/flutter_window.cpp.obj: CXX_COMPILER__vision_xai_unscanned_Debug D$:/courses/graduate$ project/VisionXAI/Frontend$ UI/vision_xai/windows/runner/flutter_window.cpp || cmake_object_order_depends_target_vision_xai
-  DEFINES = -DFLUTTER_VERSION=\"1.0.3+4\" -DFLUTTER_VERSION_BUILD=4 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=0 -DFLUTTER_VERSION_PATCH=3 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
+  DEFINES = -DFLUTTER_VERSION=\"1.1.1+1\" -DFLUTTER_VERSION_BUILD=1 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=1 -DFLUTTER_VERSION_PATCH=1 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   DEP_FILE = runner\CMakeFiles\vision_xai.dir\flutter_window.cpp.obj.d
   FLAGS = -g -std=gnu++20 /W4 /WX /wd\"4100\" /EHsc
   INCLUDES = -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/cpp_client_wrapper/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_nsd/windows/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_tts/windows/include"
@@ -342,7 +342,7 @@ build runner/CMakeFiles/vision_xai.dir/flutter_window.cpp.obj: CXX_COMPILER__vis
   TARGET_PDB = runner\vision_xai.pdb
 
 build runner/CMakeFiles/vision_xai.dir/main.cpp.obj: CXX_COMPILER__vision_xai_unscanned_Debug D$:/courses/graduate$ project/VisionXAI/Frontend$ UI/vision_xai/windows/runner/main.cpp || cmake_object_order_depends_target_vision_xai
-  DEFINES = -DFLUTTER_VERSION=\"1.0.3+4\" -DFLUTTER_VERSION_BUILD=4 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=0 -DFLUTTER_VERSION_PATCH=3 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
+  DEFINES = -DFLUTTER_VERSION=\"1.1.1+1\" -DFLUTTER_VERSION_BUILD=1 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=1 -DFLUTTER_VERSION_PATCH=1 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   DEP_FILE = runner\CMakeFiles\vision_xai.dir\main.cpp.obj.d
   FLAGS = -g -std=gnu++20 /W4 /WX /wd\"4100\" /EHsc
   INCLUDES = -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/cpp_client_wrapper/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_nsd/windows/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_tts/windows/include"
@@ -352,7 +352,7 @@ build runner/CMakeFiles/vision_xai.dir/main.cpp.obj: CXX_COMPILER__vision_xai_un
   TARGET_PDB = runner\vision_xai.pdb
 
 build runner/CMakeFiles/vision_xai.dir/utils.cpp.obj: CXX_COMPILER__vision_xai_unscanned_Debug D$:/courses/graduate$ project/VisionXAI/Frontend$ UI/vision_xai/windows/runner/utils.cpp || cmake_object_order_depends_target_vision_xai
-  DEFINES = -DFLUTTER_VERSION=\"1.0.3+4\" -DFLUTTER_VERSION_BUILD=4 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=0 -DFLUTTER_VERSION_PATCH=3 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
+  DEFINES = -DFLUTTER_VERSION=\"1.1.1+1\" -DFLUTTER_VERSION_BUILD=1 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=1 -DFLUTTER_VERSION_PATCH=1 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   DEP_FILE = runner\CMakeFiles\vision_xai.dir\utils.cpp.obj.d
   FLAGS = -g -std=gnu++20 /W4 /WX /wd\"4100\" /EHsc
   INCLUDES = -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/cpp_client_wrapper/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_nsd/windows/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_tts/windows/include"
@@ -362,7 +362,7 @@ build runner/CMakeFiles/vision_xai.dir/utils.cpp.obj: CXX_COMPILER__vision_xai_u
   TARGET_PDB = runner\vision_xai.pdb
 
 build runner/CMakeFiles/vision_xai.dir/win32_window.cpp.obj: CXX_COMPILER__vision_xai_unscanned_Debug D$:/courses/graduate$ project/VisionXAI/Frontend$ UI/vision_xai/windows/runner/win32_window.cpp || cmake_object_order_depends_target_vision_xai
-  DEFINES = -DFLUTTER_VERSION=\"1.0.3+4\" -DFLUTTER_VERSION_BUILD=4 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=0 -DFLUTTER_VERSION_PATCH=3 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
+  DEFINES = -DFLUTTER_VERSION=\"1.1.1+1\" -DFLUTTER_VERSION_BUILD=1 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=1 -DFLUTTER_VERSION_PATCH=1 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   DEP_FILE = runner\CMakeFiles\vision_xai.dir\win32_window.cpp.obj.d
   FLAGS = -g -std=gnu++20 /W4 /WX /wd\"4100\" /EHsc
   INCLUDES = -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/cpp_client_wrapper/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_nsd/windows/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_tts/windows/include"
@@ -372,7 +372,7 @@ build runner/CMakeFiles/vision_xai.dir/win32_window.cpp.obj: CXX_COMPILER__visio
   TARGET_PDB = runner\vision_xai.pdb
 
 build runner/CMakeFiles/vision_xai.dir/__/flutter/generated_plugin_registrant.cc.obj: CXX_COMPILER__vision_xai_unscanned_Debug D$:/courses/graduate$ project/VisionXAI/Frontend$ UI/vision_xai/windows/flutter/generated_plugin_registrant.cc || cmake_object_order_depends_target_vision_xai
-  DEFINES = -DFLUTTER_VERSION=\"1.0.3+4\" -DFLUTTER_VERSION_BUILD=4 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=0 -DFLUTTER_VERSION_PATCH=3 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
+  DEFINES = -DFLUTTER_VERSION=\"1.1.1+1\" -DFLUTTER_VERSION_BUILD=1 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=1 -DFLUTTER_VERSION_PATCH=1 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   DEP_FILE = runner\CMakeFiles\vision_xai.dir\__\flutter\generated_plugin_registrant.cc.obj.d
   FLAGS = -g -std=gnu++20 /W4 /WX /wd\"4100\" /EHsc
   INCLUDES = -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/cpp_client_wrapper/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_nsd/windows/include" -I"D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_tts/windows/include"
@@ -382,7 +382,7 @@ build runner/CMakeFiles/vision_xai.dir/__/flutter/generated_plugin_registrant.cc
   TARGET_PDB = runner\vision_xai.pdb
 
 build runner/CMakeFiles/vision_xai.dir/Runner.rc.obj: RC_COMPILER__vision_xai_unscanned_Debug D$:/courses/graduate$ project/VisionXAI/Frontend$ UI/vision_xai/windows/runner/Runner.rc || cmake_object_order_depends_target_vision_xai
-  DEFINES = -DFLUTTER_VERSION=\"1.0.3+4\" -DFLUTTER_VERSION_BUILD=4 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=0 -DFLUTTER_VERSION_PATCH=3 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
+  DEFINES = -DFLUTTER_VERSION=\"1.1.1+1\" -DFLUTTER_VERSION_BUILD=1 -DFLUTTER_VERSION_MAJOR=1 -DFLUTTER_VERSION_MINOR=1 -DFLUTTER_VERSION_PATCH=1 -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   DEP_FILE = runner\CMakeFiles\vision_xai.dir\Runner.rc.obj.d
   INCLUDES = -I "D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows" -I "D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral" -I "D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/cpp_client_wrapper/include" -I "D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/windows/include" -I "D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_nsd/windows/include" -I "D:/courses/graduate project/VisionXAI/Frontend UI/vision_xai/windows/flutter/ephemeral/.plugin_symlinks/flutter_tts/windows/include"
   OBJECT_DIR = runner\CMakeFiles\vision_xai.dir

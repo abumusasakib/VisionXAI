@@ -1,0 +1,2 @@
+# Requirements for save_vocab_pickle.py
+# Only standard library (pickle) is required
