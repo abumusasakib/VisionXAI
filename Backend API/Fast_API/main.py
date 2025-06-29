@@ -25,11 +25,22 @@ logger.add(
 logging.getLogger("uvicorn.access").handlers = [logging.StreamHandler()]
 logging.getLogger("uvicorn.error").handlers = [logging.StreamHandler()]
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+    global zeroconf, service_info
+    if service_info:
+        logger.info("Unregistering mDNS service...")
+        zeroconf.unregister_service(service_info)
+        zeroconf.close()
+        logger.info("mDNS service unregistered.")
+
 # Initialize the FastAPI app
 app = FastAPI(
     title="Image Caption Generation API",
     description="An API for generating image captions in Bengali.",
     version="1.0.0",
+    lifespan=lifespan
 )
 
 # Configure upload folder
@@ -81,20 +92,6 @@ def register_mdns_service():
         logger.error(f"Error registering mDNS service: {e}")
 
     logger.info(f"mDNS service registered: {service_info.name} on {local_ip}:5353")
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    yield
-    global zeroconf, service_info
-    if service_info:
-        logger.info("Unregistering mDNS service...")
-        zeroconf.unregister_service(service_info)
-        zeroconf.close()
-        logger.info("mDNS service unregistered.")
-
-
-app = FastAPI(lifespan=lifespan)
 
 
 # Routes and Endpoints

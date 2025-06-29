@@ -212,13 +212,13 @@ class Home extends StatelessWidget {
                     child: kIsWeb
                         ? Image.network(
                             imageFile.path,
-                            height: 200,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
+                            width: double.infinity,
                           )
                         : Image.file(
                             File(imageFile.path),
-                            height: 200,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
+                            width: double.infinity,
                           ),
                   ),
                 ),
@@ -320,34 +320,35 @@ class Home extends StatelessWidget {
                             const TextStyle(fontSize: 18, color: Colors.black),
                       ),
                       const SizedBox(height: 12),
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        transitionBuilder: (child, animation) => FadeTransition(
-                          opacity: animation,
-                          child: child,
+                      if (!kIsWeb && !Platform.isWindows)
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          transitionBuilder: (child, animation) => FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          ),
+                          child: state.isSpeaking
+                              // Stop button (only visible when speaking)
+                              ? ElevatedButton.icon(
+                                  key: const ValueKey('stopButton'),
+                                  onPressed: () {
+                                    context.read<HomeCubit>().stopSpeaking();
+                                  },
+                                  icon: const Icon(Icons.stop),
+                                  label: Text(context.tr.stop),
+                                )
+                              // Listen button (only visible when not speaking)
+                              : ElevatedButton.icon(
+                                  key: const ValueKey('listenButton'),
+                                  onPressed: () {
+                                    context
+                                        .read<HomeCubit>()
+                                        .speakCaption(state.testOutput, context);
+                                  },
+                                  icon: const Icon(Icons.volume_up),
+                                  label: Text(context.tr.listen),
+                                ),
                         ),
-                        child: state.isSpeaking
-                            // Stop button (only visible when speaking)
-                            ? ElevatedButton.icon(
-                                key: const ValueKey('stopButton'),
-                                onPressed: () {
-                                  context.read<HomeCubit>().stopSpeaking();
-                                },
-                                icon: const Icon(Icons.stop),
-                                label: Text(context.tr.stop),
-                              )
-                            // Listen button (only visible when not speaking)
-                            : ElevatedButton.icon(
-                                key: const ValueKey('listenButton'),
-                                onPressed: () {
-                                  context
-                                      .read<HomeCubit>()
-                                      .speakCaption(state.testOutput, context);
-                                },
-                                icon: const Icon(Icons.volume_up),
-                                label: Text(context.tr.listen),
-                              ),
-                      ),
                     ],
                   )
                 : Text(

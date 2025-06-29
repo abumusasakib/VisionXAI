@@ -140,3 +140,60 @@
 2025-06-27 12:59:21.719 | INFO     | __main__:lifespan:94 - mDNS service unregistered.
 2025-06-27 12:59:21.754 | INFO     | __main__:<module>:194 - Shutting down the server
 2025-06-27 12:59:21.762 | INFO     | __main__:<module>:196 - Unregistering mDNS service...
+2025-06-28 13:46:03.100 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
+2025-06-28 13:46:03.645 | INFO     | __main__:<module>:48 - CORS middleware configured
+2025-06-28 13:46:03.676 | INFO     | __main__:<module>:178 - Registering mDNS service...
+2025-06-28 13:46:03.694 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x13\x00\x02'], port=5353, weight=0, priority=0, server='2cd058cac995.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
+2025-06-28 13:46:03.700 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
+2025-06-28 13:46:04.511 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
+2025-06-28 13:46:04.513 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.19.0.2:5353
+2025-06-28 13:46:04.516 | INFO     | __main__:<module>:185 - Starting the API server at http://172.19.0.2:5000
+2025-06-28 13:52:00.206 | INFO     | __main__:lifespan:91 - Unregistering mDNS service...
+2025-06-28 13:52:00.546 | INFO     | __main__:lifespan:94 - mDNS service unregistered.
+2025-06-28 13:52:00.561 | INFO     | __main__:<module>:194 - Shutting down the server
+2025-06-28 13:52:00.563 | INFO     | __main__:<module>:196 - Unregistering mDNS service...
+2025-06-28 13:53:55.004 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
+2025-06-28 13:53:55.009 | INFO     | __main__:<module>:48 - CORS middleware configured
+2025-06-28 13:53:55.021 | INFO     | __main__:<module>:178 - Registering mDNS service...
+2025-06-28 13:53:55.027 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x13\x00\x02'], port=5353, weight=0, priority=0, server='f0843b828530.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
+2025-06-28 13:53:55.031 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
+2025-06-28 13:53:55.841 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
+2025-06-28 13:53:55.843 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.19.0.2:5353
+2025-06-28 13:53:55.844 | INFO     | __main__:<module>:185 - Starting the API server at http://172.19.0.2:5000
+2025-06-28 13:58:04.200 | INFO     | __main__:upload_image:117 - Upload endpoint called
+2025-06-28 13:58:04.202 | INFO     | __main__:upload_image:131 - Clearing existing files in the upload folder
+2025-06-28 13:58:04.250 | INFO     | __main__:upload_image:142 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-28 13:58:04.340 | INFO     | __main__:generate_caption:151 - Caption generation endpoint called
+2025-06-28 13:58:04.344 | INFO     | __main__:generate_caption:165 - Generating caption for image: uploaded_images/image.jpg
+2025-06-28 13:58:08.923 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: একটা ছেলে লাল জামা পরে আছে
+2025-06-28 13:58:08.924 | INFO     | __main__:generate_caption:173 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-28 14:15:56.313 | INFO     | __main__:lifespan:91 - Unregistering mDNS service...
+2025-06-28 14:15:56.579 | INFO     | __main__:lifespan:94 - mDNS service unregistered.
+2025-06-28 14:15:56.624 | INFO     | __main__:<module>:194 - Shutting down the server
+2025-06-28 14:15:56.630 | INFO     | __main__:<module>:196 - Unregistering mDNS service...
+2025-06-28 14:21:19.994 | INFO     | __main__:<module>:49 - Upload folder initialized at uploaded_images
+2025-06-28 14:21:20.005 | INFO     | __main__:<module>:59 - CORS middleware configured
+2025-06-28 14:21:20.025 | INFO     | __main__:<module>:175 - Registering mDNS service...
+2025-06-28 14:21:20.026 | INFO     | __main__:register_mdns_service:84 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x13\x00\x02'], port=5353, weight=0, priority=0, server='7e37e8572870.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
+2025-06-28 14:21:20.033 | INFO     | __main__:register_mdns_service:87 - Attempting to register mDNS service...
+2025-06-28 14:21:20.842 | INFO     | __main__:register_mdns_service:90 - mDNS service registered successfully.
+2025-06-28 14:21:20.844 | INFO     | __main__:register_mdns_service:94 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.19.0.2:5353
+2025-06-28 14:21:20.845 | INFO     | __main__:<module>:182 - Starting the API server at http://172.19.0.2:5000
+2025-06-28 14:24:07.846 | INFO     | __main__:upload_image:114 - Upload endpoint called
+2025-06-28 14:24:07.853 | INFO     | __main__:upload_image:128 - Clearing existing files in the upload folder
+2025-06-28 14:24:08.182 | INFO     | __main__:upload_image:139 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-28 14:24:08.313 | INFO     | __main__:generate_caption:148 - Caption generation endpoint called
+2025-06-28 14:24:08.322 | INFO     | __main__:generate_caption:162 - Generating caption for image: uploaded_images/image.jpg
+2025-06-28 14:24:14.413 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-28 14:24:14.417 | INFO     | __main__:generate_caption:170 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-28 14:29:07.544 | INFO     | __main__:upload_image:114 - Upload endpoint called
+2025-06-28 14:29:07.547 | INFO     | __main__:upload_image:128 - Clearing existing files in the upload folder
+2025-06-28 14:29:07.571 | INFO     | __main__:upload_image:139 - Image uploaded successfully: uploaded_images/image.jpg
+2025-06-28 14:29:07.719 | INFO     | __main__:generate_caption:148 - Caption generation endpoint called
+2025-06-28 14:29:07.725 | INFO     | __main__:generate_caption:162 - Generating caption for image: uploaded_images/image.jpg
+2025-06-28 14:29:09.442 | INFO     | ImgCap.captioner:generate:708 - Generated caption for image uploaded_images/image.jpg: মহিলা টি শাড়ি পরে আছে
+2025-06-28 14:29:09.444 | INFO     | __main__:generate_caption:170 - Caption generated successfully for uploaded_images/image.jpg
+2025-06-28 16:46:05.924 | INFO     | __main__:lifespan:33 - Unregistering mDNS service...
+2025-06-28 16:46:06.472 | INFO     | __main__:lifespan:36 - mDNS service unregistered.
+2025-06-28 16:46:06.745 | INFO     | __main__:<module>:191 - Shutting down the server
+2025-06-28 16:46:06.747 | INFO     | __main__:<module>:193 - Unregistering mDNS service...
