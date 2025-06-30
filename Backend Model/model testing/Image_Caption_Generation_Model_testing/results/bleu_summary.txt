@@ -1,6 +1,0 @@
-Count: 1000.0000
-Min BLEU: 0.2601
-Max BLEU: 1.0000
-Median BLEU: 0.7311
-Standard Deviation: 0.1497
-Mean BLEU: 0.7556
