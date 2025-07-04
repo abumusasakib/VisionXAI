@@ -75,10 +75,19 @@ image_captioning_dataset/
 │   ├── Market/
 │   ├── Road/
 │   └── School/
-└── Vehicle/
-    ├── Bicycle/
-    ├── Bike/
-    ├── Bus/
-    ├── CNG/
-    ├── Car/
-    └── Rickshaw/
+├── Vehicle/
+│   ├── Bicycle/
+│   ├── Bike/
+│   ├── Bus/
+│   ├── CNG/
+│   ├── Car/
+│   └── Rickshaw/
+└── directory_tree.md
+
+---
+📷 Total images found on disk: 325
+📝 Total images referenced in .xlsx/.csv: 150
+✅ Referenced & found: 150
+❌ Referenced but missing: 0
+📦 Unused images (not referenced): 175
+---
