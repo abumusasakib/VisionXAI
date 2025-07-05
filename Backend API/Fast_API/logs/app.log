@@ -1,1 +1,13 @@
 2025-07-05 05:34:13.115 | INFO     | __main__:read_root:105 - Root endpoint accessed
+2025-07-05 05:44:41.054 | INFO     | __main__:lifespan:33 - Unregistering mDNS service...
+2025-07-05 05:44:41.344 | INFO     | __main__:lifespan:36 - mDNS service unregistered.
+2025-07-05 05:44:41.355 | INFO     | __main__:<module>:191 - Shutting down the server
+2025-07-05 05:44:41.357 | INFO     | __main__:<module>:193 - Unregistering mDNS service...
+2025-07-05 06:14:49.162 | INFO     | __main__:<module>:38 - Upload folder initialized at uploaded_images
+2025-07-05 06:14:49.166 | INFO     | __main__:<module>:48 - CORS middleware configured
+2025-07-05 06:14:49.509 | INFO     | __main__:<module>:178 - Registering mDNS service...
+2025-07-05 06:14:49.522 | INFO     | __main__:register_mdns_service:73 - Registering service: ServiceInfo(type='_http._tcp.local.', name='VisionXAI API._http._tcp.local.', addresses=[b'\xac\x13\x00\x02'], port=5353, weight=0, priority=0, server='7e37e8572870.local.', properties={'description': 'Image Captioning API in Bengali'}, interface_index=None)
+2025-07-05 06:14:49.524 | INFO     | __main__:register_mdns_service:76 - Attempting to register mDNS service...
+2025-07-05 06:14:50.331 | INFO     | __main__:register_mdns_service:79 - mDNS service registered successfully.
+2025-07-05 06:14:50.332 | INFO     | __main__:register_mdns_service:83 - mDNS service registered: VisionXAI API._http._tcp.local. on 172.19.0.2:5353
+2025-07-05 06:14:50.332 | INFO     | __main__:<module>:185 - Starting the API server at http://172.19.0.2:5000
