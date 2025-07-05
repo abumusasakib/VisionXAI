@@ -12,7 +12,7 @@
 				},
 				{
 					"name": "libglib2.0-0",
-					"version": "2.64.6-1~ubuntu20.04.8"
+					"version": "2.64.6-1~ubuntu20.04.9"
 				}
 			],
 			"install_software_properties_common": true
@@ -42,6 +42,10 @@
 				{
 					"name": "opencv-python",
 					"version": "4.11.0.86"
+				},
+				{
+					"name": "openpyxl",
+					"version": "3.1.5"
 				},
 				{
 					"name": "protobuf",
