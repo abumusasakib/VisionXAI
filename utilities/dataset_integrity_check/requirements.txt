@@ -1,0 +1,4 @@
+# Requirements for dataset_integrity_check.py
+Pillow
+opencv-python
+numpy
