@@ -1,165 +1,206 @@
 import os
 import zipfile
-import xml.etree.ElementTree as ET # Standard ElementTree is used for XML parsing
+import xml.etree.ElementTree as ET  # Standard ElementTree is used for XML parsing
 import csv
+import json
 from pathlib import Path
 from collections import defaultdict
 from typing import Set, List, Dict, Optional
+from abc import ABC, abstractmethod
 
 # --- Constants ---
 # Set of common image file extensions
-IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp"}
+IMAGE_EXTENSIONS: Set[str] = {".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp"}
 
 # --- Helper Functions ---
-
 def is_image_file(filename: str) -> bool:
     """
     Checks if a given filename has a recognized image extension.
 
     Args:
-        filename (str): The name of the file.
+        filename (str): The name of the file to check.
 
     Returns:
-        bool: True if the file has an image extension, False otherwise.
+        bool: True if the file is an image, False otherwise.
     """
     return os.path.splitext(filename)[1].lower() in IMAGE_EXTENSIONS
 
 def get_extension(filename: str) -> str:
     """
-    Extracts and returns the lowercase file extension from a filename.
+    Extracts the lowercase extension of a file.
 
     Args:
         filename (str): The name of the file.
 
     Returns:
-        str: The lowercase file extension (e.g., ".jpg", ".txt").
+        str: The lowercase file extension (e.g., '.jpg').
     """
     return os.path.splitext(filename)[1].lower()
 
-def extract_referenced_images_from_xlsx(filepath: str) -> Set[str]:
+# --- Abstraction for Caption Reference Extraction ---
+class CaptionReferenceExtractor(ABC):
     """
-    Extracts unique image names referenced in the first column of an XLSX file.
-    Handles shared strings and specific image name formatting (e.g., stripping "#" and replacing "*MG*").
-
-    Args:
-        filepath (str): The path to the XLSX file.
-
-    Returns:
-        Set[str]: A set of normalized image names referenced in the XLSX file.
+    Abstract Base Class for extracting image filenames referenced within a caption file.
     """
-    referenced_images = set()
-    try:
-        with zipfile.ZipFile(filepath, "r") as xlsx:
-            sheet_file = "xl/worksheets/sheet1.xml"
-            shared_strings_file = "xl/sharedStrings.xml"
+    @abstractmethod
+    def extract(self, filepath: str) -> Set[str]:
+        """
+        Extracts a set of unique image filenames referenced in the given file.
 
-            ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
-            shared_strings: List[str] = []
+        Args:
+            filepath (str): The path to the caption file.
 
-            # Load shared strings from the XML part if available
-            if shared_strings_file in xlsx.namelist():
-                with xlsx.open(shared_strings_file) as f:
+        Returns:
+            Set[str]: A set of unique image filenames.
+        """
+        pass
+
+class XLSXReferenceExtractor(CaptionReferenceExtractor):
+    """
+    Extracts image filenames referenced in an XLSX file.
+    Assumes image names are in the first column and may be followed by '#'.
+    Handles XLSX as a ZIP file containing XML data. Also converts "MG" to "IMG_".
+    """
+    def extract(self, filepath: str) -> Set[str]:
+        referenced_images: Set[str] = set()
+        try:
+            with zipfile.ZipFile(filepath, "r") as xlsx:
+                sheet_file = "xl/worksheets/sheet1.xml"
+                shared_strings_file = "xl/sharedStrings.xml"
+                ns = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+
+                shared_strings: List[str] = []
+                if shared_strings_file in xlsx.namelist():
+                    with xlsx.open(shared_strings_file) as f:
+                        tree = ET.parse(f)
+                        shared_strings = [t.text for t in tree.findall(f".//{ns}t") if t.text is not None]
+
+                if sheet_file not in xlsx.namelist():
+                    print(f"Warning: Worksheet '{sheet_file}' not found in {filepath}")
+                    return referenced_images
+
+                with xlsx.open(sheet_file) as f:
                     tree = ET.parse(f)
-                    shared_strings = [
-                        t.text for t in tree.findall(f".//{ns}t") if t.text is not None
-                    ]
+                    rows = tree.findall(f".//{ns}row")
+                    # Skip header row if more than one row exists
+                    start_row = 1 if len(rows) > 1 else 0
 
-            if sheet_file not in xlsx.namelist():
-                print(f"Warning: Worksheet '{sheet_file}' not found in {filepath}")
-                return referenced_images
+                    for row in rows[start_row:]:
+                        # Find all 'c' elements (cells) within the row
+                        cells = [el for el in row if el.tag.endswith("c")]
+                        if not cells:
+                            continue # Skip empty rows
 
-            # Parse the main worksheet XML to find image names
-            with xlsx.open(sheet_file) as f:
-                tree = ET.parse(f)
-                rows = tree.findall(f".//{ns}row")
-                # Assume a header if there's more than one row. Skip first row if header exists.
-                start_row = 1 if len(rows) > 1 else 0
+                        cell = cells[0] # Assume image name is in the first column
+                        cell_type = cell.get("t") # 's' for shared string, 'n' for number, etc.
+                        value_elem = next((v for v in cell if v.tag.endswith("v")), None) # Cell value element
 
-                for row in rows[start_row:]:
-                    # Filter for 'c' (cell) elements within the row
-                    cells = [el for el in row if el.tag.endswith("c")]
-                    if not cells: # Skip if no cells in row
-                        continue
+                        if value_elem is not None and value_elem.text:
+                            val: Optional[str] = None
+                            if cell_type == "s": # If it's a shared string, look up its value
+                                try:
+                                    idx = int(value_elem.text)
+                                    val = shared_strings[idx] if 0 <= idx < len(shared_strings) else None
+                                except (ValueError, IndexError):
+                                    pass # Invalid index or not an integer
+                            else: # Otherwise, take the value directly
+                                val = value_elem.text
 
-                    cell = cells[0] # Consider only the first cell (column A)
-                    cell_type = cell.get("t") # 's' indicates a shared string reference
-                    value_elem = next((v for v in cell if v.tag.endswith("v")), None) # Find 'v' (value) element
+                            if val:
+                                # Extract image name by splitting at '#' and replace 'MG' with 'IMG_'
+                                img_name = val.split("#")[0].replace("MG", "IMG_").strip()
+                                referenced_images.add(img_name)
 
-                    if value_elem is not None and value_elem.text:
-                        val: Optional[str] = None
-                        if cell_type == "s":
-                            try:
-                                idx = int(value_elem.text)
-                                val = shared_strings[idx] if 0 <= idx < len(shared_strings) else None
-                            except (ValueError, IndexError):
-                                pass
-                        else:
-                            val = value_elem.text
+        except zipfile.BadZipFile:
+            print(f"[XLSX] Error: {filepath} is not a valid zip file (corrupted XLSX).")
+        except Exception as e:
+            print(f"[XLSX] An error occurred while reading {filepath}: {e}")
+        return referenced_images
 
-                        if val:
-                            # Clean and normalize image name (remove #index, replace *MG*)
-                            img_name = val.split("#")[0].replace("*MG*", "IMG_").strip()
-                            referenced_images.add(img_name)
-    except zipfile.BadZipFile:
-        print(f"[XLSX] Error: {filepath} is not a valid zip file (corrupted XLSX).")
-    except Exception as e:
-        print(f"[XLSX] An error occurred while reading {filepath}: {e}")
-    return referenced_images
-
-def extract_referenced_images_from_csv(filepath: str) -> Set[str]:
+class CSVReferenceExtractor(CaptionReferenceExtractor):
     """
-    Extracts unique image names referenced in the "caption_id" column of a CSV file.
-
-    Args:
-        filepath (str): The path to the CSV file.
-
-    Returns:
-        Set[str]: A set of normalized image names referenced in the CSV file.
+    Extracts image filenames referenced in a CSV file.
+    Assumes image names are in a column named "caption_id" and may be followed by '#'.
     """
-    referenced_images = set()
-    try:
-        with open(filepath, encoding="utf-8", newline='') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                val = row.get("caption_id", "")
-                if val:
-                    # Clean and normalize image name (remove #index)
-                    img_name = val.split("#")[0].strip()
+    def extract(self, filepath: str) -> Set[str]:
+        referenced_images: Set[str] = set()
+        try:
+            with open(filepath, encoding="utf-8", newline='') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    val = row.get("caption_id", "") # Get value from 'caption_id' column
+                    if val:
+                        img_name = val.split("#")[0].strip() # Split at '#' to get image name
+                        referenced_images.add(img_name)
+        except FileNotFoundError:
+            print(f"[CSV] Error: File not found at {filepath}")
+        except Exception as e:
+            print(f"[CSV] An error occurred while reading {filepath}: {e}")
+        return referenced_images
+
+class JSONReferenceExtractor(CaptionReferenceExtractor):
+    """
+    Extracts image filenames referenced in a JSON file.
+    Assumes each item in the JSON list has a "filename" key.
+    """
+    def extract(self, filepath: str) -> Set[str]:
+        referenced_images = set()
+        try:
+            with open(filepath, encoding="utf-8") as f:
+                data = json.load(f)
+                # Assuming data is a list of dictionaries, each with a 'filename' key
+                for item in data:
+                    img_name = item.get("filename", "").strip()
+                    if img_name:
+                        referenced_images.add(img_name)
+        except Exception as e:
+            print(f"[JSON] Error reading {filepath}: {e}")
+        return referenced_images
+
+class TXTReferenceExtractor(CaptionReferenceExtractor):
+    """
+    Extracts image filenames referenced in a plain TXT file.
+    Assumes each line is formatted as "image_filename   caption_text" (three spaces).
+    """
+    def extract(self, filepath: str) -> Set[str]:
+        referenced_images = set()
+        try:
+            with open(filepath, encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue # Skip empty lines
+
+                    parts = line.split("   ", 1) # Split by exactly three spaces
+                    if len(parts) < 2:
+                        # print(f"Warning: Skipping malformed line in TXT: '{line}'")
+                        continue # Skip malformed lines
+
+                    img_name = parts[0].strip()
                     referenced_images.add(img_name)
-    except FileNotFoundError:
-        print(f"[CSV] Error: File not found at {filepath}")
-    except Exception as e:
-        print(f"[CSV] An error occurred while reading {filepath}: {e}")
-    return referenced_images
+        except Exception as e:
+            print(f"[TXT] Error reading {filepath}: {e}")
+        return referenced_images
 
-def print_tree_and_count(
-    path: str,
-    prefix: str,
-    output_lines: List[str],
-    all_images_on_disk: Set[str]
-):
+def print_tree_and_count(path: str, prefix: str, output_lines: List[str], all_images_on_disk: Set[str]):
     """
-    Recursively generates a directory tree, counts image files by extension,
-    and collects all image filenames found on disk. The results are appended
-    to `output_lines` and `all_images_on_disk` in place.
+    Recursively generates a directory tree structure and counts image files.
+    Populates `all_images_on_disk` with the names of all found image files.
 
     Args:
         path (str): The current directory path to process.
-        prefix (str): The string prefix for current tree level (for indentation).
-        output_lines (List[str]): A list to which formatted tree lines are appended.
-        all_images_on_disk (Set[str]): A set to which all found image filenames are added.
+        prefix (str): The prefix string for tree indentation.
+        output_lines (List[str]): A list to append formatted tree lines to.
+        all_images_on_disk (Set[str]): A set to store the names of all found image files.
     """
     try:
         items = sorted(os.listdir(path))
-    except PermissionError:
-        output_lines.append(prefix + "└── [Permission Denied]")
-        return
-    except FileNotFoundError:
-        output_lines.append(prefix + "└── [Not Found]")
+    except (PermissionError, FileNotFoundError):
+        output_lines.append(prefix + "└── [Access Denied or Not Found]")
         return
 
     image_counter: Dict[str, int] = defaultdict(int)
-    non_image_files: List[str] = [] # To list other files explicitly
+    non_image_files: List[str] = []
 
     for i, item in enumerate(items):
         full_path = os.path.join(path, item)
@@ -174,41 +215,32 @@ def print_tree_and_count(
             if is_image_file(item):
                 ext = get_extension(item)
                 image_counter[ext] += 1
-                all_images_on_disk.add(item) # Add the basename of the image file
+                all_images_on_disk.add(item) # Add just the filename, not full path
             else:
-                # Collect non-image files to print them at the end of the directory listing
                 non_image_files.append(item)
 
-    # Print non-image files for the current directory
-    for i, item in enumerate(non_image_files):
-        is_last_non_image = (i == len(non_image_files) - 1 and not image_counter)
-        connector = "└── " if is_last_non_image else "├── "
-        output_lines.append(prefix + connector + item)
+    # Append non-image files after directories and before image counts
+    if non_image_files:
+        for i, item in enumerate(non_image_files):
+            is_last_non_image = (i == len(non_image_files) - 1 and not image_counter)
+            connector_for_file = "└── " if is_last_non_image else "├── "
+            output_lines.append(prefix + connector_for_file + item)
 
-    # Print image counts for the current directory
     if image_counter:
         for ext, count in sorted(image_counter.items()):
-            # If there were non_image_files, and this is the last entry, use '└── ' for the last image type summary
-            if non_image_files and not is_last_item: # Check for the 'is_last_item' for current directory's last file
-                 # This logic for connector for image counts needs adjustment to be consistent.
-                 # Let's simplify: image counts are always listed after individual files.
-                 # The '└── ' should apply to the very last line printed for this directory's contents.
-                pass
-            output_lines.append(prefix + f"[{ext} files: {count}]")
-
-
-# --- Main Logic ---
+            # Adjust connector for image counts
+            connector_for_count = "└── " if (not non_image_files and list(sorted(image_counter.keys()))[-1] == ext) else "├── "
+            output_lines.append(prefix + connector_for_count + f"[{ext.upper()} files: {count}]")
 
 def generate_tree_and_stats(folder_path: str, output_filename: str = "directory_tree_and_stats.md"):
     """
-    Generates a detailed directory tree for the given folder, including file counts
-    for image types, and compares images found on disk with those referenced in
-    specific XLSX and CSV caption files. Outputs the results to a Markdown file.
+    Generates a markdown report containing the directory tree structure,
+    image file counts, and statistics on image references.
 
     Args:
-        folder_path (str): The root path of the folder to scan.
-        output_filename (str, optional): The name of the output Markdown file.
-                                         Defaults to "directory_tree_and_stats.md".
+        folder_path (str): The path to the folder to be scanned.
+        output_filename (str): The name of the markdown file to save the report to.
+                               Defaults to "directory_tree_and_stats.md".
     """
     if not os.path.isdir(folder_path):
         print(f"Error: Invalid folder path: {folder_path}")
@@ -223,58 +255,71 @@ def generate_tree_and_stats(folder_path: str, output_filename: str = "directory_
 
     referenced_images: Set[str] = set()
     print("\nScanning for referenced images in caption files...")
-    # Walk through the directory again to find caption files
+
+    # Instantiate extractors once
+    xlsx_extractor = XLSXReferenceExtractor()
+    csv_extractor = CSVReferenceExtractor()
+    json_extractor = JSONReferenceExtractor()
+    txt_extractor = TXTReferenceExtractor()
+
+    # Walk through the directory again to find and parse caption files
     for root, _, files in os.walk(folder_path):
         for file in files:
             full_path = os.path.join(root, file)
             lower_file = file.lower()
+
             if lower_file.endswith(".xlsx") and "captioning" in lower_file:
-                print(f"  - Extracting from XLSX: {file} (in {root})")
-                referenced_images.update(extract_referenced_images_from_xlsx(full_path))
+                print(f"  - Extracting from XLSX: {file}")
+                referenced_images.update(xlsx_extractor.extract(full_path))
             elif lower_file.endswith(".csv") and "ban-cap" in lower_file:
-                print(f"  - Extracting from CSV: {file} (in {root})")
-                referenced_images.update(extract_referenced_images_from_csv(full_path))
-            elif lower_file == "banglaview_dataset.xlsx":
-                print(f"  - Extracting from BanglaView XLSX: {file} (in {root})")
-                referenced_images.update(extract_referenced_images_from_xlsx(full_path))
+                print(f"  - Extracting from CSV: {file}")
+                referenced_images.update(csv_extractor.extract(full_path))
+            elif lower_file == "banglaview_dataset.xlsx": # Specific file name for BanglaView
+                print(f"  - Extracting from BanglaView XLSX: {file}")
+                referenced_images.update(xlsx_extractor.extract(full_path)) # Re-use XLSX extractor
+            elif lower_file.endswith(".json") and "caption" in lower_file:
+                print(f"  - Extracting from JSON: {file}")
+                referenced_images.update(json_extractor.extract(full_path))
+            elif lower_file == "caption.txt": # Specific file name for ground truth TXT
+                print(f"  - Extracting from TXT: {file}")
+                referenced_images.update(txt_extractor.extract(full_path))
+
     print("Finished scanning for referenced images.")
 
-    # Normalize image names on disk by taking only their basenames for comparison
+    # Normalize image names on disk for comparison (just filenames)
     normalized_images_on_disk = {os.path.basename(img) for img in all_images_on_disk}
 
-    # Perform set operations for statistics
+    # Calculate statistics
     referenced_found = referenced_images.intersection(normalized_images_on_disk)
     referenced_missing = referenced_images.difference(normalized_images_on_disk)
     unused_images = normalized_images_on_disk.difference(referenced_images)
 
-    output_lines.append("\n---\n") # Separator
+    # Append statistics to output
+    output_lines.append("\n---\n")
     output_lines.append("## 📊 Image Statistics\n")
     output_lines.append(f"- 📷 **Total images found on disk:** `{len(normalized_images_on_disk)}`")
-    output_lines.append(f"- 📝 **Total unique images referenced in .xlsx/.csv files:** `{len(referenced_images)}`")
+    output_lines.append(f"- 📝 **Total unique images referenced in caption files:** `{len(referenced_images)}`")
     output_lines.append(f"- ✅ **Referenced and found on disk:** `{len(referenced_found)}`")
     output_lines.append(f"- ❌ **Referenced in files but missing from disk:** `{len(referenced_missing)}`")
-    output_lines.append(f"- 📦 **Unused images (on disk but not referenced in files):** `{len(unused_images)}`")
+    output_lines.append(f"- 📦 **Unused images (on disk but not referenced):** `{len(unused_images)}`")
     output_lines.append("\n---\n")
 
-    # Optionally list missing and unused images
+    # Append lists of missing/unused images (sample)
     if referenced_missing:
         output_lines.append("### ❌ Missing Referenced Images (Sample):\n")
-        # Sort for consistent output
-        for img_name in sorted(list(referenced_missing))[:10]: # Limit sample to 10
+        for img_name in sorted(list(referenced_missing))[:10]:
             output_lines.append(f"- `{img_name}`")
         if len(referenced_missing) > 10:
             output_lines.append(f"- ... (and {len(referenced_missing) - 10} more)")
 
     if unused_images:
         output_lines.append("\n### 📦 Unused Images on Disk (Sample):\n")
-        # Sort for consistent output
-        for img_name in sorted(list(unused_images))[:10]: # Limit sample to 10
+        for img_name in sorted(list(unused_images))[:10]:
             output_lines.append(f"- `{img_name}`")
         if len(unused_images) > 10:
             output_lines.append(f"- ... (and {len(unused_images) - 10} more)")
 
-
-    # Write the collected lines to the output file
+    # Save the report to a markdown file
     try:
         with open(output_filename, "w", encoding="utf-8") as f:
             f.write("\n".join(output_lines))
@@ -282,15 +327,15 @@ def generate_tree_and_stats(folder_path: str, output_filename: str = "directory_
     except IOError as e:
         print(f"Error: Could not write to output file {output_filename}: {e}")
 
-# --- Main Execution ---
-
 if __name__ == "__main__":
     print("--- Directory Tree & Image Analysis Script ---")
-    print("This script generates a directory tree and analyzes image references.")
-    folder_path_input = input("Enter the folder path to scan: ").strip()
+    print("This script generates a directory tree and analyzes image references within caption files.")
 
-    # Normalize path: expand user home directory and resolve to an absolute path
+    folder_path_input = input("Enter the folder path to scan: ").strip()
+    
+    # Expand user home directory (e.g., ~) and resolve to an absolute path
     folder_path_to_scan = Path(folder_path_input).expanduser().resolve()
 
     generate_tree_and_stats(str(folder_path_to_scan))
+
     print("\nAnalysis complete.")

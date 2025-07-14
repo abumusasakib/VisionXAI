@@ -1,6 +1,10 @@
-# Abstract Base Class for Caption Parsers
+# Caption Parsing Pipeline
 
 The `CaptionParser` defines the interface for any class that extracts image-caption mappings from a data file.
+
+## Imports
+
+Necessary modules and classes are imported for file handling, data structures, and abstract base class definition.
 
 ```python
 import csv
@@ -17,7 +21,13 @@ try:
     import xml.etree.cElementTree as ET
 except ImportError:
     import xml.etree.ElementTree as ET
+```
 
+## Abstract Base Class for Caption Parsers
+
+The `CaptionParser` defines the interface for any class that extracts image-caption mappings from a data file.
+
+```python
 class CaptionParser(ABC):
     """
     Abstract Base Class for caption parsers.
@@ -240,6 +250,89 @@ class CSVCaptionParser(CaptionParser):
         return caption_mapping
 ```
 
+## JSON Caption Parser
+
+The `JSONCaptionParser` is a concrete implementation designed to parse specific JSON file structures, extracting filenames and their associated captions. It expects a list of objects, each with a 'filename' and a 'caption' (which is itself a list of strings).
+
+```python
+class JSONCaptionParser(CaptionParser):
+    """
+    A concrete implementation of CaptionParser for JSON files.
+
+    This parser expects a JSON file containing a list of objects, where each object
+    has a 'filename' key (for the image name) and a 'caption' key (which is a list of captions).
+    Example JSON structure:
+    [
+        {"filename": "image1.jpg", "caption": ["caption for image1", "another caption"]},
+        {"filename": "image2.jpg", "caption": ["caption for image2"]}
+    ]
+    """
+
+    def extract(self, file_path: str, images_path: str = "", validate_images: bool = True) -> Dict[str, List[str]]:
+        """
+        Extracts image filenames and their associated captions from a JSON file.
+
+        Args:
+            file_path (str): The full path to the JSON caption file.
+            images_path (str, optional): The base directory where images referenced in the JSON
+                                         are located. This path is prepended to filenames from the JSON.
+                                         Defaults to "".
+            validate_images (bool, optional): If True, checks if the image file exists on disk
+                                              before adding its captions to the mapping. Defaults to True.
+
+        Returns:
+            Dict[str, List[str]]: A dictionary mapping absolute image paths to a list of their captions.
+                                  Captions are formatted with leading/trailing spaces as per the original code.
+        """
+        caption_mapping: Dict[str, List[str]] = {}
+        print(f"\n➡️  Parsing JSON: {os.path.basename(file_path)}...")
+        try:
+            with open(file_path, encoding="utf8") as caption_file:
+                caption_data = json.load(caption_file)
+
+                # Ensure caption_data is iterable (e.g., a list of dictionaries)
+                if not isinstance(caption_data, list):
+                    print(f"Warning: JSON file {file_path} does not contain a list at its root. Skipping.")
+                    return caption_mapping
+
+                for idx, item in enumerate(caption_data):
+                    if idx % 1000 == 0:
+                        print(f"\r  → Processing JSON item {idx}...", end="", flush=True)
+
+                    if not isinstance(item, dict) or 'filename' not in item or 'caption' not in item:
+                        print(f"Warning: Skipping malformed JSON item in {file_path}: {item}")
+                        continue
+
+                    # Construct the full image path
+                    img_name_from_json = item['filename'].strip()
+                    img_name_abs = os.path.join(images_path, img_name_from_json)
+
+                    # Ensure captions is a list, even if it's a single string
+                    raw_captions = item['caption']
+                    if not isinstance(raw_captions, list):
+                        raw_captions = [raw_captions] # Convert single string to list
+
+                    # Format captions (add leading/trailing spaces)
+                    formatted_captions = [" " + str(caption).strip() + " " for caption in raw_captions if caption is not None]
+
+                    # Validate image existence if required
+                    if not validate_images or Path(img_name_abs).exists():
+                        if formatted_captions: # Only add if there are valid captions
+                            caption_mapping[img_name_abs] = formatted_captions
+                    else:
+                        # print(f"Warning: Image not found for {img_name_abs}. Skipping.")
+                        pass # Suppress warning for missing images during non-validation pass
+
+            print(f"\r  → Finished parsing {os.path.basename(file_path)}. Total valid entries: {len(caption_mapping)}.", flush=True)
+
+        except json.JSONDecodeError as e:
+            print(f"\nError: Invalid JSON format in {file_path}: {e}")
+        except Exception as e:
+            print(f"\nError reading JSON file {file_path}: {e}")
+
+        return caption_mapping
+```
+
 ---
 
 ## Data Collector
@@ -411,4 +504,130 @@ if missing_images:
 else:
     print("🎉 No missing images found among referenced entries!")
 
+```
+
+## Ground Truth TXT Caption Parser
+
+The `GroundTruthTXTCaptionParser` implements the `CaptionParser` for simple text files. It's designed to parse lines where the image filename and its caption are separated by three spaces.
+
+```python
+class GroundTruthTXTCaptionParser(CaptionParser):
+    """
+    A concrete implementation of CaptionParser for ground-truth TXT caption files.
+
+    This parser expects each line in the text file to be formatted as:
+    `image_filename   caption_text`
+    where `image_filename` is the name of the image file (e.g., 'image.jpg')
+    and `caption_text` is its corresponding caption, separated by exactly three spaces (`   `).
+    """
+
+    def extract(self, file_path: str, images_path: str = "", validate_images: bool = False) -> Dict[str, List[str]]:
+        """
+        Extracts image filenames and their associated captions from a plain text file.
+
+        Args:
+            file_path (str): The path to the TXT caption file.
+            images_path (str, optional): The base directory where images referenced in the TXT
+                                         file are located. Defaults to "".
+            validate_images (bool, optional): If True, checks if the image file exists on disk
+                                              before adding its captions. Defaults to False.
+
+        Returns:
+            Dict[str, List[str]]: A dictionary mapping absolute image paths to a list of their captions.
+        """
+        caption_mapping: Dict[str, List[str]] = {}
+        print(f"➡️  Parsing TXT: {os.path.basename(file_path)}...")
+        try:
+            processed_lines = 0
+            with open(file_path, "r", encoding="utf-8") as file:
+                for idx, line in enumerate(file, 1):
+                    line = line.strip()
+                    if not line:
+                        continue  # Skip empty lines
+
+                    # Log progress for large files
+                    if idx % 1000 == 0:
+                        print(f"\r  → Processing line {idx}...", end="", flush=True)
+
+                    # Split by exactly three spaces. Using `maxsplit=1` ensures only the first
+                    # occurrence of "   " splits the line into two parts.
+                    parts = line.split("   ", 1)  # 3 spaces
+                    if len(parts) < 2:
+                        print(f"Warning: Skipping malformed line {idx} in {file_path}: '{line}' (expected 'filename   caption')")
+                        continue  # Skip malformed lines
+
+                    img_name_from_file = parts[0].strip()
+                    raw_caption = parts[1].strip()
+
+                    # Construct the full image path
+                    img_path = os.path.join(images_path, img_name_from_file) if images_path else img_name_from_file
+
+                    # Validate image existence if requested
+                    if not validate_images or Path(img_path).exists():
+                        caption_mapping.setdefault(img_path, []).append(raw_caption)
+                        processed_lines += 1
+                    # else:
+                        # print(f"Debug: Image '{img_path}' not found on disk. Skipped during validation.")
+                
+                print(f"\r  → Finished parsing {os.path.basename(file_path)}. Total valid entries: {processed_lines}.", flush=True)
+
+        except FileNotFoundError:
+            print(f"\nError: TXT file not found at {file_path}")
+        except Exception as e:
+            # Print a newline to prevent overwriting the progress message
+            print(f"\n[TXT] An unexpected error occurred while reading {file_path}: {e}")
+
+        return caption_mapping
+```
+
+## Ground Truth TXT Caption Parser Usage
+
+This section uses the `GroundTruthTXTCaptionParser` to extract captions from a `.txt` file, assuming a specific directory structure for the dataset.
+
+```python
+# Main loop to process test images
+dataset_directory = "/data/test/BNATURE/"
+test_image_directory = dataset_directory+"Pictures"
+test_image_filenames = os.listdir(test_image_directory)
+
+# --- Ground Truth TXT Caption Parser Usage ---
+print("--- GroundTruthTXTCaptionParser Started---")
+
+# Ensure the test directory exists
+if not os.path.isdir(dataset_directory):
+    print(f"\nError: Test dataset directory not found at '{dataset_directory}'.")
+    print("Please update 'dataset_directory' to a valid path containing 'caption/caption.txt' and 'Pictures'.")
+
+# Initialize the GroundTruthTXTCaptionParser
+txt_parser = GroundTruthTXTCaptionParser()
+
+# Define the paths to the caption file and the corresponding image directory
+captions_file_path = os.path.join(dataset_directory, "caption", "caption.txt")
+images_directory_path = os.path.join(dataset_directory, "Pictures")
+
+# Extract ground-truth captions
+# Setting `validate_images=True` will ensure that only captions for images
+# that actually exist on disk are included in the `ground_truth_captions` dictionary.
+print(f"\nAttempting to extract captions from: {captions_file_path}")
+print(f"Looking for images in: {images_directory_path}")
+ground_truth_captions = txt_parser.extract(
+    file_path=captions_file_path,
+    images_path=images_directory_path,
+    validate_images=True
+)
+
+# Display a sample of parsed captions to verify extraction
+print("\n--- Sample of Parsed Ground Truth Captions ---")
+if ground_truth_captions:
+    for i, (img_path, caps) in enumerate(ground_truth_captions.items()):
+        print(f"Image Path: {img_path}")
+        for j, caption in enumerate(caps):
+            print(f"  Caption {j+1}: {caption}")
+        print() # Add a blank line for readability between entries
+        if i >= 2: # Display only the first 3 entries for brevity
+            break
+else:
+    print("No captions were extracted. Please check file paths and format.")
+
+print("--- GroundTruthTXTCaptionParser complete ---")
 ```
