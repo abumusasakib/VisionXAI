@@ -25,7 +25,6 @@ This project provides an API to generate captions for images using a pre-trained
 │       ├── readme.txt
 │       └── vocab_231005
 ├── README.md
-├── check_tensorflow_weights.py     # Script to verify model file integrity
 ├── docker-compose.yml
 ├── install-pyenv-win.ps1
 ├── logs/
@@ -38,7 +37,7 @@ This project provides an API to generate captions for images using a pre-trained
 ├── test_suite_analysis/
 │   └── metadata.json
 ├── transfer_weight_files.ps1       # PowerShell script for remote model file sync
-└── .env.example              # Template for your .env file
+└── .env.example              # Template for the .env file
 ```
 
 ---
@@ -186,16 +185,6 @@ Then run:
 * Debug with FastAPI
 
 Both set `PYTHONUNBUFFERED=1` for clean logs.
-
----
-
-## 📦 Model Integrity Check
-
-Run this script to verify that your TensorFlow model weights are present, readable, and uncorrupted:
-
-```bash
-python check_tensorflow_weights.py
-```
 
 ---
 

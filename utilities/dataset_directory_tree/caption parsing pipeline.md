@@ -357,6 +357,7 @@ def collect_all_caption_data(base_dir: str, validate_images: bool = True) -> Dic
     xlsx_parser = XLSXCaptionParser(has_header=True)
     csv_parser = CSVCaptionParser()
     banglaview_xlsx_parser = XLSXCaptionParser(has_header=False) # BanglaView has no header
+    json_parser = JSONCaptionParser()
 
     # Walk through the directory tree.
     print(f"🔍 Scanning directories in {base_dir}...")
@@ -382,7 +383,7 @@ def collect_all_caption_data(base_dir: str, validate_images: bool = True) -> Dic
             # Process CSV files containing "ban-cap" in their name (e.g., Flickr 8k Bengali).
             elif lower_file.endswith(".csv") and "ban-cap" in lower_file:
                 # Specific image directory structure for 'Flickr 8k Dataset'.
-                img_dir = os.path.join(root, "Flickr 8k Dataset", "Images")
+                img_dir = os.path.join(base_dir, "Flickr 8k Dataset", "Images")
                 if not os.path.exists(img_dir):
                     img_dir = base_dir  # Fallback to base_dir if the specific path isn't found.
                 # print(f"Parsing CSV: {file_path}") # This print is inside the parser's extract method
@@ -398,6 +399,14 @@ def collect_all_caption_data(base_dir: str, validate_images: bool = True) -> Dic
                 # print(f"Parsing BanglaView XLSX: {file_path}") # This print is inside the parser's extract method
                 # BanglaView XLSX is known to have no header.
                 captions = banglaview_xlsx_parser.extract(file_path, images_path=img_dir, validate_images=validate_images)
+            # Process the BanglaLekhaImageCaptions dataset.
+            elif lower_file.endswith(".json") and "captions" in lower_file:
+                # First check 'images' subdirectory relative to current file's root
+                img_dir = os.path.join(root, "images")
+                if not os.path.exists(img_dir):
+                    # Fallback to a specific path relative to base_dir if not found locally
+                    img_dir = os.path.join(base_dir, "rxxch9vw59.2", "images")
+                captions = json_parser.extract(file_path, images_path=img_dir, validate_images=validate_images)
             else:
                 continue # Skip files that don't match any known caption format.
 

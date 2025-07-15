@@ -10,21 +10,35 @@ This repository contains a collection of Python utilities designed to assist wit
 - **Description:**
   - Cleans up whitespace from clipboard contents. Useful for quickly sanitizing copied text data.
 
-### 2. dataset_parser
+### 2. dataset_directory_tree
 
-- **File:** `dataset_parser.py`
+- **File:** `dataset_directory_tree.py`
 - **Description:**
-  - Parses datasets and provides tools for organizing and analyzing dataset structures.
+  - Parses datasets and provides tools for analyzing dataset structures. Includes utilities for visualizing and documenting directory trees.
 - **Additional:**
-  - `directory_tree.md`: Documentation or visualization of the dataset directory structure.
+  - `caption parsing pipeline.md`: Documentation of the caption parsing pipeline.
 
-### 3. filter_images
+### 3. dataset_integrity_check
+
+- **File:** `dataset_integrity_check.py`
+- **Description:**
+  - Checks the integrity of the BanglaLekhaImageCaptions dataset, including file existence, format validation, and optional caption parsing. Includes submodule for custom caption parsers.
+- **Additional:**
+  - `caption_parsers/`: Contains custom caption parser modules.
+
+### 4. check_tensorflow_weights
+
+- **File:** `check_tensorflow_weights.py`
+- **Description:**
+  - Utility to inspect and validate TensorFlow model weights for compatibility and integrity.
+
+### 5. filter_images
 
 - **File:** `filter_images.py`
 - **Description:**
   - Filters images in a directory based on specified criteria (e.g., size, format, or custom rules).
 
-### 4. save_vocab_pickle
+### 6. save_vocab_pickle
 
 - **File:** `save_vocab_pickle.py`
 - **Description:**

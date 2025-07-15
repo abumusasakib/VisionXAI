@@ -61,6 +61,17 @@ class XLSXReferenceExtractor(CaptionReferenceExtractor):
     Assumes image names are in the first column and may be followed by '#'.
     Handles XLSX as a ZIP file containing XML data. Also converts "MG" to "IMG_".
     """
+
+    def __init__(self, has_header: bool = True):
+        """
+        Initializes the XLSXCaptionParser.
+
+        Args:
+            has_header (bool, optional): Specifies if the XLSX file has a header row.
+                                        If True, the first row is skipped during parsing. Defaults to True.
+        """
+        self.has_header = has_header
+
     def extract(self, filepath: str) -> Set[str]:
         referenced_images: Set[str] = set()
         try:
@@ -82,8 +93,8 @@ class XLSXReferenceExtractor(CaptionReferenceExtractor):
                 with xlsx.open(sheet_file) as f:
                     tree = ET.parse(f)
                     rows = tree.findall(f".//{ns}row")
-                    # Skip header row if more than one row exists
-                    start_row = 1 if len(rows) > 1 else 0
+                    # Determine the starting row based on whether a header is present.
+                    start_row = 1 if self.has_header and len(rows) > 0 else 0
 
                     for row in rows[start_row:]:
                         # Find all 'c' elements (cells) within the row
@@ -112,9 +123,9 @@ class XLSXReferenceExtractor(CaptionReferenceExtractor):
                                 referenced_images.add(img_name)
 
         except zipfile.BadZipFile:
-            print(f"[XLSX] Error: {filepath} is not a valid zip file (corrupted XLSX).")
+            print(f"\n[XLSX] Error: {filepath} is not a valid zip file (corrupted XLSX).")
         except Exception as e:
-            print(f"[XLSX] An error occurred while reading {filepath}: {e}")
+            print(f"\n[XLSX] An error occurred while reading {filepath}: {e}")
         return referenced_images
 
 class CSVReferenceExtractor(CaptionReferenceExtractor):
@@ -133,9 +144,9 @@ class CSVReferenceExtractor(CaptionReferenceExtractor):
                         img_name = val.split("#")[0].strip() # Split at '#' to get image name
                         referenced_images.add(img_name)
         except FileNotFoundError:
-            print(f"[CSV] Error: File not found at {filepath}")
+            print(f"\n[CSV] Error: File not found at {filepath}")
         except Exception as e:
-            print(f"[CSV] An error occurred while reading {filepath}: {e}")
+            print(f"\n[CSV] An error occurred while reading {filepath}: {e}")
         return referenced_images
 
 class JSONReferenceExtractor(CaptionReferenceExtractor):
@@ -154,7 +165,7 @@ class JSONReferenceExtractor(CaptionReferenceExtractor):
                     if img_name:
                         referenced_images.add(img_name)
         except Exception as e:
-            print(f"[JSON] Error reading {filepath}: {e}")
+            print(f"\n[JSON] Error reading {filepath}: {e}")
         return referenced_images
 
 class TXTReferenceExtractor(CaptionReferenceExtractor):
@@ -179,7 +190,7 @@ class TXTReferenceExtractor(CaptionReferenceExtractor):
                     img_name = parts[0].strip()
                     referenced_images.add(img_name)
         except Exception as e:
-            print(f"[TXT] Error reading {filepath}: {e}")
+            print(f"\n[TXT] Error reading {filepath}: {e}")
         return referenced_images
 
 def print_tree_and_count(path: str, prefix: str, output_lines: List[str], all_images_on_disk: Set[str]):
@@ -258,6 +269,7 @@ def generate_tree_and_stats(folder_path: str, output_filename: str = "directory_
 
     # Instantiate extractors once
     xlsx_extractor = XLSXReferenceExtractor()
+    banglaview_xlsx_extractor = XLSXReferenceExtractor(has_header=False) # BanglaView has no header
     csv_extractor = CSVReferenceExtractor()
     json_extractor = JSONReferenceExtractor()
     txt_extractor = TXTReferenceExtractor()
@@ -268,18 +280,23 @@ def generate_tree_and_stats(folder_path: str, output_filename: str = "directory_
             full_path = os.path.join(root, file)
             lower_file = file.lower()
 
+            # Process general XLSX files containing "captioning" in their name.
             if lower_file.endswith(".xlsx") and "captioning" in lower_file:
                 print(f"  - Extracting from XLSX: {file}")
                 referenced_images.update(xlsx_extractor.extract(full_path))
+            # Process CSV files containing "ban-cap" in their name.
             elif lower_file.endswith(".csv") and "ban-cap" in lower_file:
                 print(f"  - Extracting from CSV: {file}")
                 referenced_images.update(csv_extractor.extract(full_path))
+            # Process the specific "banglaview_dataset.xlsx" file.
             elif lower_file == "banglaview_dataset.xlsx": # Specific file name for BanglaView
                 print(f"  - Extracting from BanglaView XLSX: {file}")
-                referenced_images.update(xlsx_extractor.extract(full_path)) # Re-use XLSX extractor
+                referenced_images.update(banglaview_xlsx_extractor.extract(full_path))
+            # Process the BanglaLekhaImageCaptions dataset.
             elif lower_file.endswith(".json") and "caption" in lower_file:
                 print(f"  - Extracting from JSON: {file}")
                 referenced_images.update(json_extractor.extract(full_path))
+            # Process the BNATURE dataset used for testing.
             elif lower_file == "caption.txt": # Specific file name for ground truth TXT
                 print(f"  - Extracting from TXT: {file}")
                 referenced_images.update(txt_extractor.extract(full_path))
