@@ -113,6 +113,13 @@ def validate_sequential_dataset(dataset_dir: str, apply_preprocessing: bool = Fa
     print(f"🔢 Image filenames on disk sequential (1 to N)? {are_filenames_sequential}")
     if not are_filenames_sequential and image_files_on_disk:
         print(f"   (Found start: {int(Path(image_files_on_disk[0]).stem)}, end: {int(Path(image_files_on_disk[-1]).stem)})")
+        # Identify and print missing image filename indices
+        disk_indices = sorted(int(Path(fname).stem) for fname in image_files_on_disk)
+        expected_disk_indices = set(range(disk_indices[0], disk_indices[-1] + 1))
+        actual_disk_indices = set(disk_indices)
+        missing_disk_indices = sorted(list(expected_disk_indices - actual_disk_indices))
+        if missing_disk_indices:
+            print(f"   Missing image filename index(es): {missing_disk_indices[:10]}" + (" ..." if len(missing_disk_indices) > 10 else ""))
 
 
     # Validate caption sequencing by checking the numerical part of image filenames referenced in captions.json
@@ -122,12 +129,18 @@ def validate_sequential_dataset(dataset_dir: str, apply_preprocessing: bool = Fa
     print(f"📝 Captions sequentially indexed (1 to N in JSON)? {are_captions_sequential}")
     if not are_captions_sequential and caption_indices:
         print(f"   (Found start: {caption_indices[0]}, end: {caption_indices[-1]})")
+        # Identify and print the missing index
+        expected_indices = set(range(caption_indices[0], caption_indices[-1] + 1))
+        actual_indices = set(caption_indices)
+        missing_indices = sorted(list(expected_indices - actual_indices))
+        if missing_indices:
+            print(f"   Missing caption index(es): {missing_indices[:10]}" + (" ..." if len(missing_indices) > 10 else ""))
 
     # Perform optional image readability checks
-    if apply_image_decoding:
-        missing_images = []
-        unreadable_images = []
+    missing_images = []
+    unreadable_images = []
 
+    if apply_image_decoding:
         print("\n🔎 Checking images for existence and readability...")
         # Iterate directly over the absolute image paths obtained from the parser
         for i, img_path_abs in enumerate(caption_mapping.keys(), 1):
@@ -163,6 +176,24 @@ def validate_sequential_dataset(dataset_dir: str, apply_preprocessing: bool = Fa
                 print(f"  - {path}")
     else:
         print("\nImage readability check skipped as per user choice.")
+
+    # Feature: Ask user to remove JSON entries referencing non-existent images
+    if missing_images:
+        remove_choice = input("\n❓ Do you want to remove JSON entries referencing missing images and save the cleaned JSON? (yes/no): ").strip().lower()
+        if remove_choice in {"yes", "y"}:
+            # Load original JSON
+            with open(caption_path, encoding="utf-8") as f:
+                original_json = json.load(f)
+            # Build set of missing filenames
+            missing_filenames = set(Path(path).name for path in missing_images)
+            # Filter out entries referencing missing images
+            cleaned_json = [entry for entry in original_json if entry.get("filename") not in missing_filenames]
+            # Save cleaned JSON
+            backup_path = caption_path + ".bak"
+            os.rename(caption_path, backup_path)
+            with open(caption_path, "w", encoding="utf-8") as f:
+                json.dump(cleaned_json, f, ensure_ascii=False, indent=2)
+            print(f"\n✅ Cleaned JSON saved. Original backed up as: {backup_path}")
 
 # === Entry point ===
 if __name__ == "__main__":
