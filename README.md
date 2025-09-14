@@ -1,6 +1,6 @@
-# VisionXAI: Image Caption Generation in Bengali with Explainable AI (xAI)
+# Image Caption Generation in Bengali with Explainable AI (xAI)
 
-VisionXAI is a mobile application project designed to generate detailed image captions in Bengali. It integrates Explainable AI (xAI) to help users understand how captions are generated, making the app transparent and trustworthy. VisionXAI aims to support Bengali-speaking users by offering rich image descriptions in Bengali, which can be read aloud through text-to-speech (TTS) technology. This accessibility feature ensures that visually impaired users can fully experience the descriptions and gain meaningful insights into the images.
+This is a project designed to generate detailed image captions in Bengali. It integrates Explainable AI (xAI) to help users understand how captions are generated, making the app transparent and trustworthy. It aims to support Bengali-speaking users by offering rich image descriptions in Bengali, which can be read aloud through text-to-speech (TTS) technology. This accessibility feature ensures that visually impaired users can fully experience the descriptions and gain meaningful insights into the images.
 
 ## Features
 
@@ -109,10 +109,6 @@ Remeber to setup the environments properly before setup.
 
 2. **Navigate to the project directory**:
 
-   ```bash
-   cd VisionXAI
-   ```
-
 3. **Install the backend dependencies**:
    Go to the Backend API's directory and then run this command:
 
@@ -134,10 +130,10 @@ Remeber to setup the environments properly before setup.
    flutter run
    ```
 
-   Open the Flutter project (vision_xai) in your preferred IDE (VSCode, Android Studio) and run the app on a supported device.
+   Open the Flutter project in your preferred IDE (VSCode, Android Studio) and run the app on a supported device.
 
 ## Notes
 
 - **Local Execution**: The API is designed for local use, and the IP address shown in the console is dynamic. Make sure to update the IP address in the mobile app whenever the API server is restarted.
 - **Model Weights**: Ensure the correct model weights are placed in the `ImgCap` package as they are crucial for generating accurate captions.
-- **Explainable AI**: The xAI features (using Grad-CAM or LIME) allow users to understand why specific parts of the image were selected for captioning.
+- **Explainable AI**: The xAI features (using Grad-CAM or LIME) would users to understand why specific parts of the image were selected for captioning.
